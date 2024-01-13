@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang = "eng" style = "background-color: rgb(58, 60, 81);" xmlns="https://http://www.w3.org/2000/svg"> 
+    <head>
+        <title>
+            GUI for Game Editor
+        </title>
+    </head>
+    <body>
+        <style>
+            #mainHeader{
+                color:white;
+                font-style: normal;
+                font: 600;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 45px;
+            }
+            .row{
+                position: relative;
+                float: left;
+                margin: 0;
+                border: solid green;
+                height: calc(100% - 10px);
+                display: block;
+                /*Not inline block?*/
+            }
+            .horizontalDivider{
+                width:10px;
+                height:98%;
+                float: left;
+                cursor: ew-resize;
+                position: relative;
+                top: 1.5%
+            }
+            .horizontalDivider:hover{
+                background-color:rgba(211, 211, 211, 0.65);
+            }
+            .verticalDivider{
+                width:100%;
+                height:10px;
+                float: left;
+                cursor: ns-resize;
+            }
+            .verticalDivider:hover{
+                background-color:rgba(211, 211, 211, 0.65);
+            }
+            #mainWindow{
+                /*background-color: rgb(58, 60, 81);*/
+                display:inline-block;
+                width: 100%;
+                height: calc(98vh - 50px);
+                border: solid;
+                border-width: 1%;
+                border-style:dashed;
+                overflow: hidden;
+                margin: 0;
+            }
+            .cell{
+                position: relative;
+                float: left;
+                width: 100%;
+            }
+            .header{
+                position: relative;
+                height: 20px;
+                left: 1px;
+                width: calc(100% - 3px);
+                text-overflow: ellipsis;
+                display: inline-block;
+                border-bottom: solid;
+                border-right: solid;
+                border-color: orangered;
+            }
+            .webLoader{
+                float: left;
+                width: 100%;
+            }
+            .websiteViewer{
+                width: calc(100% - 8px);
+                height: calc(100% - 60px);
+            }
+            #searchMenu{
+                width: 300px;
+            }
+            .headerControls{
+                border: 0px;
+                color: white;
+                background-color: rgb(85, 85, 225);
+                height: 100%;
+            }
+            iframe{
+                border: solid;
+                border-color: lightgray;
+            }
+            .textInput{
+                width: 100%;
+                height: 100%;
+                outline: none;
+                resize: none;
+                max-height: none;
+                background-color: transparent;
+                color: white;
+                border-color: white;
+                cursor: vertical-text;
+                font-size: 20px;
+                font-family: 'Times New Roman', Times, serif;
+            }
+            .textContainer{
+                height: calc(100% - 20px);
+                width: 100%;
+            }
+            .searchMenu{
+                width: calc(100% - 0px)
+            }
+            .menuSelector{
+                background-color: transparent;
+                border: 0px;
+                color: white;
+            }
+            #cellSettingsOpener{
+                position: fixed;
+                right: 10px;
+                text-align: center;
+                top: 50%;
+                width: 30px;
+                height: 20px;
+                color: white;
+                background-color: rgba(30, 30, 30, 0.85);
+                user-select: none;
+                z-index: 3;
+            }
+            #cellSettingsControls{
+                position: fixed;
+                right: -140px;
+                text-align: center;
+                top: calc(50% - 100px);
+                width: 150px;
+                height: 200px;
+                color: white;
+                background-color: rgba(10, 10, 10, 0.95);
+                z-index: 3;
+                float: right;
+            }
+            .cellButtonControls{
+                border: 0px;
+                color: white;
+                background-color: rgb(85, 85, 126);
+                display:inline-block;
+            }
+            #cellSettingsControls input[type="range"]{
+                accent-color: rgb(128, 83, 240);
+            }
+            #mainContainer{
+                background-color: rgb(58, 60, 81);
+            }
+            .songQueue{
+                color:white;
+                text-overflow: ellipsis;
+                overflow:hidden;
+                border: solid white;
+            }
+            .sceneEditor{
+                border: solid white;
+            }
+        </style>
+        <div hidden>elopment</div>
+        <div id = "mainContainer">
+            <div id = "mainHeader">
+                <p style = "float:left; padding: 0px; margin: 0px">Ascension</p>
+                <select style = "height: 25px; font-size: 20px; color:white; background-color: transparent; border-radius: 30px; border-color: white; position: fixed; right:0px; height: 30px; display: inline-block; top:20px; padding-left: 10px; padding-right: 10px;" id = "layOutSelectionMenu">
+                </select>
+            </div>
+            <div id = "cellSettingsOpener">&lt;</div>
+            <div id = "cellSettingsControls">
+                <p class = "currentSelectedCellValue" id = "0" hidden></p>
+                <p style = "display: inline-block; vertical-align: middle;">Width</p><input type = "range" style="width:75px" value = "0"><br>
+                <p style = "display: inline-block; vertical-align: middle">Height</p><input type = "range" style="width:75px" value = "0"><br><br>
+            </div>
+            <div id = "mainWindow">
+            </div>
+        </div>
+        <script>
+            var cell = document.getElementsByClassName("cell")
+            var horIsMouseDown = Array(document.getElementsByClassName("horizontalDivider").length).fill(false)
+            var vertIsMouseDown = Array(document.getElementsByClassName("verticalDivider").length).fill(false)
+            var layOutSelectionMenu = [
+                {
+                    "name": "Coding Layout",
+                    "layOut":[["Scene Editor"], ["Javascript API", "TileEditor"]]
+                },
+                {
+                    "name": "Tile Layout",
+                    "layOut":[["Scene Editor"], ["Javascript API", "TileEditor"]]
+                }
+            ]
+            var layOut = [["sceneEditor"], ["tileEditor", "Editor Controls"]]
+            var cellModes = ["sceneEditor", "editorControls", "tileEditor", "javascriptAPI"]
+            var allCells = document.querySelectorAll(".cell")
+            var allRows = document.querySelectorAll(".row")
+            var menuOptions = {
+                "sceneEditor" : {
+                    "ObjectData" : [[]],
+                    "widthData" : [], // Holds all objects in Scene, Tile Values, Has Collision
+                },
+                "editorControls" : {
+                    "" : "" // IDK What goes here
+                },
+                "tileEditor" : {
+                    "TileStorage" : [] // Array of color for Colors
+                    },
+                "javascriptAPI" : {
+                    "Code" : [""] // Array for code values, eventualy to 2D Array for multiple tabs 
+                }
+            }
+            
+            function compileWindows(){
+                var cellsToAppend = []
+                for(let layOutOfRows in layOut){
+                    var startingRow = document.createElement("div")
+                    startingRow.className = "row"
+                    startingRow.style.width = `calc(${100 / layOut.length}% - 16px)`
+                    console.log("Create a row")
+                    for(let layOutOfCells in layOut[layOutOfRows]){
+                        var startingCell = document.createElement("div")
+                        startingCell.className = "cell"
+                        startingCell.style.height = `calc(${100 / layOut[layOutOfRows].length}% - ${10 / layOut[layOutOfRows].length}px)`
+                        startingRow.appendChild(startingCell)
+                        console.log("Paramaters are", layOutOfCells)
+                        cellsToAppend.push(layOut[layOutOfRows][layOutOfCells])
+                        document.getElementById("mainWindow").appendChild(startingRow)
+                        console.log("Accessing the Comparison", layOut[layOutOfRows], "and", layOutOfCells)
+                        if(layOut[layOutOfRows].length - 1 > layOutOfCells){
+                            var startingVerticalDivider = document.createElement("div")
+                            startingVerticalDivider.id = `vertical${layOutOfRows},${layOutOfCells},${parseInt(layOutOfCells) + 1}`
+                            startingVerticalDivider.className = "verticalDivider"
+                            document.getElementsByClassName("row")[parseInt(layOutOfRows)].appendChild(startingVerticalDivider)
+                        }
+                    }
+                    if(layOutOfRows < layOut.length - 1){
+                        var startingHorizontalDivider = document.createElement("div")
+                        startingHorizontalDivider.id = `horizontal${layOutOfRows}${parseInt(layOutOfRows) + 1}`
+                        startingHorizontalDivider.className = "horizontalDivider"
+                        console.log("Layout is", typeof(layOutOfRows))
+                        document.getElementById("mainWindow").appendChild(startingHorizontalDivider)
+                    }
+                }
+                return cellsToAppend
+            }
+
+            function createDropdown(currentCell, cellAssignment){
+                var dropDown = document.createElement("select");
+                    
+                dropDown.onchange = function(){test(currentCell, cellAssignment)};
+                dropDown.className = "menuSelector"
+                
+                var dropDownOption = document.createElement("option");
+                dropDownOption.innerText = "Choose a Menu";
+                dropDownOption.selected = "true"
+                dropDown.appendChild(dropDownOption);
+
+                for(selectOption of cellModes){
+                    var dropDownOption = document.createElement("option");
+                    dropDownOption.innerText = selectOption;
+                    dropDown.appendChild(dropDownOption);
+                }
+
+                var header = document.createElement("div")
+                header.className = "header";
+
+                header.appendChild(dropDown)
+                document.getElementsByClassName("cell")[cellAssignment].appendChild(header);
+            }
+
+            function startUp(){
+                var cellType = compileWindows()
+                for(let current = 0; current < cell.length; current++){
+                    console.log("Current Cell called, current cell is", current)
+                    let currentCell = document.getElementsByClassName("cell")[current]
+
+                    createDropdown(currentCell, current)
+                    // var selectMode = document.createElement("form")
+                    // selectMode.style.display = "inline-block"
+
+                    // cell[current].style.width = ((window.innerWidth / 3) - 8) + "px"
+                    console.log("Inputed Variables are", current, cellType)
+                    selectMode(current, cellType)
+
+                    // selectMode.appendChild(dropDown)
+                    // header.appendChild(selectMode);
+
+                    console.log(`Current cell is ${cellType[current]}`);
+                }
+
+                if(document.getElementById("layOutSelectionMenu").children.length > 1){
+                    return
+                }
+
+                for(layOutSelectionIndex in layOutSelectionMenu){
+                    var layOutSelectionOption = document.createElement("option")
+                    layOutSelectionOption.innerText = layOutSelectionMenu[layOutSelectionIndex]["name"]
+                    document.getElementById("layOutSelectionMenu").appendChild(layOutSelectionOption)
+                }
+
+                document.getElementById("layOutSelectionMenu").addEventListener("change", (submitedEvent) => {
+                    console.log(submitedEvent.target.selectedIndex)
+                    document.getElementById("mainWindow").remove()
+                    var newMainWindow = document.createElement("div")
+                    newMainWindow.id = "mainWindow"
+                    document.getElementById("mainContainer").insertBefore(newMainWindow, document.getElementById("cellSettingsOpener"))
+                    console.log(layOutSelectionMenu[submitedEvent.target.selectedIndex])
+                    layOut = layOutSelectionMenu[submitedEvent.target.selectedIndex]["layOut"]
+                    while(document.getElementById("cellSettingsControls").firstChild){
+                        document.getElementById("cellSettingsControls").removeChild(document.getElementById("cellSettingsControls").firstChild)
+                    }
+                    document.getElementById("cellSettingsControls").innerHTML = `<p class = "currentSelectedCellValue" id = "0" hidden></p>
+                <p style = "display: inline-block; vertical-align: middle;">Width</p><input type = "range" style="width:75px" value = "0"><br>
+                <p style = "display: inline-block; vertical-align: middle">Height</p><input type = "range" style="width:75px" value = "0"><br><br>`
+                    preloadCellSettings()
+                    startUp()
+                })
+            }
+
+            function test(typeOfCell, cellID){
+                // selectMode(0, [typeOfCell.getElementsByClassName("menuSelector")[0].value])
+                console.log("Changed to", typeOfCell.getElementsByClassName("menuSelector")[0].value)
+                // typeOfCell.remove()
+                var cellArray = Array.from(Array(cellID), () => {return null})
+                cellArray.push(typeOfCell.getElementsByClassName("menuSelector")[0].value)
+                console.log(cellArray)
+                clearCell(cellID)
+                createDropdown(document.getElementsByClassName("cell")[cellID], cellID)
+                selectMode(cellID, cellArray)
+            }
+
+            function clearCell(cellID){
+                var cellsToDelete = document.getElementsByClassName("cell")[cellID]
+                while(cellsToDelete.firstChild){
+                    cellsToDelete.removeChild(cellsToDelete.firstChild)
+                }
+            }
+
+            function selectMode(cellIteration, cellPosition){
+                var header = document.createElement("div");
+                var currentCell = document.getElementsByClassName("cell")[cellIteration]; 
+                var cellAssignment = cellPosition[cellIteration]
+                console.log("Current Cell is", currentCell)
+                console.log(cellIteration, cellPosition)
+                switch(cellAssignment){
+                    case "sceneEditor":
+                        var sceneEditor = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+                        var sceneElement = document.createElementNS("http://www.w3.org/2000/svg", "text")
+                        
+                        sceneElement.textContent = "Test"
+                        sceneElement.setAttribute("y", 75)
+                        sceneElement.setAttribute("x", 50)
+                        sceneEditor.setAttribute("class", "sceneEditor")
+
+                        sceneEditor.style.width = "calc(100% - 6px)"    
+                        sceneEditor.xmlns = "http://www.w3.org/2000/svg"
+                        console.log("Width is", currentCell.clientWidth)
+                        menuOptions["sceneEditor"]["widthData"].push(currentCell.clientWidth)
+
+                        sceneEditor.appendChild(sceneElement)
+
+                        currentCell.appendChild(sceneEditor)
+                        currentCell.className = "hasSceneEditor"
+                        break
+                    case "editorControls":
+                        break
+                    
+                    case "javascriptAPI":
+                        break
+
+                    case "tileEditor":
+                        break
+                    
+                }
+            }
+            function resizeWindows(e){
+                var currentAccessedCell = 0
+                var allRows = document.querySelectorAll(".row")
+                var allCells = document.querySelectorAll(".cell")
+                for(let layOutOfRows in layOut){
+                    for(let layOutOfCells in layOut[layOutOfRows]){
+                        allCells[currentAccessedCell].style.height = String(100 / layOut[layOutOfRows].length) + "%" 
+                        allRows[layOutOfRows].style.width = `calc(${String(100 / layOut.length)}% - ${30 / layOut.length}px)`
+                        console.log("Layout of this is", allCells[0])
+                        currentAccessedCell += 1
+                    }
+                }
+            }
+
+            function resizeSceneEditor(e){
+
+            }
+
+            function horMoveDivider(e){
+                console.log("Horizontal movement is called")
+                for(var dividerClass = 0; dividerClass < document.getElementsByClassName("horizontalDivider").length; dividerClass++){
+                    var allRows = document.querySelectorAll(".row")
+                    var currentDivider = document.getElementsByClassName("horizontalDivider")[dividerClass]
+                    var firstHalf = allRows[currentDivider.id.toString().replace("horizontal", "")[0]]
+                    var secondHalf = allRows[currentDivider.id.toString().replace("horizontal", "")[1]]
+
+                    secondHalf.style.width = `${((secondHalf.clientWidth + firstHalf.clientWidth) - (e.clientX - 25))}px`
+                    firstHalf.style.width = `${(e.clientX - 25)}px`
+
+                    console.log("Selected Elements for rows are", firstHalf, secondHalf)
+                    console.log("Number of rows are", allRows.length)
+                }
+            }
+            function vertMoveDivider(e){
+                for(var dividerClass = 0; dividerClass < document.getElementsByClassName("verticalDivider").length; dividerClass++){
+                    var currentDivider = document.getElementsByClassName("verticalDivider")[dividerClass]
+                    // Get rows than cells in row
+                    var flexableElements = currentDivider.id.toString().replace("vertical", "").split(",")
+                    var selectedRow = document.querySelectorAll(".row")[flexableElements[0]]
+                    // console.log("Flexable Elements are", flexableElements, "selected row", selectedRow)
+                    var firstHalf = selectedRow.getElementsByClassName("cell")[flexableElements[1]];
+                    var secondHalf = selectedRow.getElementsByClassName("cell")[flexableElements[2]];
+                    
+                    console.log(`Selected Row ${selectedRow}, accessing cells ${firstHalf} ${secondHalf}`)
+
+                    secondHalf.style.height = `${((secondHalf.clientHeight + firstHalf.clientHeight) - (e.clientY - 60))}px`
+                    firstHalf.style.height = `${(e.clientY - 70)}px`
+                }
+            }
+            startUp()
+            window.addEventListener("mousemove", function (e) {
+
+                vertIsMouseDown.forEach((vertIsInRange) => {
+                    if(vertIsInRange[0] == true){
+                        vertMoveDivider(e)
+                    }
+                })
+                horIsMouseDown.forEach((horIsInRange) => {
+                    if(horIsInRange[0] == true){
+                        horMoveDivider(e)
+                    }
+                })
+            })
+            window.addEventListener("resize", function (e) {
+                setTimeout(resizeWindows(e), 0)
+            })
+            window.addEventListener("mousedown", function (e) {
+                for(var horizontalDividerClass = 0; horizontalDividerClass < document.getElementsByClassName("horizontalDivider").length; horizontalDividerClass++){
+                    var currentHorizontalDivider = document.getElementsByClassName("horizontalDivider")[horizontalDividerClass]
+                    console.log(`The Current Horizontal Divider is ${currentHorizontalDivider}`)
+                    if(e.clientX >= currentHorizontalDivider.getBoundingClientRect().x && 
+                    (currentHorizontalDivider.getBoundingClientRect().x + currentHorizontalDivider.clientWidth) >= e.clientX){
+                        horIsMouseDown[horizontalDividerClass] = [true]
+                    }
+                }
+                for(var verticalDividerClass = 0; verticalDividerClass < document.getElementsByClassName("verticalDivider").length; verticalDividerClass++){
+                    var currentVerticalDivider = document.getElementsByClassName("verticalDivider")[verticalDividerClass]
+                    if(e.clientY >= currentVerticalDivider.getBoundingClientRect()["y"] && 
+                    ((currentVerticalDivider.getBoundingClientRect().y + currentVerticalDivider.clientHeight) >= e.clientY) && 
+                    (e.clientX >= currentVerticalDivider.getBoundingClientRect().x) && 
+                    ((currentVerticalDivider.getBoundingClientRect().x + currentVerticalDivider.clientWidth) >= e.clientX)){
+                        console.log("Is called for Vertical data")
+                        vertIsMouseDown[verticalDividerClass] = [true]
+                    }
+                }
+            })
+
+            window.addEventListener("mouseup", function(e){
+                horIsMouseDown = horIsMouseDown.map((setValue) => [false])
+                vertIsMouseDown = vertIsMouseDown.map((setValue) => [false])
+            })
+
+            var menu = document.getElementById("mainContainer");
+            document.addEventListener("keydown", function(event){
+                if((event.metaKey && event.key == "F") || (event.ctrlKey && event.key == "F")){
+                    event.preventDefault()
+                    if(document.fullscreenElement){
+                        document.exitFullscreen() 
+                    }
+                    else{
+                        menu.requestFullscreen()
+                    }
+                }
+            })
+            
+            var settingsIsOpened = true
+            document.getElementById("cellSettingsOpener").onclick = function(){
+                
+                if(settingsIsOpened == false){
+                    settingsIsOpened = true
+                    cellSettingsControls.style.right = -(cellSettingsControls.clientWidth - 10) + "px" 
+                    cellSettingsOpener.style.right = `10px`
+                    cellSettingsOpener.innerText = "<"
+                    return
+                }
+                settingsIsOpened = false
+                cellSettingsOpener.style.right = (cellSettingsControls.clientWidth) + "px"
+                cellSettingsControls.style.right = "0px" 
+                cellSettingsOpener.innerText = ">"
+            }
+
+            preloadCellSettings()
+
+            function preloadCellSettings(){
+                var cellSettingsOpener = document.getElementById("cellSettingsOpener")
+                var cellSettingsControls = document.getElementById("cellSettingsControls")
+                var cellType = []
+                layOut.forEach((row, rowID) => {
+                    row.forEach((cell) =>{
+                        cellType.push([cell, rowID])
+                    })
+                })
+
+                cellSettingsControls.getElementsByTagName("input")[1].addEventListener("input", (e) => {
+                    var currentSelectedCellValue = document.getElementsByClassName("currentSelectedCellValue")[0]
+                    console.log(currentSelectedCellValue.getAttribute("id").split(" ")[0], Math.ceil(document.getElementsByClassName("row")[currentSelectedCellValue.getAttribute("id").split(" ")[0]].children.length / 2))
+                    document.getElementsByClassName("cell")[currentSelectedCellValue.getAttribute("id").split(" ")[1]].lastChild.style.height = `calc(
+                        ${100}%
+                    - ${e.target.value}px)`
+                    console.log(e.target.value)
+                })
+
+                for(let cellIteration in cellType){
+                    let cellButtonControl = document.createElement("button")
+                    cellButtonControl.className = "cellButtonControls"
+                    cellButtonControl.style.minWidth = String(100/document.querySelectorAll(".row").length) + "%"
+                    cellButtonControl.innerText = `Cell ${parseInt(cellIteration) + 1}`
+                    cellButtonControl.style.width = (100/(cellType[0].length)) + "%"
+                    cellButtonControl.onclick = () => {switchCellSelect(cellType[cellIteration], cellIteration)}
+                    cellSettingsControls.appendChild(cellButtonControl)
+                }
+            }
+
+            function switchCellSelect(cellData, cellNumber){
+                var extractCellHeight = String(document.getElementsByClassName("cell")[cellNumber].lastElementChild.style.height).split(" - ")
+                console.log("Extracting Last element", document.getElementsByClassName("cell")[cellNumber].lastElementChild.style.height)
+                console.log("Current Height Offset is", extractCellHeight[1].slice(0, extractCellHeight[1].search("px")))
+                console.log("Current Selected Cell Value", document.getElementsByClassName("currentSelectedCellValue")[0].getAttribute("id"))
+                console.log("Cell number is", cellNumber, "value for width is", document.getElementById("cellSettingsControls").getElementsByTagName("input")[0].value, document.getElementById("cellSettingsControls").getElementsByTagName("input")[1].value)
+
+                document.getElementsByClassName("currentSelectedCellValue")[0].id = String(cellData[1]) + " " + String(cellNumber)
+                
+                document.getElementById("cellSettingsControls").getElementsByTagName("input")[1].value = extractCellHeight[1].slice(0, extractCellHeight[1].search("px"))
+
+                document.getElementsByClassName("cell")[cellNumber].lastChild.style.height = `calc(100% - 
+                    ${document.getElementById("cellSettingsControls").getElementsByTagName("input")[1].value}px)`
+            }
+        </script>
+    </body>
+</html>
