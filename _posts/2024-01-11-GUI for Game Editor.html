@@ -160,13 +160,15 @@
             }
             .sceneEditor{
                 border: solid white;
+                width: calc(100% - 6px);
+                height: calc(100% - 19px)
             }
         </style>
         <div hidden>elopment</div>
         <div id = "mainContainer">
             <div id = "mainHeader">
                 <p style = "float:left; padding: 0px; margin: 0px">Ascension</p>
-                <select style = "height: 25px; font-size: 20px; color:white; background-color: transparent; border-radius: 30px; border-color: white; position: fixed; right:0px; height: 30px; display: inline-block; top:20px; padding-left: 10px; padding-right: 10px;" id = "layOutSelectionMenu">
+                <select style = "height: 25px; font-size: 20px; color:white; background-color: transparent; border-radius: 30px; border-color: white; position: fixed; right:0px; height: 30px; display: inline-block; padding-left: 10px; padding-right: 10px;" id = "layOutSelectionMenu">
                 </select>
             </div>
             <div id = "cellSettingsOpener">&lt;</div>
@@ -185,29 +187,29 @@
             var layOutSelectionMenu = [
                 {
                     "name": "Coding Layout",
-                    "layOut":[["Scene Editor"], ["Javascript API", "TileEditor"]]
+                    "layOut":[["Scene Editor"], ["Javascript API", "Tile Editor"]]
                 },
                 {
                     "name": "Tile Layout",
-                    "layOut":[["Scene Editor"], ["Javascript API", "TileEditor"]]
+                    "layOut":[["Scene Editor"], ["Javascript API", "Tile Editor"]]
                 }
             ]
-            var layOut = [["sceneEditor"], ["tileEditor", "Editor Controls"]]
-            var cellModes = ["sceneEditor", "editorControls", "tileEditor", "javascriptAPI"]
+            var layOut = [["Scene Editor"], ["Tile Editor", "Editor Controls"]]
+            var cellModes = ["Scene Editor", "Editor Controls", "Tile Editor", "Javascript Runner"]
             var allCells = document.querySelectorAll(".cell")
             var allRows = document.querySelectorAll(".row")
             var menuOptions = {
-                "sceneEditor" : {
-                    "ObjectData" : [[]],
-                    "widthData" : [], // Holds all objects in Scene, Tile Values, Has Collision
+                "Scene Editor" : {
+                    "ObjectData" : [{"name": "Test Box", "x": 0, "y":0}], // Holds all objects in Scene, Tile Values, Has Collision, i.e., {"x": 0, "y": 0}
+                    "screenData" : [], 
                 },
-                "editorControls" : {
+                "Editor Controls" : {
                     "" : "" // IDK What goes here
                 },
-                "tileEditor" : {
-                    "TileStorage" : [] // Array of color for Colors
+                "Tile Editor" : {
+                    "tileStorage" : [] // Array of color for Colors
                     },
-                "javascriptAPI" : {
+                "Javascript API" : {
                     "Code" : [""] // Array for code values, eventualy to 2D Array for multiple tabs 
                 }
             }
@@ -218,16 +220,13 @@
                     var startingRow = document.createElement("div")
                     startingRow.className = "row"
                     startingRow.style.width = `calc(${100 / layOut.length}% - 16px)`
-                    console.log("Create a row")
                     for(let layOutOfCells in layOut[layOutOfRows]){
                         var startingCell = document.createElement("div")
                         startingCell.className = "cell"
                         startingCell.style.height = `calc(${100 / layOut[layOutOfRows].length}% - ${10 / layOut[layOutOfRows].length}px)`
                         startingRow.appendChild(startingCell)
-                        console.log("Paramaters are", layOutOfCells)
                         cellsToAppend.push(layOut[layOutOfRows][layOutOfCells])
                         document.getElementById("mainWindow").appendChild(startingRow)
-                        console.log("Accessing the Comparison", layOut[layOutOfRows], "and", layOutOfCells)
                         if(layOut[layOutOfRows].length - 1 > layOutOfCells){
                             var startingVerticalDivider = document.createElement("div")
                             startingVerticalDivider.id = `vertical${layOutOfRows},${layOutOfCells},${parseInt(layOutOfCells) + 1}`
@@ -239,7 +238,6 @@
                         var startingHorizontalDivider = document.createElement("div")
                         startingHorizontalDivider.id = `horizontal${layOutOfRows}${parseInt(layOutOfRows) + 1}`
                         startingHorizontalDivider.className = "horizontalDivider"
-                        console.log("Layout is", typeof(layOutOfRows))
                         document.getElementById("mainWindow").appendChild(startingHorizontalDivider)
                     }
                 }
@@ -249,7 +247,8 @@
             function createDropdown(currentCell, cellAssignment){
                 var dropDown = document.createElement("select");
                     
-                dropDown.onchange = function(){test(currentCell, cellAssignment)};
+                dropDown.onchange = function(){changeCell(currentCell, cellAssignment)};
+                console.log("Inputed Data for dropdown is", currentCell, cellAssignment)
                 dropDown.className = "menuSelector"
                 
                 var dropDownOption = document.createElement("option");
@@ -273,21 +272,10 @@
             function startUp(){
                 var cellType = compileWindows()
                 for(let current = 0; current < cell.length; current++){
-                    console.log("Current Cell called, current cell is", current)
                     let currentCell = document.getElementsByClassName("cell")[current]
 
                     createDropdown(currentCell, current)
-                    // var selectMode = document.createElement("form")
-                    // selectMode.style.display = "inline-block"
-
-                    // cell[current].style.width = ((window.innerWidth / 3) - 8) + "px"
-                    console.log("Inputed Variables are", current, cellType)
                     selectMode(current, cellType)
-
-                    // selectMode.appendChild(dropDown)
-                    // header.appendChild(selectMode);
-
-                    console.log(`Current cell is ${cellType[current]}`);
                 }
 
                 if(document.getElementById("layOutSelectionMenu").children.length > 1){
@@ -301,12 +289,10 @@
                 }
 
                 document.getElementById("layOutSelectionMenu").addEventListener("change", (submitedEvent) => {
-                    console.log(submitedEvent.target.selectedIndex)
                     document.getElementById("mainWindow").remove()
                     var newMainWindow = document.createElement("div")
                     newMainWindow.id = "mainWindow"
                     document.getElementById("mainContainer").insertBefore(newMainWindow, document.getElementById("cellSettingsOpener"))
-                    console.log(layOutSelectionMenu[submitedEvent.target.selectedIndex])
                     layOut = layOutSelectionMenu[submitedEvent.target.selectedIndex]["layOut"]
                     while(document.getElementById("cellSettingsControls").firstChild){
                         document.getElementById("cellSettingsControls").removeChild(document.getElementById("cellSettingsControls").firstChild)
@@ -314,20 +300,19 @@
                     document.getElementById("cellSettingsControls").innerHTML = `<p class = "currentSelectedCellValue" id = "0" hidden></p>
                 <p style = "display: inline-block; vertical-align: middle;">Width</p><input type = "range" style="width:75px" value = "0"><br>
                 <p style = "display: inline-block; vertical-align: middle">Height</p><input type = "range" style="width:75px" value = "0"><br><br>`
-                    preloadCellSettings()
+                    // preloadCellSettings()
                     startUp()
                 })
             }
 
-            function test(typeOfCell, cellID){
-                // selectMode(0, [typeOfCell.getElementsByClassName("menuSelector")[0].value])
-                console.log("Changed to", typeOfCell.getElementsByClassName("menuSelector")[0].value)
-                // typeOfCell.remove()
+            function changeCell(typeOfCell, cellID){
+                console.log("Cell Data from Change Cell is", typeOfCell, cellID)
                 var cellArray = Array.from(Array(cellID), () => {return null})
+                console.log("Can be changed to", typeOfCell.getElementsByClassName("menuSelector")[0])
                 cellArray.push(typeOfCell.getElementsByClassName("menuSelector")[0].value)
-                console.log(cellArray)
                 clearCell(cellID)
                 createDropdown(document.getElementsByClassName("cell")[cellID], cellID)
+                console.log("Created Cell Array is", cellArray)
                 selectMode(cellID, cellArray)
             }
 
@@ -339,58 +324,85 @@
             }
 
             function selectMode(cellIteration, cellPosition){
+                console.log("Getting inputed Data", cellIteration, cellPosition)
                 var header = document.createElement("div");
                 var currentCell = document.getElementsByClassName("cell")[cellIteration]; 
                 var cellAssignment = cellPosition[cellIteration]
-                console.log("Current Cell is", currentCell)
+                console.log("Current Cell is", cellAssignment)
                 console.log(cellIteration, cellPosition)
                 switch(cellAssignment){
-                    case "sceneEditor":
+                    case "Scene Editor":
                         var sceneEditor = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-                        var sceneElement = document.createElementNS("http://www.w3.org/2000/svg", "text")
+                        var sceneElement = document.createElementNS("http://www.w3.org/2000/svg", "rect")
                         
-                        sceneElement.textContent = "Test"
-                        sceneElement.setAttribute("y", 75)
-                        sceneElement.setAttribute("x", 50)
-                        sceneEditor.setAttribute("class", "sceneEditor")
+                        console.log("Is being selected")
 
-                        sceneEditor.style.width = "calc(100% - 6px)"    
+                        // sceneElement.textContent = "Test"
+                        sceneElement.setAttribute("height", 100)
+                        sceneElement.setAttribute("width", 100)
+                        sceneElement.setAttribute("x", 0)
+                        sceneElement.setAttribute("y", 0)
+                        sceneElement.setAttribute("style", "fill: purple; stroke: green; stroke-width: 10;")
+                        menuOptions["Scene Editor"]["ObjectData"].push()
+
+                        sceneEditor.setAttribute("class", "sceneEditor")
+                        sceneEditor.setAttribute("x", 0)
+                        sceneEditor.setAttribute("y", 0)
+                        sceneEditor.setAttribute("width", currentCell.clientWidth - 1)
+                        sceneEditor.setAttribute("height", currentCell.clientHeight - 14)
                         sceneEditor.xmlns = "http://www.w3.org/2000/svg"
+                        sceneEditor.setAttribute("viewbox", `0 0 ${currentCell.clientWidth - 1} ${currentCell.clientHeight - 14}`)
+                        // sceneEditor.setAttribute("preserveAspectRatio", "xMidYMid meet")
+
                         console.log("Width is", currentCell.clientWidth)
-                        menuOptions["sceneEditor"]["widthData"].push(currentCell.clientWidth)
+                        menuOptions["Scene Editor"]["screenData"].push(0, 0, currentCell.clientWidth, currentCell.clientHeight)
 
                         sceneEditor.appendChild(sceneElement)
 
                         currentCell.appendChild(sceneEditor)
-                        currentCell.className = "hasSceneEditor"
+                        currentCell.className += " hasSceneEditor"
                         break
-                    case "editorControls":
+                    case "Editor Controls":
                         break
                     
-                    case "javascriptAPI":
+                    case "Javascript API":
                         break
 
-                    case "tileEditor":
+                    case "Tile Editor":
                         break
                     
                 }
             }
-            function resizeWindows(e){
+            function resizeWindows(events){
                 var currentAccessedCell = 0
                 var allRows = document.querySelectorAll(".row")
                 var allCells = document.querySelectorAll(".cell")
                 for(let layOutOfRows in layOut){
                     for(let layOutOfCells in layOut[layOutOfRows]){
-                        allCells[currentAccessedCell].style.height = String(100 / layOut[layOutOfRows].length) + "%" 
+                        console.log("Layout of this is", (allCells[currentAccessedCell]))
+                        // allCells[currentAccessedCell].style.height = String(100 / layOut[layOutOfRows].length) + "%" 
                         allRows[layOutOfRows].style.width = `calc(${String(100 / layOut.length)}% - ${30 / layOut.length}px)`
-                        console.log("Layout of this is", allCells[0])
+                        if(String(allCells[currentAccessedCell].className).search("hasSceneEditor") > -1){
+                            resizeSceneEditor(currentAccessedCell, events)
+                        }
                         currentAccessedCell += 1
                     }
                 }
             }
 
-            function resizeSceneEditor(e){
+            function resizeSceneEditor(currentAccessedCell, events){
+                var allCells = document.querySelectorAll(".cell")
+                // Use innerWidth, outerWidth is the entire window including inspect element
+                console.log("Accessing Cell", allCells[currentAccessedCell].getElementsByTagName("svg")[0])
+                console.log("Using Elements", events.target.innerWidth, events.target.innerHeight, menuOptions["Scene Editor"]["screenData"])
 
+                // allCells[currentAccessedCell].getElementsByTagName("svg")[0].setAttribute("width", allCells[currentAccessedCell].clientWidth - 1)
+                // allCells[currentAccessedCell].getElementsByTagName("svg")[0].setAttribute("height", allCells[currentAccessedCell].clientHeight - 14)
+                allCells[currentAccessedCell].getElementsByTagName("svg")[0].setAttribute("viewbox", `${allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]} ` +
+                `${50} ` +
+                `${allCells[currentAccessedCell].clientWidth / 2 - 0.5} `  +
+                `${allCells[currentAccessedCell].clientHeight / 2 - 7}`)
+                console.log(events.target.innerWidth, events.target.outerWidth)
             }
 
             function horMoveDivider(e){
@@ -517,11 +529,12 @@
                     console.log(e.target.value)
                 })
 
+                console.log("CellType is", cellType)
                 for(let cellIteration in cellType){
                     let cellButtonControl = document.createElement("button")
                     cellButtonControl.className = "cellButtonControls"
                     cellButtonControl.style.minWidth = String(100/document.querySelectorAll(".row").length) + "%"
-                    cellButtonControl.innerText = `Cell ${parseInt(cellIteration) + 1}`
+                    cellButtonControl.innerText = `Cell ${parseInt(cellIteration)}`
                     cellButtonControl.style.width = (100/(cellType[0].length)) + "%"
                     cellButtonControl.onclick = () => {switchCellSelect(cellType[cellIteration], cellIteration)}
                     cellSettingsControls.appendChild(cellButtonControl)
