@@ -200,7 +200,7 @@
             var allRows = document.querySelectorAll(".row")
             var menuOptions = {
                 "Scene Editor" : {
-                    "ObjectData" : [{"name": "Test Box", "x": 0, "y":0}], // Holds all objects in Scene, Tile Values, Has Collision, i.e., {"x": 0, "y": 0}
+                    "objectData" : [{"name": "Test Box", "x": 10, "y":10, "width": 100, "height": 150}], // Holds all objects in Scene, Tile Values, Has Collision, i.e., {"x": 0, "y": 0}
                     "screenData" : [], 
                 },
                 "Editor Controls" : {
@@ -338,12 +338,13 @@
                         console.log("Is being selected")
 
                         // sceneElement.textContent = "Test"
-                        sceneElement.setAttribute("height", 100)
-                        sceneElement.setAttribute("width", 100)
-                        sceneElement.setAttribute("x", 0)
-                        sceneElement.setAttribute("y", 0)
-                        sceneElement.setAttribute("style", "fill: purple; stroke: green; stroke-width: 10;")
-                        menuOptions["Scene Editor"]["ObjectData"].push()
+                        for(var objectCreator in (menuOptions["Scene Editor"]["objectData"])){
+                            sceneElement.setAttribute("height", menuOptions["Scene Editor"]["objectData"][objectCreator]["height"])
+                            sceneElement.setAttribute("width", menuOptions["Scene Editor"]["objectData"][objectCreator]["width"])
+                            sceneElement.setAttribute("x", menuOptions["Scene Editor"]["objectData"][objectCreator]["x"])
+                            sceneElement.setAttribute("y", menuOptions["Scene Editor"]["objectData"][objectCreator]["y"])
+                            sceneElement.setAttribute("style", "fill: purple; stroke: green; stroke-width: 10;")
+                        }
 
                         sceneEditor.setAttribute("class", "sceneEditor")
                         sceneEditor.setAttribute("x", 0)
@@ -373,6 +374,7 @@
                     
                 }
             }
+
             function resizeWindows(events){
                 var currentAccessedCell = 0
                 var allRows = document.querySelectorAll(".row")
@@ -393,31 +395,38 @@
             function resizeSceneEditor(currentAccessedCell, events){
                 var allCells = document.querySelectorAll(".cell")
                 // Use innerWidth, outerWidth is the entire window including inspect element
-                console.log("Accessing Cell", allCells[currentAccessedCell].getElementsByTagName("svg")[0])
                 console.log("Using Elements", events.target.innerWidth, events.target.innerHeight, menuOptions["Scene Editor"]["screenData"])
-
-                // allCells[currentAccessedCell].getElementsByTagName("svg")[0].setAttribute("width", allCells[currentAccessedCell].clientWidth - 1)
-                // allCells[currentAccessedCell].getElementsByTagName("svg")[0].setAttribute("height", allCells[currentAccessedCell].clientHeight - 14)
-                allCells[currentAccessedCell].getElementsByTagName("svg")[0].setAttribute("viewbox", `${allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]} ` +
-                `${50} ` +
-                `${allCells[currentAccessedCell].clientWidth / 2 - 0.5} `  +
-                `${allCells[currentAccessedCell].clientHeight / 2 - 7}`)
+                var svgShape = allCells[currentAccessedCell].getElementsByTagName("svg")[0].childNodes[0]
+                console.log("Shape should move", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
+                svgShape.setAttribute("x", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
+                svgShape.setAttribute("y", Math.floor((allCells[currentAccessedCell].clientHeight - menuOptions["Scene Editor"]["screenData"][3]) / 2))
+                console.log("Accessing my child", svgShape)
                 console.log(events.target.innerWidth, events.target.outerWidth)
             }
 
             function horMoveDivider(e){
-                console.log("Horizontal movement is called")
                 for(var dividerClass = 0; dividerClass < document.getElementsByClassName("horizontalDivider").length; dividerClass++){
                     var allRows = document.querySelectorAll(".row")
+                    var allCells = document.querySelectorAll(".cell")
                     var currentDivider = document.getElementsByClassName("horizontalDivider")[dividerClass]
                     var firstHalf = allRows[currentDivider.id.toString().replace("horizontal", "")[0]]
                     var secondHalf = allRows[currentDivider.id.toString().replace("horizontal", "")[1]]
 
+                    console.log("The Class Name is", document.getElementsByClassName("cell")[0].className)
                     secondHalf.style.width = `${((secondHalf.clientWidth + firstHalf.clientWidth) - (e.clientX - 25))}px`
                     firstHalf.style.width = `${(e.clientX - 25)}px`
 
                     console.log("Selected Elements for rows are", firstHalf, secondHalf)
                     console.log("Number of rows are", allRows.length)
+                
+                    console.log("Multiple Cells for", Math.floor(firstHalf.childNodes.length / 2) + 1, Math.floor(secondHalf.childNodes.length) + 1)
+                    for(var cellIndexSearch = 0; cellIndexSearch < document.getElementsByClassName("cell").length; cellIndexSearch++){
+                        console.log("Checking for instance", (allCells[cellIndexSearch].getAttributeNode("class").value))
+                        if((allCells[cellIndexSearch].getAttributeNode("class")).value.includes("hasSceneEditor")){
+                            console.log("Detected for a Scene Editor")
+                            resizeSceneEditor(cellIndexSearch, e)
+                        }
+                    }
                 }
             }
             function vertMoveDivider(e){
@@ -434,6 +443,13 @@
 
                     secondHalf.style.height = `${((secondHalf.clientHeight + firstHalf.clientHeight) - (e.clientY - 60))}px`
                     firstHalf.style.height = `${(e.clientY - 70)}px`
+                    for(var cellIndexSearch = 0; cellIndexSearch < document.getElementsByClassName("cell").length; cellIndexSearch++){
+                        console.log("Checking for instance", (allCells[cellIndexSearch].getAttributeNode("class").value))
+                        if((allCells[cellIndexSearch].getAttributeNode("class")).value.includes("hasSceneEditor")){
+                            console.log("Detected for a Scene Editor")
+                            resizeSceneEditor(cellIndexSearch, e)
+                        }
+                    }
                 }
             }
             startUp()
