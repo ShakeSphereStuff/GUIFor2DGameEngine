@@ -163,6 +163,49 @@
                 width: calc(100% - 6px);
                 height: calc(100% - 19px)
             }
+            .mainEditorControls{
+                border: solid white;
+                width: calc(100% - 6px);
+                height: calc(100% - 29px)
+            }
+            .expandedControlsImage{
+                width: 20px;
+                transform: scaleX(-1); 
+                display: inline-block;
+                top: 4px;
+                margin-left: 10px;
+                position: relative;
+                transition: rotate 0s
+            }
+            .expandedControlsSlider{
+                width: 40px;
+                color: white;
+                background-color: transparent;
+                border: 0px;
+                float: left;
+                padding: 0px;
+            }
+            .expandedControlsText{
+                color: white;
+                padding-left: 5px;
+                margin: 0px;
+                float: left;
+                font-family: monospace;
+            }
+            .expandedControlsMenu{
+                border-left: white solid;
+                display: inline-block;
+                margin-left: 19px;
+                padding-left: 5px;
+            }
+            .expandedControlsObjectMainMenu{
+                display: grid;
+            }
+            .objectNameLabel{
+                color: white;
+                font-family: monospace;
+                padding-left: 5px;
+            }
         </style>
         <div hidden>elopment</div>
         <div id = "mainContainer">
@@ -179,6 +222,11 @@
             </div>
             <div id = "mainWindow">
             </div>
+            <svg xmlns = "https://www.w3.org/2000/svg">
+                <defs>
+                    <path id = "expandedControls" d = "M 10, 0  L 20, 10  L 10, 20" fill = "none"/>
+                </defs>
+            </svg>
         </div>
         <script>
             var cell = document.getElementsByClassName("cell")
@@ -343,6 +391,7 @@
                             sceneElement.setAttribute("width", menuOptions["Scene Editor"]["objectData"][objectCreator]["width"])
                             sceneElement.setAttribute("x", menuOptions["Scene Editor"]["objectData"][objectCreator]["x"])
                             sceneElement.setAttribute("y", menuOptions["Scene Editor"]["objectData"][objectCreator]["y"])
+                            sceneElement.setAttribute("class", "sceneObject")
                             sceneElement.setAttribute("style", "fill: purple; stroke: green; stroke-width: 10;")
                         }
 
@@ -364,6 +413,34 @@
                         currentCell.className += " hasSceneEditor"
                         break
                     case "Editor Controls":
+                        var mainEditorControls = document.createElement("div")
+                        // #expandedControls
+                        mainEditorControls.className = "mainEditorControls"
+
+                        for(var editorObject in menuOptions["Scene Editor"]["objectData"]){
+                            var editorItem = document.createElement("div")
+                            var expandedControlsImage = document.createElement("img")
+                            var objectName = document.createElement("p")
+
+                            expandedControlsImage.src = "editorControlsFor2DGUI.png"
+                            expandedControlsImage.className = "expandedControlsImage"
+                            expandedControlsImage.onclick = ()=>{
+                                expandControls(editorObject, cellIteration)
+                            }
+
+                            objectName.innerText = menuOptions["Scene Editor"]["objectData"][editorObject]["name"]
+                            objectName.style.display = "inline-block"
+                            objectName.className = "objectNameLabel"
+                            
+                            editorItem.style.float = "left"
+                            editorItem.className = "editorItem"
+
+                            editorItem.appendChild(expandedControlsImage)
+                            editorItem.appendChild(objectName)
+                            mainEditorControls.appendChild(editorItem)
+                        }
+
+                        currentCell.appendChild(mainEditorControls)
                         break
                     
                     case "Javascript API":
@@ -372,6 +449,109 @@
                     case "Tile Editor":
                         break
                     
+                }
+            }
+            function expandControls(objectIndex, windowIndex){
+                var expandedCellControls = document.getElementsByClassName("editorItem")[objectIndex]
+                var expandedControlsObjectMainMenu = document.createElement("div")
+                var expandedControlsImage = document.getElementsByClassName("expandedControlsImage")[objectIndex]
+
+                if(expandedControlsImage.style.rotate == "90deg"){
+                    expandedControlsImage.style.rotate = "0deg"
+                    document.getElementsByClassName("expandedControlsObjectMainMenu")[0].remove()
+                    return
+                }
+
+                var expandedControlsXSlider = document.createElement("input")
+                var expandedControlsYSlider = document.createElement("input")
+                var expandedControlsWidthSlider = document.createElement("input")
+                var expandedControlsHeightSlider = document.createElement("input")
+
+                var expandedControlsXMenu = document.createElement("div")
+                var expandedControlsYMenu = document.createElement("div")
+                var expandedControlsWidthMenu = document.createElement("div")
+                var expandedControlsHeightMenu = document.createElement("div")
+
+                var expandedControlsXText = document.createElement("p")
+                var expandedControlsYText = document.createElement("p")
+                var expandedControlsWidthText = document.createElement("p")
+                var expandedControlsHeightText = document.createElement("p")
+                
+                expandedControlsImage.style.rotate = "90deg"
+
+                expandedControlsXText.innerText = "X: "
+                expandedControlsYText.innerText = "Y: "
+                expandedControlsWidthText.innerText = "Width: "
+                expandedControlsHeightText.innerText = "Height: "
+
+                expandedControlsXSlider.type = "number"
+                expandedControlsYSlider.type = "number"
+                expandedControlsWidthSlider.type = "number"
+                expandedControlsHeightSlider.type = "number"
+
+                expandedControlsXSlider.className = "expandedControlsSlider"
+                expandedControlsYSlider.className = "expandedControlsSlider"
+                expandedControlsWidthSlider.className = "expandedControlsSlider"
+                expandedControlsHeightSlider.className = "expandedControlsSlider"
+                expandedControlsObjectMainMenu.className = "expandedControlsObjectMainMenu"
+
+                expandedControlsXText.className = "expandedControlsText"
+                expandedControlsYText.className = "expandedControlsText"
+                expandedControlsWidthText.className = "expandedControlsText"
+                expandedControlsHeightText.className = "expandedControlsText"
+
+                expandedControlsXMenu.className = "expandedControlsMenu"
+                expandedControlsYMenu.className = "expandedControlsMenu"
+                expandedControlsWidthMenu.className = "expandedControlsMenu"
+                expandedControlsHeightMenu.className = "expandedControlsMenu"
+
+                expandedControlsXSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["x"]
+                expandedControlsYSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["y"]
+                expandedControlsWidthSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["width"]
+                expandedControlsHeightSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["height"]
+
+                expandedControlsXSlider.addEventListener("click", () => {changeObjectValues("X", objectIndex, expandedControlsXSlider.value)})
+                expandedControlsYSlider.addEventListener("click", () => {changeObjectValues("Y", objectIndex, expandedControlsYSlider.value)})
+                expandedControlsWidthSlider.addEventListener("click", () => {changeObjectValues("Width", objectIndex, expandedControlsWidthSlider.value)})
+                expandedControlsHeightSlider.addEventListener("click", () => {changeObjectValues("Height", objectIndex, expandedControlsHeightSlider.value)})
+
+                expandedControlsXMenu.appendChild(expandedControlsXText)
+                expandedControlsYMenu.appendChild(expandedControlsYText)
+                expandedControlsWidthMenu.appendChild(expandedControlsWidthText)
+                expandedControlsHeightMenu.appendChild(expandedControlsHeightText)
+
+                expandedControlsXMenu.appendChild(expandedControlsXSlider)
+                expandedControlsYMenu.appendChild(expandedControlsYSlider)
+                expandedControlsWidthMenu.appendChild(expandedControlsWidthSlider)
+                expandedControlsHeightMenu.appendChild(expandedControlsHeightSlider)
+
+                expandedControlsObjectMainMenu.appendChild(expandedControlsXMenu)
+                expandedControlsObjectMainMenu.appendChild(expandedControlsYMenu)
+                expandedControlsObjectMainMenu.appendChild(expandedControlsWidthMenu)
+                expandedControlsObjectMainMenu.appendChild(expandedControlsHeightMenu)
+                
+                expandedCellControls.appendChild(expandedControlsObjectMainMenu)
+            }
+
+            function changeObjectValues(property = String, objectIndex = Number, newValue = Number){
+                switch(property){
+                    case "X":
+                        console.log("My Available Properties are", newValue, objectIndex)
+                        document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("x", newValue)
+                        menuOptions["Scene Editor"]["objectData"][objectIndex]["x"] = newValue
+                        break
+                    case "Y":
+                        document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("y", newValue)
+                        menuOptions["Scene Editor"]["objectData"][objectIndex]["y"] = newValue
+                        break
+                    case "Width": 
+                        document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("width", newValue)
+                        menuOptions["Scene Editor"]["objectData"][objectIndex]["width"] = newValue
+                        break
+                    case "Height":
+                        document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("height", newValue)
+                        menuOptions["Scene Editor"]["objectData"][objectIndex]["height"] = newValue
+                        break
                 }
             }
 
@@ -385,23 +565,27 @@
                         // allCells[currentAccessedCell].style.height = String(100 / layOut[layOutOfRows].length) + "%" 
                         allRows[layOutOfRows].style.width = `calc(${String(100 / layOut.length)}% - ${30 / layOut.length}px)`
                         if(String(allCells[currentAccessedCell].className).search("hasSceneEditor") > -1){
-                            resizeSceneEditor(currentAccessedCell, events)
+                            resizeSceneEditor(currentAccessedCell)
                         }
                         currentAccessedCell += 1
                     }
                 }
             }
 
-            function resizeSceneEditor(currentAccessedCell, events){
+            function resizeSceneEditor(currentAccessedCell){
                 var allCells = document.querySelectorAll(".cell")
                 // Use innerWidth, outerWidth is the entire window including inspect element
-                console.log("Using Elements", events.target.innerWidth, events.target.innerHeight, menuOptions["Scene Editor"]["screenData"])
-                var svgShape = allCells[currentAccessedCell].getElementsByTagName("svg")[0].childNodes[0]
-                console.log("Shape should move", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
+                for(var svgShapes = 0; svgShapes < document.getElementsByClassName("sceneEditor").length; svgShapes++){
+                    var svgShape = document.getElementsByClassName("sceneObject")[svgShapes]
+                    console.log(svgShape)
+                    console.log("X is", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
+                    svgShape.setAttribute("x", (Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2] + parseInt(svgShape.getAttribute("x"))) / 2)))
+                    svgShape.setAttribute("y", (Math.floor((allCells[currentAccessedCell].clientHeight - menuOptions["Scene Editor"]["screenData"][3] + parseInt(svgShape.getAttribute("y"))) / 2)))
+                }
+                /*console.log("Shape should move", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
                 svgShape.setAttribute("x", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
                 svgShape.setAttribute("y", Math.floor((allCells[currentAccessedCell].clientHeight - menuOptions["Scene Editor"]["screenData"][3]) / 2))
-                console.log("Accessing my child", svgShape)
-                console.log(events.target.innerWidth, events.target.outerWidth)
+                console.log("Accessing my child", svgShape)*/
             }
 
             function horMoveDivider(e){
@@ -424,7 +608,7 @@
                         console.log("Checking for instance", (allCells[cellIndexSearch].getAttributeNode("class").value))
                         if((allCells[cellIndexSearch].getAttributeNode("class")).value.includes("hasSceneEditor")){
                             console.log("Detected for a Scene Editor")
-                            resizeSceneEditor(cellIndexSearch, e)
+                            resizeSceneEditor(cellIndexSearch)
                         }
                     }
                 }
@@ -447,7 +631,7 @@
                         console.log("Checking for instance", (allCells[cellIndexSearch].getAttributeNode("class").value))
                         if((allCells[cellIndexSearch].getAttributeNode("class")).value.includes("hasSceneEditor")){
                             console.log("Detected for a Scene Editor")
-                            resizeSceneEditor(cellIndexSearch, e)
+                            resizeSceneEditor(cellIndexSearch)
                         }
                     }
                 }
