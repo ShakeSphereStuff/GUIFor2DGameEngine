@@ -534,14 +534,16 @@
             }
 
             function changeObjectValues(property = String, objectIndex = Number, newValue = Number){
+                var svgShape = document.getElementsByClassName("sceneObject")[objectIndex]
+                console.log("My parrent is", svgShape.parentElement.clientWidth)
                 switch(property){
                     case "X":
                         console.log("My Available Properties are", newValue, objectIndex)
-                        document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("x", newValue)
+                        document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("x", Math.floor((svgShape.parentElement.clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2) + parseInt(newValue))
                         menuOptions["Scene Editor"]["objectData"][objectIndex]["x"] = newValue
                         break
                     case "Y":
-                        document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("y", newValue)
+                        document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("y", Math.floor((svgShape.parentElement.clientWidth - menuOptions["Scene Editor"]["screenData"][3]) / 2) + parseInt(newValue))
                         menuOptions["Scene Editor"]["objectData"][objectIndex]["y"] = newValue
                         break
                     case "Width": 
@@ -579,8 +581,8 @@
                     var svgShape = document.getElementsByClassName("sceneObject")[svgShapes]
                     console.log(svgShape)
                     console.log("X is", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
-                    svgShape.setAttribute("x", (Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2] + parseInt(svgShape.getAttribute("x"))) / 2)))
-                    svgShape.setAttribute("y", (Math.floor((allCells[currentAccessedCell].clientHeight - menuOptions["Scene Editor"]["screenData"][3] + parseInt(svgShape.getAttribute("y"))) / 2)))
+                    svgShape.setAttribute("x", (Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2) + parseInt(menuOptions["Scene Editor"]["objectData"][svgShapes]["x"])))
+                    svgShape.setAttribute("y", (Math.floor((allCells[currentAccessedCell].clientHeight - menuOptions["Scene Editor"]["screenData"][3]) / 2)  + parseInt(menuOptions["Scene Editor"]["objectData"][svgShapes]["y"])))
                 }
                 /*console.log("Shape should move", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
                 svgShape.setAttribute("x", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
