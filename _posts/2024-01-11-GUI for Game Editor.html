@@ -235,7 +235,7 @@
             var layOutSelectionMenu = [
                 {
                     "name": "Coding Layout",
-                    "layOut":[["Scene Editor"], ["Javascript API", "Tile Editor"]]
+                    "layOut":[["Scene Editor"], ["Javascript API", "Editor Controls"]]
                 },
                 {
                     "name": "Tile Layout",
@@ -261,6 +261,7 @@
                     "Code" : [""] // Array for code values, eventualy to 2D Array for multiple tabs 
                 }
             }
+            var cellType = ""
             
             function compileWindows(){
                 var cellsToAppend = []
@@ -296,17 +297,20 @@
                 var dropDown = document.createElement("select");
                     
                 dropDown.onchange = function(){changeCell(currentCell, cellAssignment)};
-                console.log("Inputed Data for dropdown is", currentCell, cellAssignment)
+                console.log("Inputed Data for dropdown is", currentCell, cellAssignment, cellType)
                 dropDown.className = "menuSelector"
                 
-                var dropDownOption = document.createElement("option");
-                dropDownOption.innerText = "Choose a Menu";
-                dropDownOption.selected = "true"
-                dropDown.appendChild(dropDownOption);
+                // var dropDownOption = document.createElement("option");
+                // dropDownOption.innerText = "Choose a Menu";
+                // dropDownOption.selected = "true"
+                // dropDown.appendChild(dropDownOption);
 
-                for(selectOption of cellModes){
+                for(var selectOption in cellModes){
                     var dropDownOption = document.createElement("option");
-                    dropDownOption.innerText = selectOption;
+                    dropDownOption.innerText = cellType[selectOption];
+                    if(selectOption == cellAssignment){
+                        dropDownOption.selected = "true"
+                    }
                     dropDown.appendChild(dropDownOption);
                 }
 
@@ -318,7 +322,7 @@
             }
 
             function startUp(){
-                var cellType = compileWindows()
+                cellType = compileWindows()
                 for(let current = 0; current < cell.length; current++){
                     let currentCell = document.getElementsByClassName("cell")[current]
 
@@ -358,7 +362,6 @@
                 var cellArray = Array.from(Array(cellID), () => {return null})
                 console.log("Can be changed to", typeOfCell.getElementsByClassName("menuSelector")[0])
                 cellArray.push(typeOfCell.getElementsByClassName("menuSelector")[0].value)
-                clearCell(cellID)
                 createDropdown(document.getElementsByClassName("cell")[cellID], cellID)
                 console.log("Created Cell Array is", cellArray)
                 selectMode(cellID, cellArray)
@@ -510,10 +513,10 @@
                 expandedControlsWidthSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["width"]
                 expandedControlsHeightSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["height"]
 
-                expandedControlsXSlider.addEventListener("click", () => {changeObjectValues("X", objectIndex, expandedControlsXSlider.value)})
-                expandedControlsYSlider.addEventListener("click", () => {changeObjectValues("Y", objectIndex, expandedControlsYSlider.value)})
-                expandedControlsWidthSlider.addEventListener("click", () => {changeObjectValues("Width", objectIndex, expandedControlsWidthSlider.value)})
-                expandedControlsHeightSlider.addEventListener("click", () => {changeObjectValues("Height", objectIndex, expandedControlsHeightSlider.value)})
+                expandedControlsXSlider.addEventListener("input", () => {changeObjectValues("X", objectIndex, expandedControlsXSlider.value)})
+                expandedControlsYSlider.addEventListener("input", () => {changeObjectValues("Y", objectIndex, expandedControlsYSlider.value)})
+                expandedControlsWidthSlider.addEventListener("input", () => {changeObjectValues("Width", objectIndex, expandedControlsWidthSlider.value)})
+                expandedControlsHeightSlider.addEventListener("input", () => {changeObjectValues("Height", objectIndex, expandedControlsHeightSlider.value)})
 
                 expandedControlsXMenu.appendChild(expandedControlsXText)
                 expandedControlsYMenu.appendChild(expandedControlsYText)
