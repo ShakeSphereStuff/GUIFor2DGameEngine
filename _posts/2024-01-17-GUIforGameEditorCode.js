@@ -71,7 +71,7 @@ function compileWindows(){
     return cellsToAppend
 }
 
-function settingsPrompt(){
+function settingsPrompt(){ 
     var settingsPromptBackground = document.createElement("div")
     var settingsPrompt = document.createElement("div")
     var settingsPromptHeaderBar = document.createElement("div")

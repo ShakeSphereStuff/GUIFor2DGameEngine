@@ -100,7 +100,7 @@ iframe{
 .searchMenu{
   width: calc(100% - 0px)
 }
-.menuSelector{
+.menuSelector{ 
   background-color: transparent;
   border: 0px;
   color: white;
