@@ -21,6 +21,7 @@ var menuOptions = {
         "screenData" : [], 
         "player" :{
             "speed" : 5,
+            "canMove": true
         },
     },
     "Editor Controls" : {
@@ -153,11 +154,6 @@ function createDropdown(currentCell, cellAssignment){
         
     dropDown.onchange = function(){changeCell(currentCell, cellAssignment)};
     dropDown.className = "menuSelector"
-    
-    // var dropDownOption = document.createElement("option");
-    // dropDownOption.innerText = "Choose a Menu";
-    // dropDownOption.selected = "true"
-    // dropDown.appendChild(dropDownOption);
 
     for(var selectOption in cellModes){
         var dropDownOption = document.createElement("option");
@@ -206,7 +202,6 @@ function startUp(){
         document.getElementById("cellSettingsControls").innerHTML = `<p class = "currentSelectedCellValue" id = "0" hidden></p>
     <p style = "display: inline-block; vertical-align: middle;">Width</p><input type = "range" style="width:75px" value = "0"><br>
     <p style = "display: inline-block; vertical-align: middle">Height</p><input type = "range" style="width:75px" value = "0"><br><br>`
-        // preloadCellSettings()
         startUp()
     })
 }
@@ -234,7 +229,6 @@ function selectMode(cellIteration, cellPosition){
             var sceneEditor = document.createElementNS("http://www.w3.org/2000/svg", "svg")
             var sceneElement = document.createElementNS("http://www.w3.org/2000/svg", "rect")
 
-            // sceneElement.textContent = "Test"
             for(var objectCreator in (menuOptions["Scene Editor"]["objectData"])){
                 sceneElement.setAttribute("height", menuOptions["Scene Editor"]["objectData"][objectCreator]["height"])
                 sceneElement.setAttribute("width", menuOptions["Scene Editor"]["objectData"][objectCreator]["width"])
@@ -251,7 +245,6 @@ function selectMode(cellIteration, cellPosition){
             sceneEditor.setAttribute("height", currentCell.clientHeight - 14)
             sceneEditor.xmlns = "http://www.w3.org/2000/svg"
             sceneEditor.setAttribute("viewbox", `0 0 ${currentCell.clientWidth - 1} ${currentCell.clientHeight - 14}`)
-            // sceneEditor.setAttribute("preserveAspectRatio", "xMidYMid meet")
 
             menuOptions["Scene Editor"]["screenData"].push(0, 0, currentCell.clientWidth, currentCell.clientHeight)
 
@@ -262,7 +255,6 @@ function selectMode(cellIteration, cellPosition){
             break
         case "Editor Controls":
             var mainEditorControls = document.createElement("div")
-            // #expandedControls
             mainEditorControls.className = "mainEditorControls"
 
             for(var editorObject in menuOptions["Scene Editor"]["objectData"]){
@@ -420,7 +412,6 @@ function resizeWindows(events){
     for(let layOutOfRows in layOut){
         for(let layOutOfCells in layOut[layOutOfRows]){
             console.log("Layout of this is", (allCells[currentAccessedCell]))
-            // allCells[currentAccessedCell].style.height = String(100 / layOut[layOutOfRows].length) + "%" 
             allRows[layOutOfRows].style.width = `calc(${String(100 / layOut.length)}% - ${30 / layOut.length}px)`
             if(String(allCells[currentAccessedCell].className).search("hasSceneEditor") > -1){
                 resizeSceneEditor(currentAccessedCell)
@@ -432,7 +423,6 @@ function resizeWindows(events){
 
 function resizeSceneEditor(currentAccessedCell){
     var allCells = document.querySelectorAll(".cell")
-    // Use innerWidth, outerWidth is the entire window including inspect element
     for(var svgShapes = 0; svgShapes < document.getElementsByClassName("sceneEditor").length; svgShapes++){
         var svgShape = document.getElementsByClassName("sceneObject")[svgShapes]
         console.log(svgShape)
@@ -440,6 +430,8 @@ function resizeSceneEditor(currentAccessedCell){
         svgShape.setAttribute("x", (Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2) + parseInt(menuOptions["Scene Editor"]["objectData"][svgShapes]["x"])))
         svgShape.setAttribute("y", (Math.floor((allCells[currentAccessedCell].clientHeight - menuOptions["Scene Editor"]["screenData"][3]) / 2)  + parseInt(menuOptions["Scene Editor"]["objectData"][svgShapes]["y"])))
     }
+    document.getElementById("player").setAttribute("x", allCells[currentAccessedCell].clientWidth / 2 - 12)
+    document.getElementById("player").setAttribute("y", allCells[currentAccessedCell].clientHeight / 2 - 12)
 }
 
 function horMoveDivider(e){
@@ -468,18 +460,16 @@ function horMoveDivider(e){
     }
 }
 function vertMoveDivider(e){
+    var allCells = document.getElementsByClassName("cell")
     for(var dividerClass = 0; dividerClass < document.getElementsByClassName("verticalDivider").length; dividerClass++){
         var currentDivider = document.getElementsByClassName("verticalDivider")[dividerClass]
-        // Get rows than cells in row
         var flexableElements = currentDivider.id.toString().replace("vertical", "").split(",")
         var selectedRow = document.querySelectorAll(".row")[flexableElements[0]]
-        // console.log("Flexable Elements are", flexableElements, "selected row", selectedRow)
         var firstHalf = selectedRow.getElementsByClassName("cell")[flexableElements[1]];
         var secondHalf = selectedRow.getElementsByClassName("cell")[flexableElements[2]];
         
         console.log(`Selected Row ${selectedRow}, accessing cells ${firstHalf} ${secondHalf}`)
-
-        secondHalf.style.height = `${((secondHalf.clientHeight + firstHalf.clientHeight) - (e.clientY - 60))}px`
+        secondHalf.style.height = `${((secondHalf.clientHeight + firstHalf.clientHeight) - (e.clientY - 70))}px`
         firstHalf.style.height = `${(e.clientY - 70)}px`
         for(var cellIndexSearch = 0; cellIndexSearch < document.getElementsByClassName("cell").length; cellIndexSearch++){
             console.log("Checking for instance", (allCells[cellIndexSearch].getAttributeNode("class").value))
@@ -490,6 +480,68 @@ function vertMoveDivider(e){
         }
     }
 }
+
+function saveData(){
+    var loginPromptBackground = document.createElement("div")
+    var loginPrompt = document.createElement("div")
+    var loginPromptHeaderBar = document.createElement("div")
+    var loginPromptHeaderBarCloseButton = document.createElement("div")
+    var loginPromptHeaderBarTitle = document.createElement("div")
+    var loginPromptSaveButton = document.createElement("button") 
+    var loginPromptOptions = [
+        ["UserName", "text", ""],
+        ["Password", "password", ""],
+    ]
+
+    loginPromptBackground.className = "settingsPromptBackgroundColor"
+    loginPrompt.className = "settingsPrompt"
+    loginPromptHeaderBar.className = "settingsPromptHeaderBar"
+    loginPromptHeaderBarTitle.className = "settingsPromptHeaderBarTitle"
+    loginPromptHeaderBarCloseButton.className = "settingsPromptCloseButton"
+    loginPromptSaveButton.className = "settingsPromptSaveButton" 
+
+    // Work on sliders for Grid spacing / player controls
+
+    loginPromptHeaderBarCloseButton.innerText = "X"
+    loginPromptSaveButton.innerText = "Login"
+    loginPromptHeaderBarTitle.innerText = "Save Data"
+    loginPromptHeaderBarCloseButton.onclick = () => {
+        document.getElementsByClassName("settingsPromptBackgroundColor")[0].remove()
+        menuOptions["Scene Editor"]["player"]["canMove"] = true
+    }
+    menuOptions["Scene Editor"]["player"]["canMove"] = false
+    loginPromptSaveButton.onclick = () => {saveSettingChanges()}
+
+    loginPromptHeaderBar.appendChild(loginPromptHeaderBarTitle)
+    loginPromptHeaderBar.appendChild(loginPromptHeaderBarCloseButton)
+    loginPrompt.appendChild(loginPromptHeaderBar)
+
+    for(var loginPromptOptionsIterator in loginPromptOptions){
+        var loginPromptOptionLabel = document.createElement("p")
+        var loginPromptOptionInput = document.createElement("input")
+        var loginPromptOptionDiv = document.createElement("div")
+
+        loginPromptOptionLabel.innerText = loginPromptOptions[loginPromptOptionsIterator][0]
+        loginPromptOptionInput.type = loginPromptOptions[loginPromptOptionsIterator][1]
+        loginPromptOptionInput.value = loginPromptOptions[loginPromptOptionsIterator][2]
+        if(loginPromptOptions[loginPromptOptionsIterator][1] == "checkbox"){
+            loginPromptOptionInput.setAttribute("checked", loginPromptOptions[loginPromptOptionsIterator][2])
+        }
+
+        loginPromptOptionLabel.className = "settingsPromptOptionLabel"
+        loginPromptOptionInput.className = "loginPromptOptionInput"
+        loginPromptOptionDiv.style.display = "flex"
+        loginPromptOptionDiv.style.paddingLeft = "10px"
+
+        loginPromptOptionDiv.appendChild(loginPromptOptionLabel)
+        loginPromptOptionDiv.appendChild(loginPromptOptionInput)
+        loginPrompt.appendChild(loginPromptOptionDiv)
+    }
+    loginPrompt.appendChild(loginPromptSaveButton)
+    loginPromptBackground.appendChild(loginPrompt)
+    document.getElementById("mainContainer").appendChild(loginPromptBackground)
+}
+
 startUp()
 window.addEventListener("mousemove", function (e) {
 
@@ -543,13 +595,13 @@ document.addEventListener("keydown", function(event){
         else{
             menu.requestFullscreen()
         }
-    } else if(event.key == "w"){
+    } else if(event.key == "w" && menuOptions["Scene Editor"]["player"]["canMove"]){
         movePlayer(0, menuOptions["Scene Editor"]["player"]["speed"])
-    } else if(event.key == "a"){
+    } else if(event.key == "a" && menuOptions["Scene Editor"]["player"]["canMove"]){
         movePlayer(menuOptions["Scene Editor"]["player"]["speed"], 0)
-    } else if(event.key == "s"){
+    } else if(event.key == "s" && menuOptions["Scene Editor"]["player"]["canMove"]){
         movePlayer(0, -menuOptions["Scene Editor"]["player"]["speed"])
-    } else if(event.key == "d"){
+    } else if(event.key == "d" && menuOptions["Scene Editor"]["player"]["canMove"]){
         movePlayer(-menuOptions["Scene Editor"]["player"]["speed"], 0)
     }
 })

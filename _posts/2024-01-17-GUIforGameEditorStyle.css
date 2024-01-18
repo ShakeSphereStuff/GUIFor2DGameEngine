@@ -12,7 +12,6 @@
   border: solid green;
   height: calc(100% - 10px);
   display: block;
-  /*Not inline block?*/
 }
 .horizontalDivider{
   width:10px;
@@ -35,7 +34,6 @@
   background-color:rgba(211, 211, 211, 0.65);
 }
 #mainWindow{
-  /*background-color: rgb(58, 60, 81);*/
   display:inline-block;
   width: 100%;
   height: calc(98vh - 50px);
@@ -233,8 +231,8 @@ iframe{
 .settingsPromptHeaderBarTitle{
   position: relative;
   text-align: center;
-  left: 40%;
-  width: 25%;
+  left: calc(50% - 50px);
+  width: 100px;
   font-family: monospace;
   color: white;
   user-select: none;
@@ -265,4 +263,14 @@ iframe{
   width: 25px;
   height: 25px;
   position: absolute;
+}
+.loginPromptOptionInput{
+  position:relative;
+  height: fit-content;
+  margin-left: 10px;
+  border-radius: 5px;
+  top: 10px;
+  background-color: transparent;
+  border: solid whitesmoke;
+  color: white;
 }
