@@ -470,6 +470,8 @@ function vertMoveDivider(e){
         
         console.log(`Selected Row ${selectedRow}, accessing cells ${firstHalf} ${secondHalf}`)
         secondHalf.style.height = `${((secondHalf.clientHeight + firstHalf.clientHeight) - (e.clientY - 70))}px`
+
+        secondHalf.style.height = `${((secondHalf.clientHeight + firstHalf.clientHeight) - (e.clientY - 70))}px`
         firstHalf.style.height = `${(e.clientY - 70)}px`
         for(var cellIndexSearch = 0; cellIndexSearch < document.getElementsByClassName("cell").length; cellIndexSearch++){
             console.log("Checking for instance", (allCells[cellIndexSearch].getAttributeNode("class").value))
