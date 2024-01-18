@@ -613,6 +613,8 @@ function movePlayer(x, y){
         var currentSceneObject = document.getElementsByClassName("sceneObject")[sceneObjectIndex]
         currentSceneObject.setAttribute("x", (parseInt(currentSceneObject.getAttribute("x")) + x))
         currentSceneObject.setAttribute("y", (parseInt(currentSceneObject.getAttribute("y")) + y))
+        menuOptions["Scene Editor"]["objectData"][sceneObjectIndex]["x"] = parseInt(currentSceneObject.getAttribute("x")) + x
+        menuOptions["Scene Editor"]["objectData"][sceneObjectIndex]["y"] = parseInt(currentSceneObject.getAttribute("y")) + y
     }
 }
 
