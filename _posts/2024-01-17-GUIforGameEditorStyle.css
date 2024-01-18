@@ -1,0 +1,268 @@
+#mainHeader{
+  color:white;
+  font-style: normal;
+  font: 600;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 45px;
+}
+.row{
+  position: relative;
+  float: left;
+  margin: 0;
+  border: solid green;
+  height: calc(100% - 10px);
+  display: block;
+  /*Not inline block?*/
+}
+.horizontalDivider{
+  width:10px;
+  height:98%;
+  float: left;
+  cursor: ew-resize;
+  position: relative;
+  top: 1.5%
+}
+.horizontalDivider:hover{
+  background-color:rgba(211, 211, 211, 0.65);
+}
+.verticalDivider{
+  width:100%;
+  height:10px;
+  float: left;
+  cursor: ns-resize;
+}
+.verticalDivider:hover{
+  background-color:rgba(211, 211, 211, 0.65);
+}
+#mainWindow{
+  /*background-color: rgb(58, 60, 81);*/
+  display:inline-block;
+  width: 100%;
+  height: calc(98vh - 50px);
+  border: solid;
+  border-width: 1%;
+  border-style:dashed;
+  overflow: hidden;
+  margin: 0;
+}
+.cell{
+  position: relative;
+  float: left;
+  width: 100%;
+}
+.header{
+  position: relative;
+  height: 20px;
+  left: 1px;
+  width: calc(100% - 3px);
+  text-overflow: ellipsis;
+  display: inline-block;
+  border-bottom: solid;
+  border-right: solid;
+  border-color: orangered;
+}
+.webLoader{
+  float: left;
+  width: 100%;
+}
+.websiteViewer{
+  width: calc(100% - 8px);
+  height: calc(100% - 60px);
+}
+#searchMenu{
+  width: 300px;
+}
+.headerControls{
+  border: 0px;
+  color: white;
+  background-color: rgb(85, 85, 225);
+  height: 100%;
+}
+iframe{
+  border: solid;
+  border-color: lightgray;
+}
+.textInput{
+  width: 100%;
+  height: 100%;
+  outline: none;
+  resize: none;
+  max-height: none;
+  background-color: transparent;
+  color: white;
+  border-color: white;
+  cursor: vertical-text;
+  font-size: 20px;
+  font-family: 'Times New Roman', Times, serif;
+}
+.textContainer{
+  height: calc(100% - 20px);
+  width: 100%;
+}
+.searchMenu{
+  width: calc(100% - 0px)
+}
+.menuSelector{
+  background-color: transparent;
+  border: 0px;
+  color: white;
+}
+#cellSettingsOpener{
+  position: fixed;
+  right: 10px;
+  text-align: center;
+  top: 50%;
+  width: 30px;
+  height: 20px;
+  color: white;
+  background-color: rgba(30, 30, 30, 0.85);
+  user-select: none;
+  z-index: 3;
+}
+#cellSettingsControls{
+  position: fixed;
+  right: -140px;
+  text-align: center;
+  top: calc(50% - 100px);
+  width: 150px;
+  height: 200px;
+  color: white;
+  background-color: rgba(10, 10, 10, 0.95);
+  z-index: 3;
+  float: right;
+}
+.cellButtonControls{
+  border: 0px;
+  color: white;
+  background-color: rgb(85, 85, 126);
+  display:inline-block;
+}
+#cellSettingsControls input[type="range"]{
+  accent-color: rgb(128, 83, 240);
+}
+#mainContainer{
+  background-color: rgb(58, 60, 81);
+}
+.songQueue{
+  color:white;
+  text-overflow: ellipsis;
+  overflow:hidden;
+  border: solid white;
+}
+.sceneEditor{
+  border: solid white;
+  width: calc(100% - 6px);
+  height: calc(100% - 19px)
+}
+.mainEditorControls{
+  border: solid white;
+  width: calc(100% - 6px);
+  height: calc(100% - 29px)
+}
+.expandedControlsImage{
+  width: 20px;
+  transform: scaleX(-1); 
+  display: inline-block;
+  top: 4px;
+  margin-left: 10px;
+  position: relative;
+  transition: rotate 0s
+}
+.expandedControlsSlider{
+  width: 40px;
+  color: white;
+  background-color: transparent;
+  border: 0px;
+  float: left;
+  padding: 0px;
+}
+.expandedControlsText{
+  color: white;
+  padding-left: 5px;
+  margin: 0px;
+  float: left;
+  font-family: monospace;
+}
+.expandedControlsMenu{
+  border-left: white solid;
+  display: inline-block;
+  margin-left: 19px;
+  padding-left: 5px;
+}
+.expandedControlsObjectMainMenu{
+  display: grid;
+}
+.objectNameLabel{
+  color: white;
+  font-family: monospace;
+  padding-left: 5px;
+}
+.settingsPromptBackgroundColor{
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  position: fixed;
+}
+.settingsPrompt{
+  position: fixed;
+  width: 50%;
+  height: 50%;
+  left: 25%;
+  top: 25%;
+  border-radius: 10px;
+  background-color: #241f1f;
+  border: solid white;
+}
+.settingsPromptCloseButton{
+  position: absolute;
+  right: 0px;
+  font-family: monospace;
+  user-select: none;
+  color: white;
+  width: 20px;
+  height: 20px
+}
+.settingsPromptHeaderBar{
+  display: flex;
+  width: 100%;
+  height: 20px;
+  border-bottom: solid white;
+}
+.settingsPromptHeaderBarTitle{
+  position: relative;
+  text-align: center;
+  left: 40%;
+  width: 25%;
+  font-family: monospace;
+  color: white;
+  user-select: none;
+}
+.settingsPromptOptionLabel{
+  color: white;
+  font-family: monospace;
+  user-select: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: calc(100% - 115px)
+}
+.settingsPromptSaveButton{
+  background-color: rgb(85, 85, 225);
+  color: white;
+  border-radius: 5px;
+  position: absolute;
+  border: 0px;
+  bottom: 10px;
+  right: 10px;
+}
+.settingsPromptOptionInput[type="range"]{
+  accent-color: grey;
+  width: 100px
+}
+#player{
+  fill: aqua;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+}
