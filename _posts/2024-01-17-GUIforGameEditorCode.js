@@ -4,20 +4,32 @@ var vertIsMouseDown = Array(document.getElementsByClassName("verticalDivider").l
 var layOutSelectionMenu = [
     {
         "name": "Coding Layout",
-        "layOut":[["Scene Editor"], ["Javascript API", "Editor Controls"]]
+        "layOut":[["Scene Editor"], ["Javascript Runner", "Editor Controls"]]
     },
     {
         "name": "Tile Layout",
-        "layOut":[["Scene Editor"], ["Javascript API", "Tile Editor"]]
+        "layOut":[["Scene Editor"], ["Tile Editor", "Editor Controls"]]
     }
 ]
-var layOut = [["Scene Editor"], ["Tile Editor", "Editor Controls"]]
+var layOut = [["Scene Editor"], ["Javascript Runner", "Editor Controls"]]
 var cellModes = ["Scene Editor", "Editor Controls", "Tile Editor", "Javascript Runner"]
 var allCells = document.querySelectorAll(".cell")
 var allRows = document.querySelectorAll(".row")
 var menuOptions = {
     "Scene Editor" : {
-        "objectData" : [{"name": "Test Box", "x": 10, "y":10, "width": 100, "height": 150}], // Holds all objects in Scene, Tile Values, Has Collision, i.e., {"x": 0, "y": 0}
+        "objectData" : [{
+            "name": "Test Box", 
+            "x": 10, 
+            "y":10, 
+            "width": 100, 
+            "height": 150},
+        {
+            "name": "Test Box 2", 
+            "x": 300, 
+            "y":300, 
+            "width": 100, 
+            "height": 150
+        }], // Holds all objects in Scene, Tile Values, Has Collision, i.e., {"x": 0, "y": 0}
         "screenData" : [], 
         "player" :{
             "speed" : 5,
@@ -108,7 +120,7 @@ function settingsPrompt(){
         settingsPromptOptionLabel.innerText = settingsPromptOptions[settingsPromptOptionsIterator][0]
         settingsPromptOptionInput.type = settingsPromptOptions[settingsPromptOptionsIterator][1]
         settingsPromptOptionInput.value = settingsPromptOptions[settingsPromptOptionsIterator][2]
-        if(settingsPromptOptions[settingsPromptOptionsIterator][1] == "checkbox"){
+        if(settingsPromptOptions[settingsPromptOptionsIterator][1] == "checkbox" && settingsPromptOptions[settingsPromptOptionsIterator][2]){
             settingsPromptOptionInput.setAttribute("checked", settingsPromptOptions[settingsPromptOptionsIterator][2])
         }
 
@@ -134,12 +146,19 @@ function saveSettingChanges(){
             case 0:
                 if(settingsPromptCurrentOption.checked){
                     document.getElementById("player").style.display = "inline"
+                    settingsPromptOptions[0][2] = true
+                    menuOptions["Scene Editor"]["player"]["canMove"] = true
                 }
                 else{
                     document.getElementById("player").style.display = "none"
+                    settingsPromptOptions[0][2] = false
+                    menuOptions["Scene Editor"]["player"]["canMove"] = false
                 }
                 break
             case 1:
+                /*
+                Objects have to be placed on the grid in the increments set.
+                */
                 break
             case 2:
                 menuOptions["Scene Editor"]["player"]["speed"] = parseInt(settingsPromptCurrentOption.value) 
@@ -150,15 +169,17 @@ function saveSettingChanges(){
 }
 
 function createDropdown(currentCell, cellAssignment){
+    console.log("createDropdown has", currentCell, cellAssignment)
     var dropDown = document.createElement("select");
         
-    dropDown.onchange = function(){changeCell(currentCell, cellAssignment)};
+    dropDown.onchange = function(){changeCell(currentCell, (cellAssignment))};
     dropDown.className = "menuSelector"
 
     for(var selectOption in cellModes){
         var dropDownOption = document.createElement("option");
-        dropDownOption.innerText = cellType[selectOption];
-        if(selectOption == cellAssignment){
+        console.log("Cell assignment", cellAssignment)
+        dropDownOption.innerText = cellModes[selectOption];
+        if(selectOption == (cellAssignment)){
             dropDownOption.selected = "true"
         }
         dropDown.appendChild(dropDownOption);
@@ -168,15 +189,15 @@ function createDropdown(currentCell, cellAssignment){
     header.className = "header";
 
     header.appendChild(dropDown)
-    document.getElementsByClassName("cell")[cellAssignment].appendChild(header);
+    currentCell.appendChild(header);
 }
 
 function startUp(){
     cellType = compileWindows()
     for(let current = 0; current < cell.length; current++){
         let currentCell = document.getElementsByClassName("cell")[current]
-
-        createDropdown(currentCell, current)
+        console.log("Selecting Values of", cellModes.indexOf(cellType[current]))
+        createDropdown(currentCell, (cellModes.indexOf(cellType[current])))
         selectMode(current, cellType)
     }
 
@@ -207,89 +228,184 @@ function startUp(){
 }
 
 function changeCell(typeOfCell, cellID){
-    var cellArray = Array.from(Array(cellID), () => {return null})
-    cellArray.push(typeOfCell.getElementsByClassName("menuSelector")[0].value)
-    createDropdown(document.getElementsByClassName("cell")[cellID], cellID)
-    selectMode(cellID, cellArray)
-}
+    console.log("Change Cell has", typeOfCell, (cellID - 1))
+    var cellArray = Array.from(Array(cellID - 1), () => {return null})
 
-function clearCell(cellID){
-    var cellsToDelete = document.getElementsByClassName("cell")[cellID]
-    while(cellsToDelete.firstChild){
-        cellsToDelete.removeChild(cellsToDelete.firstChild)
-    }
+    cellArray.push(typeOfCell.getElementsByClassName("menuSelector")[0].value)
+
+    typeOfCell.getElementsByClassName("header")[0].remove()
+    typeOfCell.lastChild.remove()
+    createDropdown(typeOfCell, (cellID - 1))
+    selectMode((parseInt(cellID) - 1) , cellArray)
 }
 
 function selectMode(cellIteration, cellPosition){
     var header = document.createElement("div");
     var currentCell = document.getElementsByClassName("cell")[cellIteration]; 
     var cellAssignment = cellPosition[cellIteration]
+    console.log("Cell Variables are", cellAssignment, cellIteration)
+    var previousCellAssignemnts = cellPosition.slice(0, (cellIteration + 1)).filter((item) => {
+        if(item == cellAssignment){
+            return item
+        }})
+    console.log("Cell Assignment is", previousCellAssignemnts) 
     switch(cellAssignment){
         case "Scene Editor":
             var sceneEditor = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-            var sceneElement = document.createElementNS("http://www.w3.org/2000/svg", "rect")
-
-            for(var objectCreator in (menuOptions["Scene Editor"]["objectData"])){
-                sceneElement.setAttribute("height", menuOptions["Scene Editor"]["objectData"][objectCreator]["height"])
-                sceneElement.setAttribute("width", menuOptions["Scene Editor"]["objectData"][objectCreator]["width"])
-                sceneElement.setAttribute("x", menuOptions["Scene Editor"]["objectData"][objectCreator]["x"])
-                sceneElement.setAttribute("y", menuOptions["Scene Editor"]["objectData"][objectCreator]["y"])
-                sceneElement.setAttribute("class", "sceneObject")
-                sceneElement.setAttribute("style", "fill: purple; stroke: green; stroke-width: 10;")
-            }
-
             sceneEditor.setAttribute("class", "sceneEditor")
-            sceneEditor.setAttribute("x", 0)
-            sceneEditor.setAttribute("y", 0)
-            sceneEditor.setAttribute("width", currentCell.clientWidth - 1)
-            sceneEditor.setAttribute("height", currentCell.clientHeight - 14)
-            sceneEditor.xmlns = "http://www.w3.org/2000/svg"
-            sceneEditor.setAttribute("viewbox", `0 0 ${currentCell.clientWidth - 1} ${currentCell.clientHeight - 14}`)
 
+            // Need to set scene editor to be avaliable for multiple windows
+            
             menuOptions["Scene Editor"]["screenData"].push(0, 0, currentCell.clientWidth, currentCell.clientHeight)
-
-            sceneEditor.appendChild(sceneElement)
 
             currentCell.appendChild(sceneEditor)
             currentCell.className += " hasSceneEditor"
+            for(var objectCreator in (menuOptions["Scene Editor"]["objectData"])){
+                createObjectForDisplay(objectCreator, (document.getElementsByClassName("sceneEditor").length - 1))
+            }
             break
         case "Editor Controls":
             var mainEditorControls = document.createElement("div")
+            var bottomObjectBar = document.createElement("div")
+            var addObjectButton = document.createElement("button")
+
+            bottomObjectBar.className = "bottomObjectBar"
+            addObjectButton.innerText = "+"
+            addObjectButton.className = "addObjectButton"
+            addObjectButton.onclick = () => {
+                createObjectControls(cellIteration)
+            }
             mainEditorControls.className = "mainEditorControls"
 
-            for(var editorObject in menuOptions["Scene Editor"]["objectData"]){
-                var editorItem = document.createElement("div")
-                var expandedControlsImage = document.createElement("img")
-                var objectName = document.createElement("p")
+            console.log("Current Cell is", document.getElementsByClassName("cell"))
 
-                expandedControlsImage.src = "editorControlsFor2DGUI.png"
-                expandedControlsImage.className = "expandedControlsImage"
-                expandedControlsImage.onclick = ()=>{
-                    expandControls(editorObject, cellIteration)
-                }
-
-                objectName.innerText = menuOptions["Scene Editor"]["objectData"][editorObject]["name"]
-                objectName.style.display = "inline-block"
-                objectName.className = "objectNameLabel"
-                
-                editorItem.style.float = "left"
-                editorItem.className = "editorItem"
-
-                editorItem.appendChild(expandedControlsImage)
-                editorItem.appendChild(objectName)
-                mainEditorControls.appendChild(editorItem)
-                screenControlsHUD(document.getElementsByClassName("sceneEditor").length - 1)
-            }
+            screenControlsHUD(document.getElementsByClassName("sceneEditor").length - 1)
+            bottomObjectBar.appendChild(addObjectButton)
+            mainEditorControls.appendChild(bottomObjectBar)
             currentCell.appendChild(mainEditorControls)
+
+            for(let editorObject in menuOptions["Scene Editor"]["objectData"]){
+                addObjectControls((previousCellAssignemnts.length - 1), editorObject)
+            }
+
             break
         
         case "Javascript API":
             break
 
         case "Tile Editor":
+            var mainTileEditor = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+            
+            for(var tileItterator = 0; tileItterator < (Math.pow(15, 2)); tileItterator++){
+                var mainObstacle = document.createElementNS("http://www.w3.org/2000/svg" , "rect")
+                mainObstacle.setAttribute("height", 15)
+                mainObstacle.setAttribute("width", 15)
+                mainObstacle.setAttribute("x", (tileItterator - Math.floor(tileItterator / 15) * 15) * 15 + 2)
+                mainObstacle.setAttribute("y", Math.floor(tileItterator / 15) * 15 + 2)
+                mainObstacle.setAttribute("style", `fill: rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}); stroke: black; stroke-width: 2;`)
+                mainTileEditor.appendChild(mainObstacle)
+            }
+
+            mainTileEditor.setAttribute("class", "mainTileEditor")
+            mainTileEditor.setAttribute("height", currentCell.clientHeight)
+            mainTileEditor.setAttribute("width", currentCell.clientWidth)
+            mainTileEditor.setAttribute("x", 0)
+            mainTileEditor.setAttribute("y", 0)
+            mainTileEditor.setAttribute("viewbox", `0 0 ${currentCell.clientWidth} ${currentCell.clientHeight}`)
+
+            currentCell.appendChild(mainTileEditor)
             break
         
     }
+}
+
+function createObjectForDisplay(objectCreator, sceneID){
+    var sceneElement = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+    sceneElement.setAttribute("height", menuOptions["Scene Editor"]["objectData"][objectCreator]["height"])
+    sceneElement.setAttribute("width", menuOptions["Scene Editor"]["objectData"][objectCreator]["width"])
+    sceneElement.setAttribute("x", menuOptions["Scene Editor"]["objectData"][objectCreator]["x"])
+    sceneElement.setAttribute("y", menuOptions["Scene Editor"]["objectData"][objectCreator]["y"])
+    sceneElement.setAttribute("class", "sceneObject")
+    sceneElement.setAttribute("style", "fill: purple; stroke: green; stroke-width: 10;")
+    document.getElementsByClassName("sceneEditor")[sceneID].appendChild(sceneElement)
+}
+
+function createObjectControls(cellIteration){
+    var currentAddObjectButton = document.getElementsByClassName("addObjectButton")[cellIteration]
+    var addObjectPrompt = document.createElement("div")
+    var addObjectParameters = [
+        ["X:", "number", 100, "x"], 
+        ["Y:", "number", 100, "y"], 
+        ["Width:", "number", 100, "width"], 
+        ["Height:", "number",  150,"height"], 
+    ]
+    var addObjectSubmitOptions = document.createElement("div")
+
+    for(var addObjectIndex in addObjectParameters){
+        var addObjectRow = document.createElement("div")
+        var addObjectInput = document.createElement("input")
+        var addObjectText = document.createElement("p")
+        
+        addObjectInput.className = "addObjectInput"
+        addObjectInput.type = addObjectParameters[addObjectIndex][1]
+        addObjectInput.value = addObjectParameters[addObjectIndex][2]
+
+        addObjectText.style.fontFamily = "monospace"
+        addObjectText.innerText = addObjectParameters[addObjectIndex][0]
+
+        addObjectRow.style.display = "flex"
+
+        addObjectRow.appendChild(addObjectText)
+        addObjectRow.appendChild(addObjectInput)
+        addObjectPrompt.appendChild(addObjectRow)
+    }
+
+    addObjectPrompt.className = "addObjectPrompt"
+
+    addObjectSubmitOptions.className = "addObjectSubmitOptions"
+    addObjectSubmitOptions.innerText = "Add Object"
+    menuOptions["Scene Editor"]["objectData"].push(
+        {"name": `Text Box ${document.getElementsByClassName("editorItem").length + 1}`}
+    )
+
+
+    addObjectSubmitOptions.onclick = () => {
+        for(var addObjectRetrieve = 0; addObjectRetrieve < addObjectParameters.length; addObjectRetrieve++){
+            menuOptions["Scene Editor"]["objectData"][document.getElementsByClassName("expandedControlsImage").length][addObjectParameters[addObjectRetrieve][3]] = document.getElementsByClassName("addObjectInput")[addObjectRetrieve].value
+        }
+        addObjectControls((document.getElementsByClassName("mainEditorControls").length - 1), document.getElementsByClassName("editorItem").length)
+        // Need to find out if this works on multiple windows
+        createObjectForDisplay((document.getElementsByClassName("mainEditorControls").length + 1), 0)
+        document.getElementsByClassName("addObjectPrompt")[0].remove()
+    }
+
+    addObjectPrompt.appendChild(addObjectSubmitOptions)
+
+    document.getElementsByClassName("cell")[cellIteration].appendChild(addObjectPrompt)
+}
+
+function addObjectControls(cellID, editorObject){
+    var editorItem = document.createElement("div")
+    var expandedControlsImage = document.createElement("img")
+    var objectName = document.createElement("p")
+
+    expandedControlsImage.src = "editorControlsFor2DGUI.png"
+    expandedControlsImage.className = "expandedControlsImage"
+    expandedControlsImage.onclick = ()=>{
+        expandControls(editorObject, cellID)
+    }
+
+    objectName.innerText = menuOptions["Scene Editor"]["objectData"][editorObject]["name"]
+    objectName.style.display = "inline-block"
+    objectName.className = "objectNameLabel"
+    
+    editorItem.style.float = "left"
+    editorItem.className = "editorItem"
+
+
+    editorItem.appendChild(expandedControlsImage)
+    editorItem.appendChild(objectName)
+    document.getElementsByClassName("mainEditorControls")[cellID].appendChild(editorItem)
 }
 
 function screenControlsHUD(windowID){
@@ -359,6 +475,9 @@ function expandControls(objectIndex, windowIndex){
     expandedControlsYSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["y"]
     expandedControlsWidthSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["width"]
     expandedControlsHeightSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["height"]
+
+    expandedControlsWidthSlider.min = "1"
+    expandedControlsHeightSlider.min = "1"
 
     expandedControlsXSlider.addEventListener("input", () => {changeObjectValues("X", objectIndex, expandedControlsXSlider.value)})
     expandedControlsYSlider.addEventListener("input", () => {changeObjectValues("Y", objectIndex, expandedControlsYSlider.value)})
@@ -469,10 +588,8 @@ function vertMoveDivider(e){
         var secondHalf = selectedRow.getElementsByClassName("cell")[flexableElements[2]];
         
         console.log(`Selected Row ${selectedRow}, accessing cells ${firstHalf} ${secondHalf}`)
-        secondHalf.style.height = `${((secondHalf.clientHeight + firstHalf.clientHeight) - (e.clientY - 70))}px`
-
-        secondHalf.style.height = `${((secondHalf.clientHeight + firstHalf.clientHeight) - (e.clientY - 70))}px`
-        firstHalf.style.height = `${(e.clientY - 70)}px`
+        secondHalf.style.height = `${((secondHalf.clientHeight + firstHalf.clientHeight) - (e.clientY - 60))}px`
+        firstHalf.style.height = `${(parseInt(e.clientY) - 60)}px`
         for(var cellIndexSearch = 0; cellIndexSearch < document.getElementsByClassName("cell").length; cellIndexSearch++){
             console.log("Checking for instance", (allCells[cellIndexSearch].getAttributeNode("class").value))
             if((allCells[cellIndexSearch].getAttributeNode("class")).value.includes("hasSceneEditor")){

@@ -2,6 +2,7 @@
   color:white;
   font-style: normal;
   font: 600;
+  height: 50px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 45px;
 }
@@ -51,7 +52,7 @@
 .header{
   position: relative;
   height: 20px;
-  left: 1px;
+  left: 0px;
   width: calc(100% - 3px);
   text-overflow: ellipsis;
   display: inline-block;
@@ -149,13 +150,15 @@ iframe{
 }
 .sceneEditor{
   border: solid white;
-  width: calc(100% - 6px);
+  width: calc(100% - 5px);
   height: calc(100% - 19px)
 }
 .mainEditorControls{
   border: solid white;
-  width: calc(100% - 6px);
-  height: calc(100% - 29px)
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 5px);
+  height: calc(100% - 28px)
 }
 .expandedControlsImage{
   width: 20px;
@@ -273,4 +276,76 @@ iframe{
   background-color: transparent;
   border: solid whitesmoke;
   color: white;
+}
+.mainTileEditor{
+  width: calc(100% - 5px);
+  height: calc(100% - 32px);
+  border: solid white;
+  display: inline-block;
+}
+.bottomObjectBar{
+  border-top: solid white;
+  position: absolute;
+  width: calc(100% - 6px);
+  height: 10%;
+  color:white;
+  background-color: rgb(28, 30, 44);
+  float: right;
+  bottom: 3px;
+  right: 3px;
+  user-select: none;
+}
+.addObjectButton{
+  color: white;
+  text-align: center;
+  right: 2%;
+  position: absolute;
+  background: transparent;
+  border: 0px;
+  margin-top: 2.5%;
+  transition: background-color 0.3s;
+  border-radius: 5px;
+  bottom: 20%;
+}
+.addObjectButton:hover{
+  background-color: grey;
+}
+.addObjectPrompt{
+  position: absolute;
+  bottom: 39px;
+  padding: 0px 5px 0px 10px;
+  right: 3px;
+  background-color: rgb(28, 30, 44);
+  border-top-left-radius: 10px;
+  color: white;
+  border-left: solid white;
+  border-top: solid white;
+}
+
+.addObjectInput{
+  background-color: transparent;
+  border: solid white;
+  width: 40px;
+  position: relative;
+  margin-left: 5px;
+  top: 9px;
+  color: white;
+  border-radius: 5px;
+  height: 20px;
+}
+
+.addObjectSubmitOptions{
+  background-color: blue;
+  border: 0px;
+  color: white;
+  margin-top: 15px;
+  cursor: pointer;
+  /*Width plus 8*/
+  left: calc(100% - 83px);
+  user-select: none;
+  position: relative;
+  bottom: 8px;
+  width: 75px;
+  padding: 2px 5px 2px 5px;
+  border-radius: 5px;
 }
