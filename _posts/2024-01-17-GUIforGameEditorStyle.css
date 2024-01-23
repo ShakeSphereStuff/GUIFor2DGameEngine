@@ -349,3 +349,10 @@ iframe{
   padding: 2px 5px 2px 5px;
   border-radius: 5px;
 }
+.codeSpace{
+  border: solid white;
+  width: calc(100% - 10px);
+  height: calc(100% - 34px);
+  background-color: transparent;
+  color: white;
+}

@@ -288,7 +288,16 @@ function selectMode(cellIteration, activeCell, cellType){
 
             break
         
-        case "Javascript API":
+        case "Javascript Runner":
+            var codeSpace = document.createElement("textarea")
+            codeSpace.className = "codeSpace"
+            codeSpace.addEventListener("focus", (event) => {
+                menuOptions["Scene Editor"]["player"]["canMove"] = false
+            })
+            codeSpace.addEventListener("focusout", () => {
+                menuOptions["Scene Editor"]["player"]["canMove"] = true
+            })
+            currentCell.appendChild(codeSpace)
             break
 
         case "Tile Editor":
