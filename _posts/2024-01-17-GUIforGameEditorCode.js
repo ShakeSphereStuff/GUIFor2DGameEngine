@@ -47,6 +47,7 @@ var menuOptions = {
     }
 }
 var cellType = ""
+var offsetForCell = 1
 var settingsPromptOptions = [
     ["showPlayer", "checkbox", true],
     ["gridSnaping(nextPush)", "range", 1],
@@ -64,7 +65,7 @@ function compileWindows(){
             startingCell.className = "cell"
             startingCell.style.height = `calc(${100 / layOut[layOutOfRows].length}% - ${10 / layOut[layOutOfRows].length}px)`
             startingRow.appendChild(startingCell)
-            cellsToAppend.push(layOut[layOutOfRows][layOutOfCells])
+            cellsToAppend.push([startingCell, layOut[layOutOfRows][layOutOfCells]])
             document.getElementById("mainWindow").appendChild(startingRow)
             if(layOut[layOutOfRows].length - 1 > layOutOfCells){
                 var startingVerticalDivider = document.createElement("div")
@@ -171,7 +172,7 @@ function saveSettingChanges(){
 function createDropdown(currentCell, cellAssignment){
     console.log("createDropdown has", currentCell, cellAssignment)
     var dropDown = document.createElement("select");
-        
+    
     dropDown.onchange = function(){changeCell(currentCell, (cellAssignment))};
     dropDown.className = "menuSelector"
 
@@ -179,8 +180,9 @@ function createDropdown(currentCell, cellAssignment){
         var dropDownOption = document.createElement("option");
         console.log("Cell assignment", cellAssignment)
         dropDownOption.innerText = cellModes[selectOption];
-        if(selectOption == (cellAssignment)){
-            dropDownOption.selected = "true"
+        if(selectOption == cellAssignment){
+            console.log("Cell assignment is", cellAssignment)
+            dropDownOption.selected = cellModes[selectOption]
         }
         dropDown.appendChild(dropDownOption);
     }
@@ -196,9 +198,9 @@ function startUp(){
     cellType = compileWindows()
     for(let current = 0; current < cell.length; current++){
         let currentCell = document.getElementsByClassName("cell")[current]
-        console.log("Selecting Values of", cellModes.indexOf(cellType[current]))
-        createDropdown(currentCell, (cellModes.indexOf(cellType[current])))
-        selectMode(current, cellType)
+        console.log("Selecting Values of", cellType[current])
+        createDropdown(currentCell, (cellModes.indexOf(cellType[current][1])))
+        selectMode(current, cellType[current][0], cellType[current][1])
     }
 
     if(document.getElementById("layOutSelectionMenu").children.length > 1){
@@ -228,28 +230,24 @@ function startUp(){
 }
 
 function changeCell(typeOfCell, cellID){
-    console.log("Change Cell has", typeOfCell, (cellID - 1))
-    var cellArray = Array.from(Array(cellID - 1), () => {return null})
-
-    cellArray.push(typeOfCell.getElementsByClassName("menuSelector")[0].value)
+    // typeOfCell = document.getElementsByClassName("cell")[cellID - 1]
+    console.log("Change Cell has", typeOfCell, (cellID))
+    var cellLabel = typeOfCell.getElementsByTagName("select")[0].value
+    console.log("Testing", typeOfCell.getElementsByTagName("select")[0].value)
 
     typeOfCell.getElementsByClassName("header")[0].remove()
     typeOfCell.lastChild.remove()
-    createDropdown(typeOfCell, (cellID - 1))
-    selectMode((parseInt(cellID) - 1) , cellArray)
+    createDropdown(typeOfCell, cellModes.indexOf(cellLabel))
+    selectMode((parseInt(cellID) - 1) , typeOfCell, cellLabel)
 }
 
-function selectMode(cellIteration, cellPosition){
+function selectMode(cellIteration, activeCell, cellType){
     var header = document.createElement("div");
-    var currentCell = document.getElementsByClassName("cell")[cellIteration]; 
-    var cellAssignment = cellPosition[cellIteration]
-    console.log("Cell Variables are", cellAssignment, cellIteration)
-    var previousCellAssignemnts = cellPosition.slice(0, (cellIteration + 1)).filter((item) => {
-        if(item == cellAssignment){
-            return item
-        }})
-    console.log("Cell Assignment is", previousCellAssignemnts) 
-    switch(cellAssignment){
+    var currentCell = activeCell
+    console.log("Cell Variables are", activeCell, cellIteration, cellType)
+
+    // Does not work at all! 
+    switch(cellType){
         case "Scene Editor":
             var sceneEditor = document.createElementNS("http://www.w3.org/2000/svg", "svg")
             sceneEditor.setAttribute("class", "sceneEditor")
@@ -285,7 +283,7 @@ function selectMode(cellIteration, cellPosition){
             currentCell.appendChild(mainEditorControls)
 
             for(let editorObject in menuOptions["Scene Editor"]["objectData"]){
-                addObjectControls((previousCellAssignemnts.length - 1), editorObject)
+                addObjectControls(cellIteration, editorObject)
             }
 
             break
@@ -385,6 +383,7 @@ function createObjectControls(cellIteration){
 }
 
 function addObjectControls(cellID, editorObject){
+    console.log("Items for controls are", cellID, editorObject)
     var editorItem = document.createElement("div")
     var expandedControlsImage = document.createElement("img")
     var objectName = document.createElement("p")
@@ -405,7 +404,7 @@ function addObjectControls(cellID, editorObject){
 
     editorItem.appendChild(expandedControlsImage)
     editorItem.appendChild(objectName)
-    document.getElementsByClassName("mainEditorControls")[cellID].appendChild(editorItem)
+    document.getElementsByClassName("cell")[cellID].getElementsByClassName("mainEditorControls")[0].appendChild(editorItem)
 }
 
 function screenControlsHUD(windowID){
