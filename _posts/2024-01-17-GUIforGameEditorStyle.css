@@ -355,4 +355,5 @@ iframe{
   height: calc(100% - 34px);
   background-color: transparent;
   color: white;
+  resize: none;
 }

@@ -261,6 +261,8 @@ function selectMode(cellIteration, activeCell, cellType){
             for(var objectCreator in (menuOptions["Scene Editor"]["objectData"])){
                 createObjectForDisplay(objectCreator, (document.getElementsByClassName("sceneEditor").length - 1))
             }
+
+            screenControlsHUD(currentCell)
             break
         case "Editor Controls":
             var mainEditorControls = document.createElement("div")
@@ -276,14 +278,13 @@ function selectMode(cellIteration, activeCell, cellType){
             mainEditorControls.className = "mainEditorControls"
 
             console.log("Current Cell is", document.getElementsByClassName("cell"))
-
-            screenControlsHUD(document.getElementsByClassName("sceneEditor").length - 1)
             bottomObjectBar.appendChild(addObjectButton)
             mainEditorControls.appendChild(bottomObjectBar)
             currentCell.appendChild(mainEditorControls)
 
+            console.log("My current Cell is", currentCell)
             for(let editorObject in menuOptions["Scene Editor"]["objectData"]){
-                addObjectControls(cellIteration, editorObject)
+                addObjectControls((currentCell.getElementsByClassName("mainEditorControls")[0]), editorObject)
             }
 
             break
@@ -346,6 +347,7 @@ function createObjectControls(cellIteration){
         ["Width:", "number", 100, "width"], 
         ["Height:", "number",  150,"height"], 
     ]
+    var objectMenu = menuOptions["Scene Editor"]["objectData"]
     var addObjectSubmitOptions = document.createElement("div")
 
     for(var addObjectIndex in addObjectParameters){
@@ -371,16 +373,17 @@ function createObjectControls(cellIteration){
 
     addObjectSubmitOptions.className = "addObjectSubmitOptions"
     addObjectSubmitOptions.innerText = "Add Object"
-    menuOptions["Scene Editor"]["objectData"].push(
-        {"name": `Text Box ${document.getElementsByClassName("editorItem").length + 1}`}
+    objectMenu.push(
+        {"name": `Text Box ${document.getElementsByClassName("objectNameLabel").length + 1}`}
     )
 
 
     addObjectSubmitOptions.onclick = () => {
         for(var addObjectRetrieve = 0; addObjectRetrieve < addObjectParameters.length; addObjectRetrieve++){
-            menuOptions["Scene Editor"]["objectData"][document.getElementsByClassName("expandedControlsImage").length][addObjectParameters[addObjectRetrieve][3]] = document.getElementsByClassName("addObjectInput")[addObjectRetrieve].value
+            objectMenu[objectMenu.length - 1][addObjectParameters[addObjectRetrieve][3]] = document.getElementsByClassName("addObjectInput")[addObjectRetrieve].value
+            console.log(objectMenu)
         }
-        addObjectControls((document.getElementsByClassName("mainEditorControls").length - 1), document.getElementsByClassName("editorItem").length)
+        addObjectControls((addObjectParameters.length - 2), document.getElementsByClassName("editorItem").length)
         // Need to find out if this works on multiple windows
         createObjectForDisplay((document.getElementsByClassName("mainEditorControls").length + 1), 0)
         document.getElementsByClassName("addObjectPrompt")[0].remove()
@@ -391,8 +394,8 @@ function createObjectControls(cellIteration){
     document.getElementsByClassName("cell")[cellIteration].appendChild(addObjectPrompt)
 }
 
-function addObjectControls(cellID, editorObject){
-    console.log("Items for controls are", cellID, editorObject)
+function addObjectControls(editorID, editorObject){
+    console.log("Items for controls are", editorID, editorObject)
     var editorItem = document.createElement("div")
     var expandedControlsImage = document.createElement("img")
     var objectName = document.createElement("p")
@@ -400,8 +403,9 @@ function addObjectControls(cellID, editorObject){
     expandedControlsImage.src = "editorControlsFor2DGUI.png"
     expandedControlsImage.className = "expandedControlsImage"
     expandedControlsImage.onclick = ()=>{
-        expandControls(editorObject, cellID)
+        expandControls(editorObject, editorID)
     }
+    console.log("I'm getting inputed", editorID)
 
     objectName.innerText = menuOptions["Scene Editor"]["objectData"][editorObject]["name"]
     objectName.style.display = "inline-block"
@@ -413,11 +417,14 @@ function addObjectControls(cellID, editorObject){
 
     editorItem.appendChild(expandedControlsImage)
     editorItem.appendChild(objectName)
-    document.getElementsByClassName("cell")[cellID].getElementsByClassName("mainEditorControls")[0].appendChild(editorItem)
+    console.log("Appending", editorItem)
+    for(var appendChildIterator = 0; appendChildIterator < document.getElementsByClassName("mainEditorControls").length; appendChildIterator++){
+        editorID.appendChild(editorItem)
+    }
 }
 
-function screenControlsHUD(windowID){
-    var svgWindow = document.getElementsByClassName("sceneEditor")[windowID]
+function screenControlsHUD(svgWindow){
+    svgWindow = document.getElementsByClassName("sceneEditor")[0]
     var player = document.createElementNS("http://www.w3.org/2000/svg", "rect")
     player.setAttribute("id", "player")
     player.setAttribute("x", svgWindow.clientWidth / 2 - 12)
