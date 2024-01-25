@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAAG Game Store</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            font-size: 2em;
+        }
+
+        nav {
+            margin-bottom: 1em;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-right: 1em;
+        }
+
+        .button-link {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            padding: 0.5em 1em;
+            border-radius: 5px;
+            background-color: #555;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .button-link:hover {
+            background-color: #444;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2em;
+        }
+
+        section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 65%;
+        }
+
+        .game-card {
+            width: 400px;
+            border: 1px solid #ccc;
+            margin: 1.5em;
+            padding: 1.5em;
+            text-align: center;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .game-card:hover {
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .game-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .game-card h2 {
+            margin-top: 1em;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .game-card p {
+            color: #666;
+            margin-top: 1em;
+        }
+
+        .game-card button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.7em 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .game-card button:hover {
+            background-color: #45a049;
+        }
+
+        .additional-content {
+            width: 30%;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1.5em;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .additional-content:hover {
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .additional-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1em;
+        }
+
+        .additional-content h3 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .additional-content p {
+            color: #666;
+            margin-top: 1em;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a class="button-link" href="https://swaggerplayer33.github.io/ppFrontEnd/Car.website/index.html">HOME</a></li>
+                <li><a class="button-link" href="https://swaggerplayer33.github.io/ppFrontEnd/Car.website/vehicles.html">VEHICLES</a></li>
+                <li><a class="button-link" target="_blank" rel="noopener" href="<!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>SAAG Game Store</title>
+                        <style>
+                            body {
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                margin: 0;
+                                padding: 0;
+                                background-color: #f9f9f9;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                            }
+                    
+                            header {
+                                background-color: #333;
+                                color: white;
+                                text-align: center;
+                                padding: 1.5em;
+                                font-size: 2em;
+                            }
+                    
+                            nav {
+                                margin-bottom: 1em;
+                            }
+                    
+                            nav ul {
+                                list-style: none;
+                                padding: 0;
+                                display: flex;
+                            }
+                    
+                            nav li {
+                                margin-right: 1em;
+                            }
+                    
+                            .button-link {
+                                text-decoration: none;
+                                color: white;
+                                font-weight: bold;
+                                font-size: 1.2em;
+                                padding: 0.5em 1em;
+                                border-radius: 5px;
+                                background-color: #555;
+                                transition: background-color 0.3s ease-in-out;
+                            }
+                    
+                            .button-link:hover {
+                                background-color: #444;
+                            }
+                    
+                            .content {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: flex-start;
+                                max-width: 1200px;
+                                margin: 0 auto;
+                                padding: 2em;
+                            }
+                    
+                            section {
+                                display: flex;
+                                flex-wrap: wrap;
+                                justify-content: space-around;
+                                width: 65%;
+                            }
+                    
+                            .game-card {
+                                width: 400px;
+                                border: 1px solid #ccc;
+                                margin: 1.5em;
+                                padding: 1.5em;
+                                text-align: center;
+                                background-color: white;
+                                box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+                                transition: box-shadow 0.3s ease-in-out;
+                            }
+                    
+                            .game-card:hover {
+                                box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+                            }
+                    
+                            .game-card img {
+                                max-width: 100%;
+                                height: auto;
+                                border-radius: 8px;
+                                transition: transform 0.3s ease-in-out;
+                            }
+                    
+                            .game-card:hover img {
+                                transform: scale(1.1);
+                            }
+                    
+                            .game-card h2 {
+                                margin-top: 1em;
+                                font-size: 1.5em;
+                                color: #333;
+                            }
+                    
+                            .game-card p {
+                                color: #666;
+                                margin-top: 1em;
+                            }
+                    
+                            .game-card button {
+                                background-color: #4CAF50;
+                                color: white;
+                                padding: 0.7em 1em;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                font-size: 1em;
+                                transition: background-color 0.3s ease-in-out;
+                            }
+                    
+                            .game-card button:hover {
+                                background-color: #45a049;
+                            }
+                    
+                            .additional-content {
+                                width: 30%;
+                                background-color: rgba(255, 255, 255, 0.8);
+                                padding: 1.5em;
+                                border-radius: 8px;
+                                box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+                                transition: box-shadow 0.3s ease-in-out;
+                            }
+                    
+                            .additional-content:hover {
+                                box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+                            }
+                    
+                            .additional-content img {
+                                max-width: 100%;
+                                height: auto;
+                                border-radius: 8px;
+                                margin-bottom: 1em;
+                            }
+                    
+                            .additional-content h3 {
+                                font-size: 1.5em;
+                                color: #333;
+                            }
+                    
+                            .additional-content p {
+                                color: #666;
+                                margin-top: 1em;
+                            }
+                    
+                            footer {
+                                background-color: #333;
+                                color: white;
+                                text-align: center;
+                                padding: 1.5em;
+                                position: fixed;
+                                bottom: 0;
+                                width: 100%;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <header>
+                            <nav>
+                                <ul>
+                                    <li><a class="button-link" href="https://swaggerplayer33.github.io/ppFrontEnd/Car.website/index.html">HOME</a></li>
+                                    <li><a class="button-link" href="https://swaggerplayer33.github.io/ppFrontEnd/Car.website/vehicles.html">VEHICLES</a></li>
+                                    <li><a class="button-link" target="_blank" rel="noopener" href="https://ths.li/CXry8ak">INSIGNIS GARAGE</a></li>
+                                </ul>
+                            </nav>
+                            <h1>Fancy Game Store</h1>
+                        </header>
+                    
+                        <div class="content">
+                            <section>
+                                <div class="game-card">
+                                    <img src="game1.jpg" alt="Game 1">
+                                    <h2>Game 1</h2>
+                                    <p>Description of Game 1.</p>
+                                    <button>Add to Cart</button>
+                                </div>
+                    
+                                <div class="game-card">
+                                    <img src="game2.jpg" alt="Game 2">
+                                    <h2>Game 2</h2>
+                                    <p>Description of Game 2.</p>
+                                    <button>Add to Cart</button>
+                                </div>
+                    
+                                <!-- Add more game cards as needed -->
+                    
+                            </section>
+                    
+                            <div class="additional-content">
+                                <img src="placeholder-image.jpg" alt="Additional Image">
+                                <h3>Special Offer</h3>
+                                <p>Get an extra 10% off on your first purchase. Use code: APCALCISSTUPID</p>
+                                <hr>
+                                <h3>Latest News</h3>
+                                <p>Stay tuned for exciting game releases and updates.</p>
+                            </div>
+                        </div>
+                    
+                        <footer>
+                            <p>&copy; 2024 Fancy Game Store. All rights reserved.</p>
+                        </footer>
+                    </body>
+                    </html>
+                    ">extraaa</a></li>
+            </ul>
+        </nav>
+        <h1>SAAG Game Store</h1>
+    </header>
+
+    <div class="content">
+        <section>
+            <div class="game-card">
+                <img src="game1.jpg" alt="Game 1">
+                <h2>Game 1</h2>
+                <p>Description of Game 1.</p>
+                <button>Add to Cart</button>
+            </div>
+
+            <div class="game-card">
+                <img src="game2.jpg" alt="Game 2">
+                <h2>Game 2</h2>
+                <p>Description of Game 2.</p>
+                <button>Add to Cart</button>
+            </div>
+
+            <!-- Add more game cards as needed -->
+
+        </section>
+
+        <div class="additional-content">
+            <img src="placeholder-image.jpg" alt="Additional Image">
+            <h3>Special Offer</h3>
+            <p>Get an extra 10% off on your first purchase. Use code: IHATECALC</p>
+            <hr>
+            <h3>Latest News</h3>
+            <p>Stay tuned for exciting game releases and updates.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 SAAG Game Store. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smash Bros Type Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #efefef;
+        }
+
+        .player {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            background-color: #3498db;
+        }
+
+        .tile {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Player A -->
+    <div class="player" id="playerA"></div>
+
+    <!-- Player B -->
+    <div class="player" id="playerB"></div>
+
+    <!-- Add more tiles as needed -->
+    <div class="tile" style="top: 200px; left: 100px;"></div>
+    <div class="tile" style="top: 300px; left: 200px;"></div>
+
+    <script>
+        const playerA = document.getElementById('playerA');
+        const playerB = document.getElementById('playerB');
+
+        document.addEventListener('keydown', (event) => {
+            // Player A controls
+            if (event.key === 'a') {
+                movePlayer(playerA, 'left');
+            } else if (event.key === 'd') {
+                movePlayer(playerA, 'right');
+            } else if (event.key === 'w') {
+                jumpPlayer(playerA);
+            } else if (event.key === 's') {
+                shootPower(playerA);
+            }
+
+            // Player B controls
+            if (event.key === 'ArrowLeft') {
+                movePlayer(playerB, 'left');
+            } else if (event.key === 'ArrowRight') {
+                movePlayer(playerB, 'right');
+            } else if (event.key === 'ArrowUp') {
+                jumpPlayer(playerB);
+            } else if (event.key === 'ArrowDown') {
+                shootPower(playerB);
+            }
+        });
+
+        function movePlayer(player, direction) {
+            // Implement player movement logic
+        }
+
+        function jumpPlayer(player) {
+            // Implement player jump logic
+        }
+
+        function shootPower(player) {
+            // Implement shooting logic
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+Game Gui Creation:
+game stuff:
+Smash bros type game: Two player, fighting. 
+they should be able to jump move, left or right, and shoot powers. 
+for player a
+the s key should be used for shoot powers
+the a key should be used to move left
+the d key should be used to move right
+the w key should be used to jump up (with a jump animation bringing the charcater up and down)
+for player b
+<!-- the down key should be used for shoot powers -->
+the left key should be used to move left
+the right key should be used to move right
+the up key should be used to jump up (with a jump animation bringing the charcater up and down)
+Character should be able to stand on tiles (their y value has to be above the tile their standing on)
+If they are hovering in the same space as the tile, they get transported above the tile. 
+the characters are preset 
+
+Gui creator stuff: 
+You drag tiles where you want to, on the map
+you can change the colors of tiles. 
