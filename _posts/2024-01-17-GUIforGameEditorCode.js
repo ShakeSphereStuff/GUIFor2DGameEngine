@@ -8,11 +8,11 @@ var layOutSelectionMenu = [
     },
     {
         "name": "Tile Layout",
-        "layOut":[["Scene Editor"], ["Tile Editor", "Editor Controls"]]
+        "layOut":[["Scene Editor"], ["Tile Editor", "Tile Editor Colors"]]
     }
 ]
 var layOut = [["Scene Editor"], ["Javascript Runner", "Editor Controls"]]
-var cellModes = ["Scene Editor", "Editor Controls", "Tile Editor", "Javascript Runner"]
+var cellModes = ["Scene Editor", "Editor Controls", "Tile Editor", "Javascript Runner", "Tile Editor Colors"]
 var allCells = document.querySelectorAll(".cell")
 var allRows = document.querySelectorAll(".row")
 var menuOptions = {
@@ -303,16 +303,11 @@ function selectMode(cellIteration, activeCell, cellType){
 
         case "Tile Editor":
             var mainTileEditor = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-            
-            for(var tileItterator = 0; tileItterator < (Math.pow(15, 2)); tileItterator++){
-                var mainObstacle = document.createElementNS("http://www.w3.org/2000/svg" , "rect")
-                mainObstacle.setAttribute("height", 15)
-                mainObstacle.setAttribute("width", 15)
-                mainObstacle.setAttribute("x", (tileItterator - Math.floor(tileItterator / 15) * 15) * 15 + 2)
-                mainObstacle.setAttribute("y", Math.floor(tileItterator / 15) * 15 + 2)
-                mainObstacle.setAttribute("style", `fill: rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}); stroke: black; stroke-width: 2;`)
-                mainTileEditor.appendChild(mainObstacle)
-            }
+            var tileEditorItemChanger = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            var tileXSpacing = 15 // In px
+            var tileYSpacing = 15
+            var tilesOnXAxis = 20
+            var tilesOnYAxis = 20
 
             mainTileEditor.setAttribute("class", "mainTileEditor")
             mainTileEditor.setAttribute("height", currentCell.clientHeight)
@@ -320,10 +315,96 @@ function selectMode(cellIteration, activeCell, cellType){
             mainTileEditor.setAttribute("x", 0)
             mainTileEditor.setAttribute("y", 0)
             mainTileEditor.setAttribute("viewbox", `0 0 ${currentCell.clientWidth} ${currentCell.clientHeight}`)
+            
+            for(var tileItterator = 0; tileItterator < (tilesOnXAxis * tilesOnYAxis); tileItterator++){
+                var spacingForTileX = () =>{
+                    return ((tileXSpacing * tileItterator) - Math.floor((tileXSpacing * tileItterator) / (tilesOnXAxis * tileXSpacing)) * tilesOnXAxis * tileXSpacing) 
+                }
+                console.log("Main Calculations are", (Math.floor(tileItterator / tilesOnXAxis) * tilesOnXAxis))
+                console.log("Spacing is", spacingForTileX())
+                var mainObstacle = document.createElementNS("http://www.w3.org/2000/svg" , "rect")
+                mainObstacle.setAttribute("height", 15)
+                mainObstacle.setAttribute("width", 15)
+                mainObstacle.setAttribute("x", spacingForTileX())
+                mainObstacle.setAttribute("y", (Math.floor(tileItterator / tilesOnXAxis) * tileYSpacing))
+                mainObstacle.setAttribute("style", `fill: rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}); user-select: none`)
+                tileEditorItemChanger.appendChild(mainObstacle)
+            }
+
+            tileEditorItemChanger.setAttribute("transform", `translate(${currentCell.clientWidth / 2 - (tilesOnYAxis * tileYSpacing / 2) - 7.5}, ${currentCell.clientHeight / 2 - (tilesOnYAxis * tileYSpacing / 2) + 7.5})`)
+
+            var targetCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
+            targetCircle.setAttribute("cx", (currentCell.clientWidth / 2 - 10))
+            targetCircle.setAttribute("cy", (currentCell.clientHeight) / 2 - 10)
+            targetCircle.setAttribute("r", 10)
+            targetCircle.setAttribute("style", "stroke:red; stroke-width: 2; fill: transparent")
+
+            mainTileEditor.appendChild(tileEditorItemChanger)
+            mainTileEditor.appendChild(targetCircle)
 
             currentCell.appendChild(mainTileEditor)
             break
-        
+        case "Tile Editor Colors":
+            var tileEditorMainMenu = document.createElement("div")
+            var tileEditorLabels = ["Red:", "Green:", "Blue:", "Alpha:"]
+            var tileEditorColorName = document.createElement("p")
+            var tileEditorColorShowcase = document.createElement("div")
+            var tileEditorColorRow = document.createElement("div")
+            var tileEditorSetColor = [127, 127, 127, 255]
+
+            tileEditorMainMenu.className = "tileEditorMainMenu"
+            tileEditorColorShowcase.className = "tileEditorColorShowcase"
+
+            tileEditorColorShowcase.style.width = "40px"
+            tileEditorColorShowcase.style.height = "20px"
+
+            tileEditorColorName.innerText = "Resulting Color:"
+            tileEditorColorName.style.color = "white"
+            tileEditorColorName.style.marginBottom = "0px"
+
+            tileEditorColorRow.style.display = "flex"
+
+            tileEditorColorRow.appendChild(tileEditorColorName)
+            tileEditorColorRow.appendChild(tileEditorColorShowcase)
+
+            tileEditorMainMenu.appendChild(tileEditorColorRow)
+
+            for(let tileItterator in tileEditorLabels){
+                var tileEditorRow = document.createElement("div")
+                var tileEditorLabel = document.createElement("p")
+                var tileEditorSlider = document.createElement("input")
+                var tileEditorColorLabel = document.createElement("p")
+
+                tileEditorSlider.className = "tileEditorColors"
+                tileEditorLabel.className = "tileEditorLabel"
+                tileEditorLabel.style.width = "75px"
+                tileEditorColorLabel.className = "tileEditorColorLabel tileEditorLabel"
+
+                tileEditorRow.style.display = "flex"
+                tileEditorRow.style.height = "20px"
+                tileEditorColorLabel.style.right = "10px"
+                tileEditorColorLabel.style.position = "absolute"
+
+                tileEditorSlider.type = "range"
+                tileEditorSlider.max = "255"
+                tileEditorSlider.value = tileEditorSetColor[tileItterator]
+                tileEditorLabel.innerText = tileEditorLabels[tileItterator]
+                tileEditorColorLabel.innerText = tileEditorSetColor[tileItterator]
+
+                tileEditorSlider.addEventListener("input", () => {
+                    console.log(document.getElementsByClassName("tileEditorColorLabel")[tileItterator])
+                    document.getElementsByClassName("tileEditorColorLabel")[tileItterator].innerText = document.getElementsByClassName("tileEditorColors")[tileItterator].value
+                    tileEditorSetColor[tileItterator] = document.getElementsByClassName("tileEditorColors")[tileItterator].value
+                    document.getElementsByClassName("tileEditorColorShowcase")[0].style.backgroundColor = `rgba(${tileEditorSetColor[0]}, ${tileEditorSetColor[1]}, ${tileEditorSetColor[2]}, ${tileEditorSetColor[3]})`
+                })
+
+                tileEditorRow.appendChild(tileEditorLabel)
+                tileEditorRow.appendChild(tileEditorSlider)
+                tileEditorRow.appendChild(tileEditorColorLabel)
+                tileEditorMainMenu.appendChild(tileEditorRow)
+            }
+
+            currentCell.appendChild(tileEditorMainMenu)
     }
 }
 
@@ -383,8 +464,7 @@ function createObjectControls(cellIteration){
             objectMenu[objectMenu.length - 1][addObjectParameters[addObjectRetrieve][3]] = document.getElementsByClassName("addObjectInput")[addObjectRetrieve].value
             console.log(objectMenu)
         }
-        addObjectControls((addObjectParameters.length - 2), document.getElementsByClassName("editorItem").length)
-        // Need to find out if this works on multiple windows
+        addObjectControls(document.getElementsByClassName("cell")[cellIteration].getElementsByClassName("mainEditorControls")[0], document.getElementsByClassName("editorItem").length)
         createObjectForDisplay((document.getElementsByClassName("mainEditorControls").length + 1), 0)
         document.getElementsByClassName("addObjectPrompt")[0].remove()
     }
@@ -729,14 +809,22 @@ document.addEventListener("keydown", function(event){
         else{
             menu.requestFullscreen()
         }
-    } else if(event.key == "w" && menuOptions["Scene Editor"]["player"]["canMove"]){
-        movePlayer(0, menuOptions["Scene Editor"]["player"]["speed"])
-    } else if(event.key == "a" && menuOptions["Scene Editor"]["player"]["canMove"]){
-        movePlayer(menuOptions["Scene Editor"]["player"]["speed"], 0)
-    } else if(event.key == "s" && menuOptions["Scene Editor"]["player"]["canMove"]){
-        movePlayer(0, -menuOptions["Scene Editor"]["player"]["speed"])
-    } else if(event.key == "d" && menuOptions["Scene Editor"]["player"]["canMove"]){
-        movePlayer(-menuOptions["Scene Editor"]["player"]["speed"], 0)
+    } else if(menuOptions["Scene Editor"]["player"]["canMove"]) {
+        switch(event.key){
+            case "w":
+                movePlayer(0, menuOptions["Scene Editor"]["player"]["speed"])
+                break
+            case "a":
+                movePlayer(menuOptions["Scene Editor"]["player"]["speed"], 0)
+                break
+            case "s":
+                movePlayer(0, -menuOptions["Scene Editor"]["player"]["speed"])
+                break
+            case "d":
+                movePlayer(-menuOptions["Scene Editor"]["player"]["speed"], 0)
+                break
+
+        }
     }
 })
 

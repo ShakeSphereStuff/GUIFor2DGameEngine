@@ -280,6 +280,7 @@ iframe{
 .mainTileEditor{
   width: calc(100% - 5px);
   height: calc(100% - 32px);
+  background-color: black;
   border: solid white;
   display: inline-block;
 }
@@ -356,4 +357,28 @@ iframe{
   background-color: transparent;
   color: white;
   resize: none;
+}
+.tileEditorMainMenu{
+  border: solid white;
+  width: calc(100% - 14px);
+  height: calc(100% - 28px);
+  display: block;
+  padding-left: 10px;
+}
+.tileEditorColors{
+  background-color: transparent;
+  border-color: white;
+  margin-top: 15px;
+  position: absolute;
+  right: 50px;
+}
+.tileEditorLabel{
+  color: white
+}
+.tileEditorColorShowcase{
+  border: solid white;
+  background-color: rgba(127, 127, 127, 255);
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-left: 10px;
 }
