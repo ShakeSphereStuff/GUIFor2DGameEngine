@@ -58,8 +58,8 @@ var settingsPromptOptions = [
 ]
 var tileXSpacing = 15 // In px
 var tileYSpacing = 15
-var tilesOnXAxis = 10
-var tilesOnYAxis = 10
+var tilesOnXAxis = 8
+var tilesOnYAxis = 8
 
 for(var objectItterator in menuOptions["Scene Editor"]["objectData"]){
     menuOptions["Scene Editor"]["objectData"][objectItterator]["colors"] = Array(tilesOnYAxis * tilesOnYAxis).fill([0, 128, 0])
@@ -327,8 +327,8 @@ function selectMode(cellIteration, activeCell, cellType){
                 if(document.getElementsByClassName("selectedTile").length != 0){
                     document.getElementsByClassName("selectedTile")[0].remove()
                 }
-                var tileEditorSelectedX = Math.floor((event.clientX - Math.floor(tileEditorItemChanger.getBoundingClientRect().x)) / (tilesOnXAxis * 2 + (-2.45 * tilesOnXAxis) + 19.5))
-                var tileEditorSelectedY = Math.floor((event.clientY - Math.floor(tileEditorItemChanger.getBoundingClientRect().y)) / (tilesOnYAxis * 2 + (-2.45 * tilesOnYAxis) + 19.5))
+                var tileEditorSelectedX = Math.floor((event.clientX - Math.floor(tileEditorItemChanger.getBoundingClientRect().x)) / (tilesOnXAxis * (tileXSpacing / tilesOnYAxis)))
+                var tileEditorSelectedY = Math.floor((event.clientY - Math.floor(tileEditorItemChanger.getBoundingClientRect().y)) / (tilesOnYAxis * (tileYSpacing / tilesOnYAxis)))
 
                 var selectedTile = document.createElementNS("http://www.w3.org/2000/svg", "rect")
                 selectedTile.setAttribute("width", 15)
