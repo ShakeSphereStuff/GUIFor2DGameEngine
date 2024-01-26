@@ -106,6 +106,9 @@ iframe{
   border: 0px;
   color: white;
 }
+.menuSelector option{
+  user-select: none;
+}
 #cellSettingsOpener{
   position: fixed;
   right: 10px;
@@ -365,7 +368,7 @@ iframe{
   display: block;
   padding-left: 10px;
 }
-.tileEditorColors{
+.tileEditorSlider{
   background-color: transparent;
   border-color: white;
   margin-top: 15px;
@@ -373,7 +376,8 @@ iframe{
   right: 50px;
 }
 .tileEditorLabel{
-  color: white
+  color: white;
+  margin-top: 12px;
 }
 .tileEditorColorShowcase{
   border: solid white;
@@ -381,4 +385,9 @@ iframe{
   border-radius: 5px;
   margin-top: 10px;
   margin-left: 10px;
+}
+.tileEditorPixel:hover{
+  stroke: red;
+  stroke-dasharray: 5px;
+  stroke-width: 3px;
 }

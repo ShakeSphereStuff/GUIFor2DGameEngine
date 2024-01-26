@@ -22,13 +22,16 @@ var menuOptions = {
             "x": 10, 
             "y":10, 
             "width": 100, 
-            "height": 150},
+            "height": 150,
+            "colors":[],
+        },
         {
             "name": "Test Box 2", 
             "x": 300, 
             "y":300, 
             "width": 100, 
-            "height": 150
+            "height": 150,
+            "colors":[],
         }], // Holds all objects in Scene, Tile Values, Has Collision, i.e., {"x": 0, "y": 0}
         "screenData" : [], 
         "player" :{
@@ -53,6 +56,14 @@ var settingsPromptOptions = [
     ["gridSnaping(nextPush)", "range", 1],
     ["playerSpeed", "range", 5]
 ]
+var tileXSpacing = 15 // In px
+var tileYSpacing = 15
+var tilesOnXAxis = 10
+var tilesOnYAxis = 10
+
+for(var objectItterator in menuOptions["Scene Editor"]["objectData"]){
+    menuOptions["Scene Editor"]["objectData"][objectItterator]["colors"] = Array(tilesOnYAxis * tilesOnYAxis).fill([0, 128, 0])
+}
 
 function compileWindows(){
     var cellsToAppend = []
@@ -304,10 +315,6 @@ function selectMode(cellIteration, activeCell, cellType){
         case "Tile Editor":
             var mainTileEditor = document.createElementNS("http://www.w3.org/2000/svg", "svg")
             var tileEditorItemChanger = document.createElementNS("http://www.w3.org/2000/svg", "g")
-            var tileXSpacing = 15 // In px
-            var tileYSpacing = 15
-            var tilesOnXAxis = 20
-            var tilesOnYAxis = 20
 
             mainTileEditor.setAttribute("class", "mainTileEditor")
             mainTileEditor.setAttribute("height", currentCell.clientHeight)
@@ -315,10 +322,55 @@ function selectMode(cellIteration, activeCell, cellType){
             mainTileEditor.setAttribute("x", 0)
             mainTileEditor.setAttribute("y", 0)
             mainTileEditor.setAttribute("viewbox", `0 0 ${currentCell.clientWidth} ${currentCell.clientHeight}`)
-            
+
+            tileEditorItemChanger.onmousedown = (event) => {
+                if(document.getElementsByClassName("selectedTile").length != 0){
+                    document.getElementsByClassName("selectedTile")[0].remove()
+                }
+                var tileEditorSelectedX = Math.floor((event.clientX - Math.floor(tileEditorItemChanger.getBoundingClientRect().x)) / (tilesOnXAxis * 2 + (-2.45 * tilesOnXAxis) + 19.5))
+                var tileEditorSelectedY = Math.floor((event.clientY - Math.floor(tileEditorItemChanger.getBoundingClientRect().y)) / (tilesOnYAxis * 2 + (-2.45 * tilesOnYAxis) + 19.5))
+
+                var selectedTile = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+                selectedTile.setAttribute("width", 15)
+                selectedTile.setAttribute("height", 15)
+                selectedTile.setAttribute("x", tileEditorSelectedX * tileXSpacing)
+                selectedTile.setAttribute("y", tileEditorSelectedY * tileYSpacing)
+                selectedTile.setAttribute("class", "selectedTile")
+                selectedTile.setAttribute("style", "fill: transparent; stroke: red; stroke-width: 3")
+                tileEditorItemChanger.appendChild(selectedTile)
+
+                console.log("Got values of", document.getElementsByClassName("tileEditorPixel")[tileEditorSelectedY * tilesOnYAxis + tileEditorSelectedX].getAttribute("style"))
+                console.log("Color should be", `rgb(${document.getElementsByClassName("tileEditorSlider")[0].value}, ${document.getElementsByClassName("tileEditorSlider")[1].value}, ${document.getElementsByClassName("tileEditorSlider")[2].value})`)
+                if(document.getElementsByClassName("tileEditorColorShowcase").length == 0){
+                    return
+                }
+
+                var tileEditorObjectColor = menuOptions["Scene Editor"]["objectData"][0]["colors"][tileEditorSelectedY * tilesOnYAxis + tileEditorSelectedX]
+
+                for(var tileEditorColorItterator in Array(document.getElementsByClassName("tileEditorShowcase"))){
+                    console.log(tileEditorColorItterator)
+                    console.log(document.getElementsByClassName("tileEditorColorShowcase")[tileEditorColorItterator])
+                    // document.getElementsByClassName("tileEditorColorShowcase")[tileEditorColorItterator].style.backgroundColor = `rgb(${tileEditorObjectColor[0]}, ${tileEditorObjectColor[1]}, ${tileEditorObjectColor[2]})`
+                }
+                menuOptions["Scene Editor"]["objectData"][0]["colors"][tileEditorSelectedY * tilesOnYAxis + tileEditorSelectedX] = [parseInt(document.getElementsByClassName("tileEditorSlider")[0].value), parseInt(document.getElementsByClassName("tileEditorSlider")[1].value), parseInt(document.getElementsByClassName("tileEditorSlider")[2].value)]
+
+                document.getElementsByClassName("tileEditorPixel")[tileEditorSelectedY * tilesOnYAxis + tileEditorSelectedX].setAttribute("style", `fill: rgb(${document.getElementsByClassName("tileEditorSlider")[0].value}, ${document.getElementsByClassName("tileEditorSlider")[1].value}, ${document.getElementsByClassName("tileEditorSlider")[2].value}); user-select:none;`)
+
+                // document.getElementsByClassName("tileEditorPixel")[tileEditorSelectedY * tilesOnYAxis + tileEditorSelectedX].setAttribute("class", 
+                // document.getElementsByClassName("tileEditorPixel")[tileEditorSelectedY * tilesOnYAxis + tileEditorSelectedX].getAttribute("class").toString() + " selectedTile")
+            }
+
+            tileEditorItemChanger.onmouseup = (event) => {
+                document.getElementsByClassName("selectedTile")[0].remove()
+            }
+
+            var tileXPreCalc = tilesOnXAxis * tileXSpacing
+            var tileEditorObjectColor = menuOptions["Scene Editor"]["objectData"][0]["colors"]
+
             for(var tileItterator = 0; tileItterator < (tilesOnXAxis * tilesOnYAxis); tileItterator++){
                 var spacingForTileX = () =>{
-                    return ((tileXSpacing * tileItterator) - Math.floor((tileXSpacing * tileItterator) / (tilesOnXAxis * tileXSpacing)) * tilesOnXAxis * tileXSpacing) 
+                    var tileXSpacingItteration = tileXSpacing * tileItterator 
+                    return ((tileXSpacingItteration) - Math.floor((tileXSpacingItteration) / (tileXPreCalc)) * tileXPreCalc) 
                 }
                 console.log("Main Calculations are", (Math.floor(tileItterator / tilesOnXAxis) * tilesOnXAxis))
                 console.log("Spacing is", spacingForTileX())
@@ -327,15 +379,16 @@ function selectMode(cellIteration, activeCell, cellType){
                 mainObstacle.setAttribute("width", 15)
                 mainObstacle.setAttribute("x", spacingForTileX())
                 mainObstacle.setAttribute("y", (Math.floor(tileItterator / tilesOnXAxis) * tileYSpacing))
-                mainObstacle.setAttribute("style", `fill: rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}); user-select: none`)
+                mainObstacle.setAttribute("class", "tileEditorPixel")
+                mainObstacle.setAttribute("style", `fill: rgb(${tileEditorObjectColor[tileItterator][0]}, ${tileEditorObjectColor[tileItterator][1]}, ${tileEditorObjectColor[tileItterator][2]}); user-select: none`)
                 tileEditorItemChanger.appendChild(mainObstacle)
             }
 
-            tileEditorItemChanger.setAttribute("transform", `translate(${currentCell.clientWidth / 2 - (tilesOnYAxis * tileYSpacing / 2) - 7.5}, ${currentCell.clientHeight / 2 - (tilesOnYAxis * tileYSpacing / 2) + 7.5})`)
+            tileEditorItemChanger.setAttribute("transform", `translate(${currentCell.clientWidth / 2 - (tilesOnYAxis * tileYSpacing / 2) - 10.25 + 15 - (tileYSpacing / 2)}, ${currentCell.clientHeight / 2 - (tilesOnYAxis * tileYSpacing / 2) - 10.25 + 15 - (tileYSpacing / 2)})`)
 
             var targetCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
             targetCircle.setAttribute("cx", (currentCell.clientWidth / 2 - 10))
-            targetCircle.setAttribute("cy", (currentCell.clientHeight) / 2 - 10)
+            targetCircle.setAttribute("cy", (currentCell.clientHeight / 2 - 10))
             targetCircle.setAttribute("r", 10)
             targetCircle.setAttribute("style", "stroke:red; stroke-width: 2; fill: transparent")
 
@@ -375,7 +428,7 @@ function selectMode(cellIteration, activeCell, cellType){
                 var tileEditorSlider = document.createElement("input")
                 var tileEditorColorLabel = document.createElement("p")
 
-                tileEditorSlider.className = "tileEditorColors"
+                tileEditorSlider.className = "tileEditorSlider"
                 tileEditorLabel.className = "tileEditorLabel"
                 tileEditorLabel.style.width = "75px"
                 tileEditorColorLabel.className = "tileEditorColorLabel tileEditorLabel"
@@ -393,8 +446,8 @@ function selectMode(cellIteration, activeCell, cellType){
 
                 tileEditorSlider.addEventListener("input", () => {
                     console.log(document.getElementsByClassName("tileEditorColorLabel")[tileItterator])
-                    document.getElementsByClassName("tileEditorColorLabel")[tileItterator].innerText = document.getElementsByClassName("tileEditorColors")[tileItterator].value
-                    tileEditorSetColor[tileItterator] = document.getElementsByClassName("tileEditorColors")[tileItterator].value
+                    document.getElementsByClassName("tileEditorColorLabel")[tileItterator].innerText = document.getElementsByClassName("tileEditorSlider")[tileItterator].value
+                    tileEditorSetColor[tileItterator] = document.getElementsByClassName("tileEditorSlider")[tileItterator].value
                     document.getElementsByClassName("tileEditorColorShowcase")[0].style.backgroundColor = `rgba(${tileEditorSetColor[0]}, ${tileEditorSetColor[1]}, ${tileEditorSetColor[2]}, ${tileEditorSetColor[3]})`
                 })
 
@@ -776,7 +829,6 @@ window.addEventListener("resize", function (e) {
 window.addEventListener("mousedown", function (e) {
     for(var horizontalDividerClass = 0; horizontalDividerClass < document.getElementsByClassName("horizontalDivider").length; horizontalDividerClass++){
         var currentHorizontalDivider = document.getElementsByClassName("horizontalDivider")[horizontalDividerClass]
-        console.log(`The Current Horizontal Divider is ${currentHorizontalDivider}`)
         if(e.clientX >= currentHorizontalDivider.getBoundingClientRect().x && 
         (currentHorizontalDivider.getBoundingClientRect().x + currentHorizontalDivider.clientWidth) >= e.clientX){
             horIsMouseDown[horizontalDividerClass] = [true]
