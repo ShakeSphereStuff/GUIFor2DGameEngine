@@ -161,7 +161,8 @@ iframe{
   display: flex;
   flex-direction: column;
   width: calc(100% - 5px);
-  height: calc(100% - 28px)
+  overflow: hidden;
+  height: calc(100% - 62px)
 }
 .expandedControlsImage{
   width: 20px;
@@ -262,7 +263,13 @@ iframe{
 }
 .settingsPromptOptionInput[type="range"]{
   accent-color: grey;
-  width: 100px
+  max-width: 100px
+  calc(100% - 120px)
+}
+.settingsPromptOptionValue{
+  color: white;
+  position: absolute;
+  right: 10px;
 }
 #player{
   fill: aqua;
@@ -288,15 +295,15 @@ iframe{
   display: inline-block;
 }
 .bottomObjectBar{
-  border-top: solid white;
+  border: solid white;
   position: absolute;
-  width: calc(100% - 6px);
+  width: calc(100% - 5px);
   height: 30px;
   color:white;
   background-color: rgb(28, 30, 44);
   float: right;
-  bottom: 3px;
-  right: 3px;
+  bottom: 0px;
+  right: 0px;
   user-select: none;
 }
 .addObjectButton{
@@ -373,6 +380,7 @@ iframe{
   border-color: white;
   margin-top: 15px;
   position: absolute;
+  width: calc(100% - 120px);
   right: 50px;
 }
 .tileEditorLabel{
@@ -383,8 +391,7 @@ iframe{
   border: solid white;
   background-color: rgba(127, 127, 127, 255);
   border-radius: 5px;
-  margin-top: 10px;
-  margin-left: 10px;
+  margin: 10px 10px 0px 10px;
 }
 .tileEditorPixel:hover{
   stroke: red;

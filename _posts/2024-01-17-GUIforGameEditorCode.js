@@ -50,16 +50,22 @@ var menuOptions = {
     }
 }
 var cellType = ""
-var offsetForCell = 1
 var settingsPromptOptions = [
-    ["showPlayer", "checkbox", true],
-    ["gridSnaping(nextPush)", "range", 1],
-    ["playerSpeed", "range", 5]
+    ["showPlayer", "checkbox", true, null],
+    ["gridSnaping", "range", 10, 1],
+    ["playerSpeed", "range", 5, 0.1]
 ]
 var tileXSpacing = 15 // In px
 var tileYSpacing = 15
 var tilesOnXAxis = 8
 var tilesOnYAxis = 8
+var gridSnaping = 10
+var defaultObjectParameters = [
+    ["X:", "number", 100, "x"], 
+    ["Y:", "number", 100, "y"], 
+    ["Width:", "number", 100, "width"], 
+    ["Height:", "number",  150, "height"], 
+]
 
 for(var objectItterator in menuOptions["Scene Editor"]["objectData"]){
     menuOptions["Scene Editor"]["objectData"][objectItterator]["colors"] = Array(tilesOnYAxis * tilesOnYAxis).fill([0, 128, 0])
@@ -124,25 +130,43 @@ function settingsPrompt(){
     settingsPromptHeaderBar.appendChild(settingsPromptHeaderBarCloseButton)
     settingsPrompt.appendChild(settingsPromptHeaderBar)
 
-    for(var settingsPromptOptionsIterator in settingsPromptOptions){
+    for(let settingsPromptOptionsIterator in settingsPromptOptions){
         var settingsPromptOptionLabel = document.createElement("p")
         var settingsPromptOptionInput = document.createElement("input")
         var settingsPromptOptionDiv = document.createElement("div")
+        var settingsPromptOptionValue = document.createElement("p")
 
         settingsPromptOptionLabel.innerText = settingsPromptOptions[settingsPromptOptionsIterator][0]
         settingsPromptOptionInput.type = settingsPromptOptions[settingsPromptOptionsIterator][1]
         settingsPromptOptionInput.value = settingsPromptOptions[settingsPromptOptionsIterator][2]
-        if(settingsPromptOptions[settingsPromptOptionsIterator][1] == "checkbox" && settingsPromptOptions[settingsPromptOptionsIterator][2]){
-            settingsPromptOptionInput.setAttribute("checked", settingsPromptOptions[settingsPromptOptionsIterator][2])
+        settingsPromptOptionValue.innerText = settingsPromptOptions[settingsPromptOptionsIterator][2]
+
+        if(settingsPromptOptions[settingsPromptOptionsIterator][1] == "checkbox"){ 
+            if(settingsPromptOptions[settingsPromptOptionsIterator][2]){
+                settingsPromptOptionInput.setAttribute("checked", settingsPromptOptions[settingsPromptOptionsIterator][2])
+            }
+            settingsPromptOptionInput.addEventListener("click", (event)=>{
+                console.log(document.getElementsByClassName("settingsPromptOptionValue")[settingsPromptOptionsIterator])
+                document.getElementsByClassName("settingsPromptOptionValue")[settingsPromptOptionsIterator].innerText = document.getElementsByClassName("settingsPromptOptionInput")[settingsPromptOptionsIterator].checked
+            })
+        }
+        else if(settingsPromptOptions[settingsPromptOptionsIterator][1] == "range"){
+            settingsPromptOptionInput.min = settingsPromptOptions[settingsPromptOptionsIterator][3]
+            settingsPromptOptionInput.step = settingsPromptOptions[settingsPromptOptionsIterator][3]
+            settingsPromptOptionInput.addEventListener("input", (event)=>{
+                document.getElementsByClassName("settingsPromptOptionValue")[settingsPromptOptionsIterator].innerText = document.getElementsByClassName("settingsPromptOptionInput")[settingsPromptOptionsIterator].value
+            })
         }
 
         settingsPromptOptionLabel.className = "settingsPromptOptionLabel"
         settingsPromptOptionInput.className = "settingsPromptOptionInput"
+        settingsPromptOptionValue.className = "settingsPromptOptionValue"
         settingsPromptOptionDiv.style.display = "flex"
         settingsPromptOptionDiv.style.paddingLeft = "10px"
 
         settingsPromptOptionDiv.appendChild(settingsPromptOptionLabel)
         settingsPromptOptionDiv.appendChild(settingsPromptOptionInput)
+        settingsPromptOptionDiv.appendChild(settingsPromptOptionValue)
         settingsPrompt.appendChild(settingsPromptOptionDiv)
     }
     settingsPrompt.appendChild(settingsPromptSaveButton)
@@ -153,7 +177,6 @@ function settingsPrompt(){
 function saveSettingChanges(){
     for(var settingsPromptOptionItterator = 0; settingsPromptOptionItterator < document.getElementsByClassName("settingsPromptOptionInput").length; settingsPromptOptionItterator++){
         var settingsPromptCurrentOption = document.getElementsByClassName("settingsPromptOptionInput")[settingsPromptOptionItterator]
-        console.log(settingsPromptCurrentOption)
         switch(settingsPromptOptionItterator){
             case 0:
                 if(settingsPromptCurrentOption.checked){
@@ -168,13 +191,60 @@ function saveSettingChanges(){
                 }
                 break
             case 1:
-                /*
-                Objects have to be placed on the grid in the increments set.
-                */
+                console.log(document.getElementsByClassName("expandedControlsSlider"))
+                settingsPromptOptions[1][2] = parseInt(settingsPromptCurrentOption.value)
+                gridSnaping = settingsPromptOptions[1][2]
+
+                for(var settingsChangeObjectItterator = 0; settingsChangeObjectItterator < (document.getElementsByClassName("sceneObject").length * defaultObjectParameters.length); settingsChangeObjectItterator++){
+                    var currentObjectID = Math.floor(settingsChangeObjectItterator / defaultObjectParameters.length)
+                    var currentParameterID = defaultObjectParameters[settingsChangeObjectItterator % defaultObjectParameters.length][3]
+
+                    document.getElementsByClassName("sceneObject")[currentObjectID].setAttribute(
+                        defaultObjectParameters[settingsChangeObjectItterator % defaultObjectParameters.length][3], 
+                        Math.floor(menuOptions["Scene Editor"]["objectData"][currentObjectID][currentParameterID] / gridSnaping + 0.5) * gridSnaping
+                    )
+                    menuOptions["Scene Editor"]["objectData"][currentObjectID][currentParameterID] = Math.floor(menuOptions["Scene Editor"]["objectData"][currentObjectID][currentParameterID] / gridSnaping + 0.5) * gridSnaping
+                }
+
+                for(let controlSnaping in document.getElementsByClassName("expandedControlsSlider")){
+                    if(document.getElementsByClassName("expandedControlsSlider")[controlSnaping].type != "number"){
+                        console.log("Not the the right type")
+                        continue
+                    }
+                    let expandedControlsSlider = document.createElement("input")
+                    expandedControlsSlider.type = "number"
+                    expandedControlsSlider.step = gridSnaping
+                    expandedControlsSlider.className = "expandedControlsSlider"
+
+                    if(controlSnaping == 2 || controlSnaping == 3){
+                        expandedControlsSlider.min = 0
+                    }
+
+                    document.getElementsByClassName("expandedControlsMenu")[controlSnaping].appendChild(expandedControlsSlider)
+
+                    var currentObjectID = parseInt(expandedControlsSlider.parentElement.id.replace("expandedControlsParentObject", ""))
+                    var currentParameterID = defaultObjectParameters[controlSnaping % defaultObjectParameters.length][3]
+
+                    expandedControlsSlider.value = Math.floor(menuOptions["Scene Editor"]["objectData"][currentObjectID][currentParameterID] / gridSnaping + 0.5) * gridSnaping
+
+                    expandedControlsSlider.addEventListener("input", () => {
+                        changeObjectValues(
+                            defaultObjectParameters[controlSnaping][3], 
+                            parseInt(expandedControlsSlider.parentElement.id.replace("expandedControlsParentObject", "")), 
+                            expandedControlsSlider.value)
+                    })
+                    document.getElementsByClassName("expandedControlsMenu")[controlSnaping].getElementsByClassName("expandedControlsSlider")[0].remove() 
+                }
+                var allCells = document.getElementsByClassName("cell")
+                for(var sceneEditorItterator = 0; sceneEditorItterator < document.getElementsByClassName("hasSceneEditor").length; sceneEditorItterator++){
+                    document.getElementById("player").setAttribute("x", Math.floor((allCells[sceneEditorItterator].clientWidth / 2 - 12) / gridSnaping + 0.5) * gridSnaping)
+                    document.getElementById("player").setAttribute("y", Math.floor((allCells[sceneEditorItterator].clientHeight / 2 - 12) / gridSnaping + 0.5) * gridSnaping)
+                }
                 break
             case 2:
-                menuOptions["Scene Editor"]["player"]["speed"] = parseInt(settingsPromptCurrentOption.value) 
-                settingsPromptOptions[2][2] = parseInt(settingsPromptCurrentOption.value)
+                menuOptions["Scene Editor"]["player"]["speed"] = settingsPromptCurrentOption.value
+                settingsPromptOptions[2][2] = settingsPromptCurrentOption.value
+                break
         }
     }
     document.getElementsByClassName("settingsPromptBackgroundColor")[0].remove()
@@ -276,7 +346,7 @@ function selectMode(cellIteration, activeCell, cellType){
             screenControlsHUD(currentCell)
             break
         case "Editor Controls":
-            var mainEditorControls = document.createElement("div")
+            var mainEditorControls = document.createElement("nav")
             var bottomObjectBar = document.createElement("div")
             var addObjectButton = document.createElement("button")
 
@@ -327,8 +397,8 @@ function selectMode(cellIteration, activeCell, cellType){
                 if(document.getElementsByClassName("selectedTile").length != 0){
                     document.getElementsByClassName("selectedTile")[0].remove()
                 }
-                var tileEditorSelectedX = Math.floor((event.clientX - Math.floor(tileEditorItemChanger.getBoundingClientRect().x)) / (tilesOnXAxis * (tileXSpacing / tilesOnYAxis)))
-                var tileEditorSelectedY = Math.floor((event.clientY - Math.floor(tileEditorItemChanger.getBoundingClientRect().y)) / (tilesOnYAxis * (tileYSpacing / tilesOnYAxis)))
+                var tileEditorSelectedX = Math.floor((event.clientX - Math.floor(tileEditorItemChanger.getBoundingClientRect().x)) / tileXSpacing)
+                var tileEditorSelectedY = Math.floor((event.clientY - Math.floor(tileEditorItemChanger.getBoundingClientRect().y)) / tileYSpacing)
 
                 var selectedTile = document.createElementNS("http://www.w3.org/2000/svg", "rect")
                 selectedTile.setAttribute("width", 15)
@@ -475,26 +545,20 @@ function createObjectForDisplay(objectCreator, sceneID){
 function createObjectControls(cellIteration){
     var currentAddObjectButton = document.getElementsByClassName("addObjectButton")[cellIteration]
     var addObjectPrompt = document.createElement("div")
-    var addObjectParameters = [
-        ["X:", "number", 100, "x"], 
-        ["Y:", "number", 100, "y"], 
-        ["Width:", "number", 100, "width"], 
-        ["Height:", "number",  150,"height"], 
-    ]
     var objectMenu = menuOptions["Scene Editor"]["objectData"]
     var addObjectSubmitOptions = document.createElement("div")
 
-    for(var addObjectIndex in addObjectParameters){
+    for(var addObjectIndex in defaultObjectParameters){
         var addObjectRow = document.createElement("div")
         var addObjectInput = document.createElement("input")
         var addObjectText = document.createElement("p")
         
         addObjectInput.className = "addObjectInput"
-        addObjectInput.type = addObjectParameters[addObjectIndex][1]
-        addObjectInput.value = addObjectParameters[addObjectIndex][2]
+        addObjectInput.type = defaultObjectParameters[addObjectIndex][1]
+        addObjectInput.value = defaultObjectParameters[addObjectIndex][2]
 
         addObjectText.style.fontFamily = "monospace"
-        addObjectText.innerText = addObjectParameters[addObjectIndex][0]
+        addObjectText.innerText = defaultObjectParameters[addObjectIndex][0]
 
         addObjectRow.style.display = "flex"
 
@@ -513,8 +577,8 @@ function createObjectControls(cellIteration){
 
 
     addObjectSubmitOptions.onclick = () => {
-        for(var addObjectRetrieve = 0; addObjectRetrieve < addObjectParameters.length; addObjectRetrieve++){
-            objectMenu[objectMenu.length - 1][addObjectParameters[addObjectRetrieve][3]] = document.getElementsByClassName("addObjectInput")[addObjectRetrieve].value
+        for(var addObjectRetrieve = 0; addObjectRetrieve < defaultObjectParameters.length; addObjectRetrieve++){
+            objectMenu[objectMenu.length - 1][defaultObjectParameters[addObjectRetrieve][3]] = document.getElementsByClassName("addObjectInput")[addObjectRetrieve].value
             console.log(objectMenu)
         }
         addObjectControls(document.getElementsByClassName("cell")[cellIteration].getElementsByClassName("mainEditorControls")[0], document.getElementsByClassName("editorItem").length)
@@ -560,8 +624,8 @@ function screenControlsHUD(svgWindow){
     svgWindow = document.getElementsByClassName("sceneEditor")[0]
     var player = document.createElementNS("http://www.w3.org/2000/svg", "rect")
     player.setAttribute("id", "player")
-    player.setAttribute("x", svgWindow.clientWidth / 2 - 12)
-    player.setAttribute("y", svgWindow.clientHeight / 2 - 12)
+    player.setAttribute("x", Math.floor((svgWindow.clientWidth / 2 - 12) / gridSnaping + 0.5) * gridSnaping)
+    player.setAttribute("y", Math.floor((svgWindow.clientHeight / 2 - 12) / gridSnaping + 0.5) * gridSnaping)
     svgWindow.appendChild(player)
 }
 
@@ -576,100 +640,51 @@ function expandControls(objectIndex, windowIndex){
         return
     }
 
-    var expandedControlsXSlider = document.createElement("input")
-    var expandedControlsYSlider = document.createElement("input")
-    var expandedControlsWidthSlider = document.createElement("input")
-    var expandedControlsHeightSlider = document.createElement("input")
-
-    var expandedControlsXMenu = document.createElement("div")
-    var expandedControlsYMenu = document.createElement("div")
-    var expandedControlsWidthMenu = document.createElement("div")
-    var expandedControlsHeightMenu = document.createElement("div")
-
-    var expandedControlsXText = document.createElement("p")
-    var expandedControlsYText = document.createElement("p")
-    var expandedControlsWidthText = document.createElement("p")
-    var expandedControlsHeightText = document.createElement("p")
-    
-    expandedControlsImage.style.rotate = "90deg"
-
-    expandedControlsXText.innerText = "X: "
-    expandedControlsYText.innerText = "Y: "
-    expandedControlsWidthText.innerText = "Width: "
-    expandedControlsHeightText.innerText = "Height: "
-
-    expandedControlsXSlider.type = "number"
-    expandedControlsYSlider.type = "number"
-    expandedControlsWidthSlider.type = "number"
-    expandedControlsHeightSlider.type = "number"
-
-    expandedControlsXSlider.className = "expandedControlsSlider"
-    expandedControlsYSlider.className = "expandedControlsSlider"
-    expandedControlsWidthSlider.className = "expandedControlsSlider"
-    expandedControlsHeightSlider.className = "expandedControlsSlider"
     expandedControlsObjectMainMenu.className = "expandedControlsObjectMainMenu"
 
-    expandedControlsXText.className = "expandedControlsText"
-    expandedControlsYText.className = "expandedControlsText"
-    expandedControlsWidthText.className = "expandedControlsText"
-    expandedControlsHeightText.className = "expandedControlsText"
+    for(let expandedControlsItterator in defaultObjectParameters){
+        let expandedControlsSlider = document.createElement("input")
+        var expandedControlsMenu = document.createElement("div")
+        var expandedControlsText = document.createElement("p")
+        
+        expandedControlsImage.style.rotate = "90deg"
+        expandedControlsText.innerText = defaultObjectParameters[expandedControlsItterator][0]
+        expandedControlsSlider.type = "number"
+        expandedControlsSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex][defaultObjectParameters[expandedControlsItterator][3]]
+        expandedControlsSlider.step = gridSnaping
+        expandedControlsMenu.id = `expandedControlsParentObject${objectIndex}`
 
-    expandedControlsXMenu.className = "expandedControlsMenu"
-    expandedControlsYMenu.className = "expandedControlsMenu"
-    expandedControlsWidthMenu.className = "expandedControlsMenu"
-    expandedControlsHeightMenu.className = "expandedControlsMenu"
+        expandedControlsSlider.className = "expandedControlsSlider"
+        expandedControlsText.className = "expandedControlsText"
+        expandedControlsMenu.className = "expandedControlsMenu"
 
-    expandedControlsXSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["x"]
-    expandedControlsYSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["y"]
-    expandedControlsWidthSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["width"]
-    expandedControlsHeightSlider.value = menuOptions["Scene Editor"]["objectData"][objectIndex]["height"]
+        
+        if(expandedControlsItterator == 2 || expandedControlsItterator == 3){
+            expandedControlsSlider.min = 0
+        }
 
-    expandedControlsWidthSlider.min = "1"
-    expandedControlsHeightSlider.min = "1"
+        expandedControlsSlider.addEventListener("input", () => {
+            changeObjectValues(defaultObjectParameters[expandedControlsItterator][3], parseInt(objectIndex), 
+            expandedControlsSlider.value)
+        })
 
-    expandedControlsXSlider.addEventListener("input", () => {changeObjectValues("X", objectIndex, expandedControlsXSlider.value)})
-    expandedControlsYSlider.addEventListener("input", () => {changeObjectValues("Y", objectIndex, expandedControlsYSlider.value)})
-    expandedControlsWidthSlider.addEventListener("input", () => {changeObjectValues("Width", objectIndex, expandedControlsWidthSlider.value)})
-    expandedControlsHeightSlider.addEventListener("input", () => {changeObjectValues("Height", objectIndex, expandedControlsHeightSlider.value)})
-
-    expandedControlsXMenu.appendChild(expandedControlsXText)
-    expandedControlsYMenu.appendChild(expandedControlsYText)
-    expandedControlsWidthMenu.appendChild(expandedControlsWidthText)
-    expandedControlsHeightMenu.appendChild(expandedControlsHeightText)
-
-    expandedControlsXMenu.appendChild(expandedControlsXSlider)
-    expandedControlsYMenu.appendChild(expandedControlsYSlider)
-    expandedControlsWidthMenu.appendChild(expandedControlsWidthSlider)
-    expandedControlsHeightMenu.appendChild(expandedControlsHeightSlider)
-
-    expandedControlsObjectMainMenu.appendChild(expandedControlsXMenu)
-    expandedControlsObjectMainMenu.appendChild(expandedControlsYMenu)
-    expandedControlsObjectMainMenu.appendChild(expandedControlsWidthMenu)
-    expandedControlsObjectMainMenu.appendChild(expandedControlsHeightMenu)
+        expandedControlsMenu.appendChild(expandedControlsText)
+        expandedControlsMenu.appendChild(expandedControlsSlider)
+        expandedControlsObjectMainMenu.appendChild(expandedControlsMenu)
+    }
     
     expandedCellControls.appendChild(expandedControlsObjectMainMenu)
 }
 
 function changeObjectValues(property = String, objectIndex = Number, newValue = Number){
+    console.log("Getting Inputed", property, objectIndex, newValue)
     var svgShape = document.getElementsByClassName("sceneObject")[objectIndex]
-    switch(property){
-        case "X":
-            document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("x", Math.floor((svgShape.parentElement.clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2) + parseInt(newValue))
-            menuOptions["Scene Editor"]["objectData"][objectIndex]["x"] = newValue
-            break
-        case "Y":
-            document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("y", Math.floor((svgShape.parentElement.clientWidth - menuOptions["Scene Editor"]["screenData"][3]) / 2) + parseInt(newValue))
-            menuOptions["Scene Editor"]["objectData"][objectIndex]["y"] = newValue
-            break
-        case "Width": 
-            document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("width", newValue)
-            menuOptions["Scene Editor"]["objectData"][objectIndex]["width"] = newValue
-            break
-        case "Height":
-            document.getElementsByClassName("sceneObject")[objectIndex].setAttribute("height", newValue)
-            menuOptions["Scene Editor"]["objectData"][objectIndex]["height"] = newValue
-            break
-    }
+    svgShape.setAttribute(property, parseInt(
+        svgShape.getAttribute(property)) - (
+            menuOptions["Scene Editor"]["objectData"][objectIndex][property] - newValue
+        )
+    )
+    menuOptions["Scene Editor"]["objectData"][objectIndex][property] = newValue
 }
 
 function resizeWindows(events){
@@ -697,8 +712,8 @@ function resizeSceneEditor(currentAccessedCell){
         svgShape.setAttribute("x", (Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2) + parseInt(menuOptions["Scene Editor"]["objectData"][svgShapes]["x"])))
         svgShape.setAttribute("y", (Math.floor((allCells[currentAccessedCell].clientHeight - menuOptions["Scene Editor"]["screenData"][3]) / 2)  + parseInt(menuOptions["Scene Editor"]["objectData"][svgShapes]["y"])))
     }
-    document.getElementById("player").setAttribute("x", allCells[currentAccessedCell].clientWidth / 2 - 12)
-    document.getElementById("player").setAttribute("y", allCells[currentAccessedCell].clientHeight / 2 - 12)
+    document.getElementById("player").setAttribute("x", Math.floor((allCells[currentAccessedCell].clientWidth / 2 - 12) / gridSnaping + 0.5) * gridSnaping)
+    document.getElementById("player").setAttribute("y", Math.floor((allCells[currentAccessedCell].clientHeight / 2 - 12) / gridSnaping + 0.5) * gridSnaping)
 }
 
 function horMoveDivider(e){
@@ -864,16 +879,16 @@ document.addEventListener("keydown", function(event){
     } else if(menuOptions["Scene Editor"]["player"]["canMove"]) {
         switch(event.key){
             case "w":
-                movePlayer(0, menuOptions["Scene Editor"]["player"]["speed"])
+                movePlayer(0, menuOptions["Scene Editor"]["player"]["speed"] * gridSnaping)
                 break
             case "a":
-                movePlayer(menuOptions["Scene Editor"]["player"]["speed"], 0)
+                movePlayer(menuOptions["Scene Editor"]["player"]["speed"] * gridSnaping, 0)
                 break
             case "s":
-                movePlayer(0, -menuOptions["Scene Editor"]["player"]["speed"])
+                movePlayer(0, -menuOptions["Scene Editor"]["player"]["speed"] * gridSnaping)
                 break
             case "d":
-                movePlayer(-menuOptions["Scene Editor"]["player"]["speed"], 0)
+                movePlayer(-menuOptions["Scene Editor"]["player"]["speed"] * gridSnaping, 0)
                 break
 
         }
@@ -885,8 +900,6 @@ function movePlayer(x, y){
         var currentSceneObject = document.getElementsByClassName("sceneObject")[sceneObjectIndex]
         currentSceneObject.setAttribute("x", (parseInt(currentSceneObject.getAttribute("x")) + x))
         currentSceneObject.setAttribute("y", (parseInt(currentSceneObject.getAttribute("y")) + y))
-        menuOptions["Scene Editor"]["objectData"][sceneObjectIndex]["x"] = parseInt(currentSceneObject.getAttribute("x")) + x
-        menuOptions["Scene Editor"]["objectData"][sceneObjectIndex]["y"] = parseInt(currentSceneObject.getAttribute("y")) + y
     }
 }
 
