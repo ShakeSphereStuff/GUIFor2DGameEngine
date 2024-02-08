@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental</title>
+    <link rel="stylesheet" href="stylesEverythingElse.css">
+</head>
+<body> <!--Header links-->
+    <div class="content">
+        <header>
+            <nav>
+                <ul>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/index.html">HOME</a></li>
+                    <li><a class="button-link1" target="_blank" rel="noopener" href="https://ths.li/CXry8ak">INSIGNIS GARAGE</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/about.html">ABOUT</a></li>
+                    <li><a class="button-link1 clickable-link" href="https://trinket.io/pygame/d5aa77e737">DRIVING GAME</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/contact.html">CONTACT</a></li>
+                    <li><a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/vehicles.html">VEHICLES</a></li>
+                </ul>
+            </nav>
+        </header>
+</body>
+
+<head>
+    <title>Car Information</title>
+</head>
+<body>
+    <h1 style="color:black">Available Inventory Information</h1>
+    <h2>Here are the details for your car!</h2>
+    <label for="modelInput">Enter Car Model:</label>
+    <input type="text" id="modelInput">
+    <button class="button-link" id="fetchData">Fetch Car Info</button>
+    <button class="button-link" id="searchCar">Search Car</button>
+    <div id="carTable"></div>
+</body>
+
+
+
+<script>
+    document.getElementById("fetchData").addEventListener("click", function () {
+        const url = "http://127.0.0.1:8420/api/car/";
+    
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const carTable = document.getElementById("carTable");
+                carTable.innerHTML = ""; // Clear previous table
+    
+                if (data.length === 0) {
+                    carTable.textContent = "No cars found.";
+                } else {
+                    const table = document.createElement("table");
+                    table.border = "1";
+    
+                    const headerRow = document.createElement("tr");
+                    ['make', 'model', 'year', 'fuel', 'cylinders'].forEach(key => {
+                        const th = document.createElement("th");
+                        th.textContent = key.charAt(0).toUpperCase() + key.slice(1); // Capitalize first letter of keys
+                        headerRow.appendChild(th);
+                    });
+                    table.appendChild(headerRow);
+    
+                    data.forEach(car => {
+                        const row = document.createElement("tr");
+                        ['make', 'model', 'year', 'fuel', 'cylinders'].forEach(key => {
+                            const cell = document.createElement("td");
+                            cell.textContent = car[key];
+                            row.appendChild(cell);
+                        });
+                        table.appendChild(row);
+                    });
+    
+                    carTable.appendChild(table);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    });
+    
+    document.getElementById("searchCar").addEventListener("click", function () {
+        const modelInput = document.getElementById("modelInput").value.toLowerCase();
+        const rows = document.querySelectorAll("#carTable table tr");
+    
+        const newTable = document.createElement("table");
+        newTable.border = "1";
+    
+        let headerRow; // Declare a variable to store the header row
+    
+        rows.forEach(row => {
+            if (row.firstElementChild.tagName === "TH") {
+                // Store the header row
+                headerRow = row.cloneNode(true);
+                newTable.appendChild(headerRow); // Append the header row to the new table
+            } else {
+                const modelCell = row.querySelector("td:nth-child(2)"); // Assuming model is the second column
+                if (modelCell && modelCell.textContent.toLowerCase() === modelInput) {
+                    const newRow = row.cloneNode(true); // Clone the matching row
+                    newRow.style.backgroundColor = "pink"; // Highlight the row
+                    newTable.appendChild(newRow); // Append the matching row to the new table
+                }
+            }
+        });
+    
+        // Replace the old table with the new table
+        const carTable = document.getElementById("carTable");
+        carTable.innerHTML = "";
+        carTable.appendChild(newTable);
+    });
+    
+    
+    function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        const carName = params.get('carName');
+
+        // Use the parameters as needed
+        console.log(`Car Name: ${carName}`);
+
+        // You can also update HTML elements with these values
+        document.getElementById('car-name').textContent = `Car: ${carName}`;
+    }
+    // Call the function when the page loads
+</script>
+<script>
+    document.getElementById("fetchData").click();
+    // Get the carName parameter from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const carName = urlParams.get('carName');
+    // Pre-fill the input field with the carName parameter
+    document.getElementById("modelInput").value = carName;
+
+    // Call the search function programmatically
+
+    document.getElementById("searchCar").click();
+</script>
+
+<!--<script>
+    document.getElementById("fetchData").addEventListener("click", function () {
+        const modelInput = document.getElementById("modelInput").value;
+
+        const url = "https://cars-by-api-ninjas.p.rapidapi.com/v1/cars";
+        const querystring = { model: modelInput };
+
+        const headers = {
+            "X-RapidAPI-Key": "a8491de794msh6676acc5521c4fcp1c5cf8jsn6d99a8656992",
+            "X-RapidAPI-Host": "cars-by-api-ninjas.p.rapidapi.com"
+        };
+
+        const params = new URLSearchParams(querystring);
+
+        fetch(url + "?" + params, { headers: headers })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data here
+                const carTable = document.getElementById("carTable");
+                carTable.innerHTML = ""; // Clear previous table
+
+                if (data.length === 0) {
+                    carTable.textContent = "No cars found.";
+                } else {
+                    // Create a table
+                    const table = document.createElement("table");
+                    table.border = "1";
+
+                    // Create table header
+                    const headerRow = document.createElement("tr");
+                    for (const key in data[0]) {
+                        const th = document.createElement("th");
+                        th.textContent = key;
+                        headerRow.appendChild(th);
+                    }
+                    table.appendChild(headerRow);
+
+                    // Add data rows to the table
+                    data.forEach(car => {
+                        const row = document.createElement("tr");
+                        for (const key in car) {
+                            const cell = document.createElement("td");
+                            cell.textContent = car[key];
+                            row.appendChild(cell);
+                        }
+                        table.appendChild(row);
+                    });
+
+                    carTable.appendChild(table);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    });
+</script>-->>
+</html>
+

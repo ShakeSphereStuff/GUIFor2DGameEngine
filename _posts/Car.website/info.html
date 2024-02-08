@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Information</title>
+</head>
+
+<body> <!--Header links-->
+    <div class="content">
+        <header>
+            <nav>
+                <ul>
+                    <li><a class="button-link1" href="http://127.0.0.1:5500/Car.website/index.html">HOME</a></li>
+                    <li><a class="button-link1" target="_blank" rel="noopener" href="https://ths.li/CXry8ak">INSIGNIS GARAGE</a></li>
+                    <li><a class="button-link1" href="http://127.0.0.1:5500/Car.website/about.html">ABOUT</a></li>
+                    <li><a class="button-link1 clickable-link" href="https://trinket.io/pygame/d5aa77e737">DRIVING GAME</a></li>
+                    <li><a class="button-link1" href="http://127.0.0.1:5500/Car.website/contact.html">CONTACT</a></li>
+                </ul>
+            </nav>
+        </header>
+</body>
+
+<body>
+    <header>
+        <h1>Vehicle Information</h1>
+    </header>
+    <div class="container">
+        <h1 id="car-name">Car Name</h1>
+    </div>
+
+    <script>
+        // Fetch data from the API and update the #car-name element
+        fetch('http://127.0.0.1:8420/api/car/') // Replace with your API endpoint URL
+            .then(response => response.json())
+            .then(data => {
+                // Assuming the API response is an array of car objects
+                const carNameElement = document.getElementById('car-name');
+
+                // Check if there are cars in the response
+                if (data.length > 0) {
+                    // Update the car name element with the first car's name
+                    carNameElement.textContent = `${data[0].make} ${data[0].model}`;
+                } else {
+                    // If no cars are returned from the API, display a message
+                    carNameElement.textContent = 'No cars available';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    </script>
+</body>
+
+</html>
+

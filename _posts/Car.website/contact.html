@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Car Rental</title>
+    <link rel="stylesheet" href="stylesEverythingElse.css">
+    <link rel="stylesheet" href="styleshome.css">
+    <style>
+        body {
+            background-image: url('your-background-image-url.jpg');
+            background-size: cover;
+            background-repeat: repeat;
+            background-attachment: fixed;
+            font-family: sans-serif, sans-serif;
+        }
+        .contact-form, .contact-info {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            color: #000000;
+        }
+        .contact-form h2, .contact-info h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .contact-form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .contact-form button {
+            width: 100%;
+            background-color: #2a84c0;
+            color: white;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .contact-form button:hover {
+            background-color: #1963b8;
+        }
+        .contact-info {
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+        .contact-info a {
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+
+    <body> <!--Header links-->
+        <div class="content">
+            <header>
+                <nav>
+                    <ul>
+                        <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/index.html">HOME</a></li>
+                        <li><a class="button-link1" target="_blank" rel="noopener" href="https://ths.li/CXry8ak">INSIGNIS GARAGE</a></li>
+                        <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/about.html">ABOUT</a></li>
+                        <li><a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/vehicles.html">VEHICLES</a></li>
+                        <li><a class="button-link1 clickable-link" href="https://trinket.io/pygame/d5aa77e737">DRIVING GAME</a></li>
+                        <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/timebox.html">Timebox</a></li>
+                    </ul>
+                </nav>
+            </header>
+    </body>
+
+<h1></h1>
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            fetch('process_contact.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('responseMessage').innerHTML = data;
+                document.getElementById('contactForm').style.display = 'none';
+                document.getElementById('thankYouMessage').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="content">
+        <header>
+            <nav>
+                <ul>
+                    <!-- <li><a class="button-link1" href="index.html">HOME</a></li>
+                    <li><a class="button-link1" href="vehicles.html">VEHICLES</a></li>
+                    <li><a class="button-link1" target="_blank" rel="noopener" href="https://ths.li/CXry8ak">INSIGNIS GARAGE</a></li>
+                    <li><a class="button-link1" href="contact.html">CONTACT</a></li> -->
+                </ul>
+            </nav>
+        </header>
+        <div class="contact-form">
+            <h2>Contact Us</h2>
+            <form id="contactForm" onsubmit="submitForm(event)">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <div id="thankYouMessage" style="display:none;">
+                <h2>Thank You for Your Message</h2>
+                <p>Thank you for sending your message. Expect a response in 2-3 business days.</p>
+            </div>
+            <div id="responseMessage"></div>
+        </div>
+    </div>
+    <div class="contact-info">
+        <h2>Contact Information</h2>
+        <p>If you have any questions, feel free to email us at <a href="mailto:timalfaraje@icloud.com">timalfaraje@icloud.com</a></p>
+    </div>
+</body>
+</html>
+

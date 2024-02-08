@@ -1,0 +1,347 @@
+body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 0;
+    margin: 0;
+    padding: 0;
+    background-color: #fce5e5;
+    background-size: cover;
+    background-position: center;
+}
+
+header {
+    background-color: #000; /* Background color for the header */
+    color: white;
+    text-align: center;
+    padding: 0px 0; /* Adjust top and bottom padding to reduce header height */
+    border-bottom: 1px solid #73e6fd; /* Border at the bottom with desired color and thickness */
+    font-size: 16px; /* Adjust font size */
+}
+
+@keyframes changeBackground {
+    500% {
+        background: url(/images/bentleyFlyingSpur.JPG);
+    }
+    25% {
+        background: url("https://www.rolls-roycemotorcars.com/content/dam/rrmc/marketUK/rollsroycemotorcars_com/3-1-cullinan/page-properties/rolls-royce-cullinan-discover-hero-d.jpg");
+    }
+    50% {
+        background: url("https://car-images.bauersecure.com/wp-images/12905/01-teslamodelx.jpg");
+    }
+    75% {
+        background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/McLaren_P1.jpg/1200px-McLaren_P1.jpg");
+    }
+    100% {
+        background: url("/images/carVideo.mp4");
+    }
+}
+something {
+    font-family: 'Inter', sans-serif;
+    font-weight: 12;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3a88c7; /* Green background color */
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px; /* Optional: rounded corners for the button */
+    margin-right: 20px; /* Optional: adds space between buttons */
+}
+
+.button-link:hover {
+    background-color: #002149; /* Darker green on hover */
+}
+
+header {
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 24px;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+    font-size: 18px;
+}
+
+.car-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Creates flexible columns with a minimum width of 200px */
+    gap: 20px; /* Add space between cars */
+    width: 1400px; /* Adjust the value as needed */
+    margin: 0 auto; /* Center-align the container */
+    margin-top: 1%;
+}
+
+
+.car {
+    flex: 0 1 calc(50% - 10px); /* Set the width of each car to 50% minus the margin */
+    margin-bottom: 1%; /* Add space between rows */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin: 10px;
+}
+
+
+.image {
+    width: 400px;
+    height: 250px;
+    border-radius: 10px;
+
+}
+
+.car:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.content {
+    text-align: center;
+}
+
+.content h1 {
+    font-size: 50px;
+    color: #fff;
+    font-weight: 100;
+}
+
+.content a {
+    text-decoration: none;
+    display: inline-block;
+    color: #fff;
+    font-size: 24px;
+    border: 2px solid #fff;
+    padding: 14px 70px;
+    border-radius: 50px;
+    margin-top: 20px;
+}
+
+#image-slider {
+    width: 100%;
+    height: 300px; /* Set your preferred height */
+    background: url('path/to/your/image.jpg') center/cover no-repeat; /* Replace 'path/to/your/image.jpg' with the actual path to your image */
+    /* Add more styles for a luxurious look if needed */
+}
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fcc684;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    transition: all 0.3s ease;
+}
+
+/* Increase cursor size on hover */
+.clickable-link:hover + .custom-cursor {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+}
+/*------------------------------------Below this is the search bar stuff----------------------------------------------------*/
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3%; /* Adjust the value as needed to align with the button */
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    width: 80%;
+    font-size: 40px;
+    margin-right: 10px; /* Add margin to the right of the input */
+}
+
+.search-button {
+    display: inline-block;
+    padding: 20px;
+    background-color: #3a88c7; /* Green background color */
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 25px; /* Optional: rounded corners for the button */
+    margin-right: 20px; /* Optional: adds space between buttons */
+}
+
+.search-button:hover {
+    background-color: #002149; /* Darker green on hover */
+}
+
+/*------------------------Below this is the stuff for the attributes and tooltips-------------------------------------------------------------*/
+.car-attributes {
+    position: relative;
+    top: 5px;
+    left: -40%;
+}
+
+/* Style for individual attribute tags */
+.attribute-tag {
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    font-size: 14px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer; /* Add pointer cursor for better UX */
+
+    /* Tooltip styles */
+    position: relative;
+}
+
+/* Style for sedan attribute */
+.sedan {
+    background-color: #3a88c7; /* Blue color */
+    color: white;
+}
+
+/* Style for city attribute */
+.city {
+    background-color: #ff5733; /* Orange color */
+    color: white;
+}
+
+.offroad {
+    background-color: burlywood;
+    color: white
+}
+
+.fast {
+    background-color: rgb(211, 81, 102);
+    color: white
+}
+
+.budget{
+    background-color: green;
+    color: white
+}
+
+.luxury {
+    background-color:goldenrod;
+    color: white
+}
+
+.lowCG {
+    background-color: #002149;
+    color: white
+}
+
+.family {
+    background-color: cornflowerblue;
+    color: white
+}
+
+.autopilot {
+    background-color:silver;
+    color: white
+}
+
+.highmileage {
+    background-color: #000;
+    color: white
+}
+
+/* Tooltip styles */
+.attribute-tag::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: #333; /* Tooltip background color */
+    color: white; /* Tooltip text color */
+    border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+/* Tooltip display on hover */
+.attribute-tag:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Styles for the arrow buttons */
+.arrow-btn {
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ddd;
+    padding: 10px 15px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.arrow-btn:hover {
+    background-color: #ccc;
+}
+
+.left-arrow {
+    left: 400px;
+}
+
+.right-arrow {
+    right: 400px;
+}
+
+.button-container {
+    position: fixed;
+    bottom: 64%;
+    left: 0.4%;
+}
+
+.home-button {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* Style the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  /* Style the table header */
+  th {
+    background-color: #007BFF; /* Blue header background */
+    color: #fff; /* White text color */
+    padding: 10px;
+    text-align: left;
+  }
+  
+  /* Style the table rows */
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Add hover effect to rows */
+  tr:hover {
+    background-color: #f5f5f5;
+  }
+  
