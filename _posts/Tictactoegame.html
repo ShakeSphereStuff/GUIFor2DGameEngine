@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazing Tic Tac Toe</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            color: #61dafb;
+        }
+
+        #ticTacToe {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+        }
+
+        .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background-color: #61dafb;
+            color: #282c34;
+            cursor: pointer;
+        }
+
+        .cell:hover {
+            background-color: #48a1d9;
+        }
+
+        .winner {
+            background-color: #28a745;
+        }
+
+        .draw {
+            background-color: #ffc107;
+        }
+
+        .reset {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ticTacToe"></div>
+    <div id="result"></div>
+    <button class="reset" onclick="resetGame()">Reset Game</button>
+
+    <script>
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+
+        const ticTacToe = document.getElementById('ticTacToe');
+        const resultDisplay = document.getElementById('result');
+
+        function handleCellClick(index) {
+            if (gameBoard[index] === '' && gameActive) {
+                gameBoard[index] = currentPlayer;
+                renderBoard();
+                checkForWinner();
+                checkForDraw();
+                switchPlayer();
+            }
+        }
+
+        function switchPlayer() {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+
+        function checkForWinner() {
+            const winPatterns = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+
+            for (const pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    ticTacToe.childNodes[a].classList.add('winner');
+                    ticTacToe.childNodes[b].classList.add('winner');
+                    ticTacToe.childNodes[c].classList.add('winner');
+                    resultDisplay.textContent = `${currentPlayer} wins!`;
+                    gameActive = false;
+                    return;
+                }
+            }
+        }
+
+        function checkForDraw() {
+            if (!gameBoard.includes('')) {
+                resultDisplay.textContent = 'It\'s a draw!';
+                ticTacToe.childNodes.forEach(cell => cell.classList.add('draw'));
+                gameActive = false;
+            }
+        }
+
+        function resetGame() {
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            currentPlayer = 'X';
+            resultDisplay.textContent = '';
+            renderBoard();
+        }
+
+        function renderBoard() {
+            ticTacToe.innerHTML = '';
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = `cell ${gameBoard[i] === 'X' ? 'X' : gameBoard[i] === 'O' ? 'O' : ''}`;
+                cell.textContent = gameBoard[i];
+                cell.addEventListener('click', () => handleCellClick(i));
+                ticTacToe.appendChild(cell);
+            }
+        }
+
+        // Initial render
+        renderBoard();
+    </script>
+</body>
+
+</html>
