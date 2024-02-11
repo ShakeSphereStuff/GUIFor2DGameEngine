@@ -424,7 +424,7 @@ function selectMode(cellIteration, activeCell, cellType){
             tileLayerSelector.className = "tileLayerSelector"
 
             for(var tileLayerSelectorName in menuOptions["Tile Editor"]["tileLayers"]){
-                var tileLayerSelectorLabel = document.createElement("option")
+                var tileLayerSelectorLabel = document.createElement("option") 
                 tileLayerSelectorLabel.innerText = menuOptions["Tile Editor"]["tileLayers"][tileLayerSelectorName][0]
                 if(tileLayerSelectorName == menuOptions["Scene Editor"]["objectData"][cellIteration]["selectedLayerIndex"]){
                     tileLayerSelectorLabel.selected = "true"

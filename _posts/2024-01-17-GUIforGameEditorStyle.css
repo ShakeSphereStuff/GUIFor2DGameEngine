@@ -149,7 +149,7 @@ iframe{
   color:white;
   text-overflow: ellipsis;
   overflow:hidden;
-  border: solid white;
+  border: solid white; 
 }
 .sceneEditor{
   border: solid white;
