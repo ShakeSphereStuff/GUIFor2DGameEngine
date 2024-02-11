@@ -11,6 +11,7 @@
             padding: 0;
             box-sizing: border-box;
             background-color: #f9f9f9;
+            text-align: center;
         }
 
         header {
@@ -40,24 +41,30 @@
             color: #ffcc00;
         }
 
-        .slideshow {
-            position: relative;
+        .image-slideshow {
             max-width: 100%;
             overflow: hidden;
             margin-top: 1em;
         }
 
-        .slide {
+        .image {
             display: none;
             position: absolute;
             width: 100%;
             height: auto;
-            cursor: pointer;
-            transition: transform 0.5s ease-in-out;
         }
 
-        .slide:hover {
-            transform: scale(1.05);
+        .fade {
+            animation: fadeAnimation 2s ease-in-out infinite;
+        }
+
+        @keyframes fadeAnimation {
+            from {
+                opacity: 0.4;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .discount {
@@ -88,32 +95,6 @@
             flex-direction: column;
             align-items: center;
         }
-
-        .image-slideshow {
-            max-width: 100%;
-            overflow: hidden;
-            margin-top: 1em;
-        }
-
-        .image {
-            display: none;
-            position: absolute;
-            width: 100%;
-            height: auto;
-        }
-
-        .fade {
-            animation: fadeAnimation 2s ease-in-out infinite;
-        }
-
-        @keyframes fadeAnimation {
-            from {
-                opacity: 0.4;
-            }
-            to {
-                opacity: 1;
-            }
-        }
     </style>
 </head>
 <body>
@@ -129,19 +110,7 @@
         <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
         <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
     </nav>
-    <div class="image-slideshow">
-        <div class="image fade">
-            <img src="images/slideshow/slide_1.png" alt=”imaggee” height=”(30%)” width=”(20%)” onclick="window.location.href='http://sai.sai';">
-        </div>
-        <div class="image fade">
-            <img src="images/slideshow/slide_2.png" alt="imahsds" height=”(30%)” width=”(20%)” onclick="window.location.href='http://sai.sai';">
-        </div>
-        <div class="image fade">
-            <img src="images/slideshow/slide_3.png" alt="Game Image 3" onclick="window.location.href='http://sai.sai';">
-        </div>
-        <!-- Add more slides as needed -->
-    </div>
-
+    
     <script>
         const slides = document.querySelectorAll('.image');
         let currentSlide = 0;
@@ -161,29 +130,34 @@
 
         setInterval(nextSlide, 8000); // Change slide every 8 seconds
     </script>
+ <div id="part1" class="bio-part visible">
 
-    <div class="discount">
-        <h2>Exclusive Offer!</h2>
-        <p>Unlock the gaming experience with a 10% discount. Use code 'Gavin' at checkout.</p>
-    </div>
+    <p>Hey! Welcome to the game store.</p>
+</div>
+
+<div id="part2" class="bio-part">
+    <p>Hit your first star! Congrats! Hit one more to hear a bit about us!</p>
+
+</div>
+
+<div id="part3" class="bio-part">
+    <p>We are the gaming store! Our team wanted to create a game designer, games, and a store site! So we settled with this!</p>
+
+</div>
+
+<div id="part4" class="bio-part">
+    <p>Go to the games tab to check out some of the games we worked on!</p>
+
+</div>
+
+<div id="part5" class="bio-part">
+    <p>That's it! Thanks for reading!</p>
+</div>
+   
 
     <footer>
         &copy; 2024 Your Game Universe. All rights reserved.
     </footer>
-
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-
-        function showSlide() {
-            slides.forEach((slide, index) => {
-                slide.style.display = index === currentSlide ? 'block' : 'none';
-            });
-            currentSlide = (currentSlide + 1) % slides.length;
-        }
-
-        setInterval(showSlide, 8000);
-    </script>
 
 </body>
 </html>

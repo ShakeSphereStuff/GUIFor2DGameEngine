@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Car Rental</title>
+   <style>
+       body, html {
+           height: 100%;
+           margin: 0;
+           font-family: Arial, sans-serif;
+       }
+
+
+       /* CSS for the parallax effect */
+       .parallax {
+           height: 100vh;
+           background-attachment: fixed;
+           background-position: center;
+           background-repeat: no-repeat;
+           background-size: cover;
+           transition: background-image 0.5s;
+       }
+
+
+       /* Styling for the text boxes */
+       .parallax-text-box {
+           background-color: rgba(255, 255, 255, 0.8);
+           padding: 20px;
+           margin: 0 auto;
+           width: 60%;
+           border-radius: 10px;
+       }
+
+
+       .parallax-text {
+           color: #000;
+           text-align: justify;
+       }
+
+
+       .parallax-images {
+           display: flex;
+           justify-content: space-around;
+           align-items: center;
+           margin-top: 20px;
+       }
+
+
+       .parallax-images img {
+           width: 200px;
+           height: auto;
+           border-radius: 10px;
+       }
+
+
+       footer {
+           text-align: center;
+           background: #333;
+           color: #fff;
+           padding: 10px;
+       }
+   </style>
+</head>
+<body>
+   <!-- Parallax Sections -->
+   <div class="parallax" id="section1" data-bg="https://th.bing.com/th/id/OIP.BG44SpjV2NOAjiSVTkhRSQHaEK?pid=ImgDet&rs=1">
+       <div class="parallax-text-box">
+           <div class="parallax-text">
+               <!-- Section 1 content -->
+           </div>
+       </div>
+   </div>
+
+
+   <div class="parallax" id="section2" data-bg="https://th.bing.com/th/id/OIP.wp-Fe_jAQlVC99we1ovVYwHaFP?pid=ImgDet&rs=1">
+       <div class="parallax-text-box">
+           <div class="parallax-text">
+               <!-- Section 2 content -->
+           </div>
+       </div>
+   </div>
+
+
+   <div class="parallax" id="section3" data-bg="https://th.bing.com/th/id/OIP.yZgHqBd_0fa8-jrxZlHN2wHaGl?pid=ImgDet&rs=1">
+       <div class="parallax-text-box">
+           <div class="parallax-text">
+               <!-- Section 3 content -->
+           </div>
+       </div>
+   </div>
+
+
+   <div class="parallax" id="section4" data-bg="https://weburbanist.com/wp-content/uploads/2018/03/stylish-cars-main.jpg">
+       <div class="parallax-text-box">
+           <div class="parallax-text">
+               <!-- Section 4 content -->
+           </div>
+       </div>
+   </div>
+
+
+   <!-- Additional content -->
+   <div class="parallax" id="section4" data-bg="https://th.bing.com/th/id/OIP.JRdv-eO-xLrcAx00ntCuOAHaEs?pid=ImgDet&rs=1">
+       <div class="content">
+           <header>
+               <h1 class="title">SUMMIT LUXURY AUTO</h1>
+               <nav>
+                   <ul>
+                       <!-- Navigation links -->
+                   </ul>
+               </nav>
+           </header>
+       </div>
+       <footer>
+           <p>&copy; 2023 Summit Luxury Auto</p>
+       </footer>
+       <script>
+           // Script to change background images on scroll
+           const sections = document.querySelectorAll('.parallax');
+
+           function changeBackground() {
+               sections.forEach((section) => { // iterates through parallax
+                   const rect = section.getBoundingClientRect(); //gets the size of each
+                   if (rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.5) { //check if the top is halfway visible
+                       const bg = section.getAttribute('data-bg'); // gets images for the background
+                       section.style.backgroundImage = `url(${bg})`; // switches when required
+                   }
+               });
+           }
+
+           document.addEventListener('scroll', changeBackground);
+       </script>
+   </div>
+</body>
+</html>
+

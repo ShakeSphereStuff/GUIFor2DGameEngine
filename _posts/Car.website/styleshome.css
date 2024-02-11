@@ -1,0 +1,194 @@
+body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 100;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Bugatti_Chiron_%2836559710091%29.jpg/2560px-Bugatti_Chiron_%2836559710091%29.jpg");
+    animation: changeBackground 20s infinite;
+    background-size: cover;
+    background-position: center;
+}
+
+header {
+    background-color: #0a0a0a; /* Background color for the header */
+    color: white;
+    background-color: #000; /* Background color for the header */
+    color: rgb(23, 6, 6);
+    text-align: center;
+    padding: 5px 0; /* Adjust top and bottom padding to reduce header height */
+    border-bottom: 1px solid #081416; /* Border at the bottom with desired color and thickness */
+    font-size: 16px; /* Adjust font size */
+}
+
+/* Rest of your CSS styles */
+
+
+
+@keyframes changeBackground {
+    0% {        
+        background: url(https://media.ed.edmunds-media.com/mercedes-benz/g-class/2023/oem/2023_mercedes-benz_g-class_4dr-suv_amg-g-63_fq_oem_10_1280.jpg);
+    }
+    25% {
+        background: url(https://th.bing.com/th/id/OIP.GjOIontjruFHOAmj5A1fCgHaE7?pid=ImgDet&rs=1);
+    }
+    50% {
+        background: url(https://th.bing.com/th/id/R.3ccfee5b12ceaaa76c06601921191e78?rik=BaaaR2dPVEm6fg&riu=http%3a%2f%2fwww.hdcarwallpapers.com%2fwalls%2fbugatti_chiron_sky_view_show_car_4k_2-HD.jpg&ehk=OgLFI0d8hn%2bNLSo2Kp%2bWIcxjguwnVe%2f%2bzEpXA9x9GQE%3d&risl=1&pid=ImgRaw&r=0);
+    }
+    75% {
+        background: url(https://th.bing.com/th/id/R.77597ba94dbbae78287c534bd06643af?rik=n3qDEehIlmbEzA&riu=http%3a%2f%2fpurepng.com%2fpublic%2fuploads%2flarge%2fpurepng.com-lamborghini-huracan-front-view-carcarvehicletransportlamborghini-961524661745jdw6l.png&ehk=2jNvS3S2%2fIezV1hSSOCegkNDZhv9rcDdI3tikT3uATw%3d&risl=&pid=ImgRaw&r=0);
+    }
+    100% {
+        background: url(/images/stylehomecssimages/rolls-royce-cullinan-discover-hero-d.jpg);
+    }   
+}
+
+something {
+    font-family: 'Inter', sans-serif;
+    font-weight: 100;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+.button-link1 {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #121314; /* Green background color */
+    color: rgb(11, 6, 6);
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px; /* Optional: rounded corners for the button */
+    margin-right: 20px; /* Optional: adds space between buttons */
+}
+
+.button-link1:hover {
+    background-color: #a1b986; /* Darker green on hover */
+}
+
+header {
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 24px;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+    width: 100%; /* Make the nav bar span the full width */
+    z-index: 999; /* Ensure the nav bar appears above other elements */
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    z-index: 999;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 20px;
+    font-size: 18px;
+}
+
+/* Style for navigation links */
+nav ul li a {
+    text-decoration: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 5px; /* Rounded corners */
+            background: linear-gradient(90deg, #3e0be7, #648bd4, #e5c33a, #d5ff01); /* color changing per hover */
+            background-size: 400% 100%;
+            transition: all 0.5s;
+}
+
+/* Change link color on hover */
+nav ul li a:hover {
+    color: #14181c; /* Lighter color on hover */
+}
+
+
+
+.car-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.car {
+    flex-basis: 48%;
+    margin: 10px; /* Adjust margin as needed */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.car:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.content {
+    text-align: center;
+}
+
+.content h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 75px;
+    color: #fff;
+    font-weight: 100;
+}
+
+.content a {
+    text-decoration: none;
+    display: inline-block;
+    color: #fff;
+    font-size: 24px;
+    border: 2px solid #fff;
+    padding: 14px 70px;
+    border-radius: 50px;
+    margin-top: 20px;
+}
+
+#image-slider {
+    width: 100%;
+    height: 300px; /* Set your preferred height */
+    background: url('path/to/your/image.jpg') center/cover no-repeat; /* Replace 'path/to/your/image.jpg' with the actual path to your image */
+    /* Add more styles for a luxurious look if needed */
+}
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #FFBF69;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    transition: all 0.3s ease;
+}
+
+/* Increase cursor size on hover */
+.clickable-link:hover + .custom-cursor {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Scroll</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        nav {
+            background-color: #1e1e1e;
+            color: #ffcc00;
+            text-align: center;
+            padding: 1em;
+            font-size: 2em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .filter {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        input, select {
+            padding: 8px;
+            margin: 0 10px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+
+        section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        .game {
+            flex: 0 0 300px;
+            margin-bottom: 20px;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .game:hover {
+            transform: scale(1.05);
+        }
+
+        .game img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-bottom: 2px solid #555;
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        .sign-in {
+            text-align: center;
+            background-color: #ffcc00;
+            padding: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #1e1e1e;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+            font-size: 1.2em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
+        <a href="http://127.0.0.1:5500/_posts/igames.html">GAMES</a>
+        <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
+        <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
+        <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
+    </nav>
+
+    <div class="filter">
+        <label for="nameFilter">Filter by Name:</label>
+        <input type="text" id="nameFilter" oninput="filterGames()" placeholder="Enter name">
+
+        <label for="statusFilter">Filter by Status:</label>
+        <select id="statusFilter" onchange="filterGames()">
+            <option value="">All</option>
+            <option value="Free">Free</option>
+            <option value="Sign-in to Play">Sign-in to Play</option>
+            <option value="Buy">Buy</option>
+        </select>
+    </div>
+
+    <section id="gamesSection"></section>
+
+    <footer>&copy; 2024 Game Scroll. All rights reserved.</footer>
+
+    <script>
+        const gamesData = [
+            {
+                name: 'Tic Tac Toe',
+                description: 'Description of Awesome Game 1.',
+                image: 'tictacpngidk',
+                status: 'Sign-in to Play'
+            },
+            {
+                name: 'Super Game 2',
+                description: 'Description of Super Game 2.',
+                image: 'images/game2.jpg',
+                status: 'Free'
+            },
+            // Add more game entries as needed
+        ];
+
+        const gamesSection = document.getElementById('gamesSection');
+
+        function renderGames(data) {
+            gamesSection.innerHTML = '';
+
+            data.forEach(game => {
+                const gameDiv = document.createElement('div');
+                gameDiv.className = 'game';
+
+                const img = document.createElement('img');
+                img.src = game.image;
+                img.alt = game.name;
+
+                const gameInfoDiv = document.createElement('div');
+                gameInfoDiv.className = 'game-info';
+
+                const h3 = document.createElement('h3');
+                h3.textContent = game.name;
+
+                const p = document.createElement('p');
+                p.textContent = game.description;
+
+                const statusDiv = document.createElement('div');
+                statusDiv.className = 'sign-in';
+                statusDiv.textContent = game.status;
+
+                gameInfoDiv.appendChild(h3);
+                gameInfoDiv.appendChild(p);
+                gameInfoDiv.appendChild(statusDiv);
+
+                gameDiv.appendChild(img);
+                gameDiv.appendChild(gameInfoDiv);
+
+                gamesSection.appendChild(gameDiv);
+            });
+        }
+
+        renderGames(gamesData);
+
+        function filterGames() {
+            const nameFilter = document.getElementById('nameFilter').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+
+            const filteredGames = gamesData.filter(game => {
+                const isNameMatch = game.name.toLowerCase().includes(nameFilter);
+                const isStatusMatch = statusFilter === '' || game.status.toLowerCase().includes(statusFilter);
+                return isNameMatch && isStatusMatch;
+            });
+
+            renderGames(filteredGames);
+        }
+    </script>
+</body>
+</html>

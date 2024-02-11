@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+</head>
+<body>
+
+    <header>
+        Your Game Universe
+    </header>
+
+    <nav>
+        <a href="#">GAMES</a>
+        <a href="#">BIO</a>
+        <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
+        <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
+    </nav>
+    <div class="image-slideshow">
+        <div class="image fade">
+            <img src="images/slideshow/slide_1.png" alt="Game Image 1" onclick="window.location.href='http://sai.sai';">
+        </div>
+        <div class="image fade">
+            <img src="images/slideshow/slide_2.png" alt="Game Image 2" onclick="window.location.href='http://sai.sai';">
+        </div>
+        <div class="image fade">
+            <img src="images/slideshow/slide_3.png" alt="Game Image 3" onclick="window.location.href='http://sai.sai';">
+        </div>
+        <!-- Add more slides as needed -->
+    </div>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+        }
+    
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            font-size: 2em;
+        }
+    
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #444;
+            padding: 1em;
+        }
+    
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: color 0.3s ease-in-out;
+        }
+    
+        nav a:hover {
+            color: #ffcc00;
+        }
+    
+        .slideshow {
+            position: relative;
+            max-width: 100%;
+            overflow: hidden;
+            margin-top: 1em;
+        }
+    
+        .slide {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.5s ease-in-out;
+        }
+    
+        .slide:hover {
+            transform: scale(1.05);
+        }
+    
+        .discount {
+            background-color: #ffcc00;
+            padding: 2em;
+            text-align: center;
+            margin: 2em;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        .image-slideshow {
+            max-width: 100%;
+            overflow: hidden;
+            margin-top: 1em;
+        }
+    
+        .image {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: auto;
+        }
+    
+        .fade {
+            animation: fadeAnimation 2s ease-in-out infinite;
+        }
+    
+        @keyframes fadeAnimation {
+            from {
+                opacity: 0.4;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        /* Form Styling */
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 7px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    /* Form Validation Error Styling */
+    input:invalid {
+        border-color: #dc3545;
+    }
+
+    input:invalid + span::after {
+        content: 'Invalid';
+        display: block;
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    </style>
+<h1>Sign Up</h1>
+
+<form action="javascript:create_user()">
+    <p><label>
+        User ID:
+        <input type="text" name="uid" id="uid" required="" />
+    </label></p>
+    <p><label>
+        Password:
+        <input type="password" name="password" id="password" required="" />
+    </label></p>
+    <p><label>
+        Full Name:
+        <input type="text" name="Name" id="Name" required="" />
+    </label></p>
+     <!-- <p><label>
+        Food:
+        <input type="text" name="Food" id="Food" required="" />
+    </label></p> -->
+    <p>
+        <button>Create User</button>
+    </p>
+</form>
+
+<!-- 
+Below JavaScript code is designed to handle user authentication in a web application. It's written to work with a backend server that uses JWT (JSON Web Tokens) for authentication.
+
+The script defines a function when the page loads. This function is triggered when the Login button in the HTML form above is pressed. 
+ -->
+<script type="module">
+    // uri variable and options object are obtained from config.js
+
+    function create_user(){
+        // Set Authenticate endpoint
+        const url ='http://127.0.0.1:8086/api/users/';
+
+        // Set the body of the request to include login data from the DOM
+        const body = {
+            uid: document.getElementById("uid").value,
+            password: document.getElementById("password").value,
+            name: document.getElementById("Name").value,
+            // food: document.getElementById("Food").value
+        };
+
+        // Change options according to Authentication requirements
+        const authOptions = {
+            mode: 'cors', // no-cors, *cors, same-origin
+            credentials: 'include', // include, same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST', // Override the method property
+            cache: 'no-cache', // Set the cache property
+            body: JSON.stringify(body)
+        };
+
+        // Fetch JWT
+        fetch(url, authOptions)
+        .then(response => {
+            // handle error response from Web API
+            if (!response.ok) {
+                const errorMsg = 'Login error: ' + response.status;
+                console.log(errorMsg);
+                return;
+            }
+            // Success!!!
+            // Redirect to the database page
+            window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html";
+        })
+        // catch fetch errors (ie ACCESS to server blocked)
+        .catch(err => {
+            console.error(err);
+        });
+    }
+
+    // Attach login_user to the window object, allowing access to form action
+    window.create_user = create_user;
+</script>

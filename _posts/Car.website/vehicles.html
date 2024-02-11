@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental</title>
+    <link rel="stylesheet" href="stylesEverythingElse.css">
+</head>
+
+<body> <!--viewchanging buttons-->
+    <div class="button-container">
+        <a href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/vehiclesSlider.html">
+            <button>
+                <img src="https://media.discordapp.net/attachments/1151590802703794238/1169800877125668924/image.png?ex=6556b8f6&is=654443f6&hm=2586f264ac9a58a81bd5255f3d5bc4c3ae9eccc750bd063be2410e661f0d1325&=" alt="Image Button" height="40" width="auto">
+            </button>
+        </a>
+    </div>
+
+    <script>
+        // You can keep the button's JavaScript function here
+        function myFunction() {
+            alert('Button Clicked!');
+        }
+    </script>
+</body>
+
+<body> <!--Header links-->
+    <div class="content">
+        <header>
+            <nav>
+                <ul>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/index.html">HOME</a></li>
+                    <li><a class="button-link1" target="_blank" rel="noopener" href="https://ths.li/CXry8ak">INSIGNIS GARAGE</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/about.html">ABOUT</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/contact.html">CONTACT</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/timebox.html">Timebox</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/list.html">Likes</a></li>
+                    <li><a class="button-link1 clickable-link" href="https://trinket.io/pygame/d5aa77e737">DRIVING GAME</a></li>
+                </ul>
+            </nav>
+        </header>
+</body>
+
+<script> //Search Bar
+function searchCars() {
+    var input, filter, carContainers, car, carName, i, txtValue;
+    input = document.getElementById("search");
+    filter = input.value.toUpperCase();
+    carContainers = document.querySelectorAll('.car-container');
+
+    for (i = 0; i < carContainers.length; i++) {
+        car = carContainers[i].querySelectorAll('.car'); // Find cars within each container
+        for (var j = 0; j < car.length; j++) {
+            carName = car[j].querySelector('h2');
+            txtValue = carName.textContent || carName.innerText;
+
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                car[j].style.display = "block"; // Show the car listing
+            } else {
+                car[j].style.display = "none"; // Hide the car listing
+            }
+        }
+    }
+}
+</script>
+
+<body> <!--Cars-->
+    <div class="search-container">
+        <input type="text" id="search" placeholder=" Search for cars...">
+        <button class="search-button" onclick="searchCars()">Find Cars</button>
+    </div>
+
+    <div class="car-container">
+        <div class="car"> <!--Bugatti Chiron-->
+            <div class="car-attributes">
+                <span class="attribute-tag sedan" data-tooltip="This car is a sedan.">Sedan</span>
+                <span class="attribute-tag city" data-tooltip="Great for city driving.">City</span>
+            </div>
+            <img class="image" src="https://hips.hearstapps.com/hmg-prod/images/bugatti-sur-mesure-chiron-pur-sport-106-1639069047.jpg?crop=0.766xw:0.647xh;0.234xw,0.353xh&resize=1200:*" alt="Buggati Chiron" width="600" height="400">
+            <h2>Bugatti Chiron</h2>
+            <p>Price: $1000/hour</p>
+            <p>$4000/day<p>
+            <a class="button-link" href="rent.html?carName=Bugatti%20Chiron&pricePerHour=1000&pricePerDay=4000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=Chiron">Info</a>
+        </div>
+        <div class="car"> <!--Tesla Roadster-->
+            <div class="car-attributes">
+                <span class="attribute-tag sedan" data-tooltip="This car is a sedan.">Sedan</span>
+            </div>
+            <img class="image" src="https://hips.hearstapps.com/hmg-prod/amv-prod-cad-assets/wp-content/uploads/2017/11/Tesla-Roadster-103.jpg" alt="Tesla Roadster" width="600" height="400">
+            <h2>Tesla Roadster</h2>
+            <p>Price: $400/hour</p>
+            <p>$2000/day<p>
+            <a class="button-link" href="rent.html?carName=Tesla%20Roadster&pricePerHour=400&pricePerDay=2000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=Roadster">Info</a>
+        </div>
+    </div>
+
+    <div class="car-container">
+        <div class="car"> <!--Rolls Royce Phantom-->
+            <div class="car-attributes">
+                <span class="attribute-tag luxury" data-tooltip="This car has a very luxurious interior">Luxury</span>
+            </div>
+            <img class="image" src="https://hips.hearstapps.com/hmg-prod/images/2024-rolls-royce-phantom-102-64bad70ba7661.jpg?crop=0.498xw:0.446xh;0.300xw,0.332xh&resize=640:*" alt="Rolls Royce Phantom" width = "600" height="400">
+            <h2>Rolls Royce phantom</h2>
+            <p>Price: $600/hour</p>
+            <p>$2000/day<p>
+            <a class="button-link" href="rent.html?carName=Rolls%20Royce%20Phantom&pricePerHour=600&pricePerDay=2000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=Phantom">Info</a>
+        </div>
+        <div class="car"> <!--Mercedes Benz G Class-->
+            <div class="car-attributes">
+                <span class="attribute-tag offroad" data-tooltip="This car is great for off roading">Off-Road</span>
+            </div>
+            <img class="image" src="https://media.ed.edmunds-media.com/mercedes-benz/g-class/2023/oem/2023_mercedes-benz_g-class_4dr-suv_amg-g-63_fq_oem_10_1280.jpg" alt="Mercedes Benz G" width="600" height="400">
+            <h2>Mercedes Benz G Class</h2>
+            <p>Price: $600/hour</p>
+            <p>$2000/day<p>
+            <a class="button-link" href="rent.html?carName=Mercedes%20Benz%20G%20Class&pricePerHour=600&pricePerDay=2000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=G%20Class">Info</a>
+        </div>
+    </div>
+
+    <div class="car-container">
+        <div class="car"> <!--Aston Martin DB11-->
+            <div class="car-attributes">
+                <span class="attribute-tag fast" data-tooltip="This car has a very high max speed">Fast</span>
+                <span class="attribute-tag budget" data-tooltip="This car is at an economical price">Budget</span>
+            </div>
+            <img class="image" src="https://di-uploads-pod26.dealerinspire.com/mikewardastonmartin/uploads/2022/03/2022-ASTON-MARTIN-DB11-1024x612.jpg" alt="Aston Martin DB11" width="600" height="400">
+            <h2>Aston Martin DB11</h2>
+            <p>Price: $900/hour</p>
+            <p>$4500/day</p>
+            <a class="button-link" href="rent.html?carName=Aston%20Martin%20DB11&pricePerHour=900&pricePerDay=4500">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=DB11">Info</a>
+        </div>
+        <div class="car"> <!--Ferarri 488 GTB-->
+            <div class="car-attributes">
+                <span class="attribute-tag fast" data-tooltip="This car has a very high max speed">Fast</span>
+                <span class="attribute-tag luxury" data-tooltip="This car has a very luxurious interior.">Luxury</span>
+            </div>
+            <img class="image" src="https://hips.hearstapps.com/hmg-prod/images/2024-ferrari-812-gts-101-64caae4038b21.jpeg?crop=0.526xw:0.701xh;0.137xw,0.299xh&resize=768:*" alt="Ferrari 488 GTB" width="600" height="400">
+            <h2>Ferrari 488 GTB</h2>
+            <p>Price: $1000/hour</p>
+            <p>$5000/day</p>
+            <a class="button-link" href="rent.html?carName=Ferrari%20488%20GTB&pricePerHour=1000&pricePerDay=5000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=488GTB">Info</a>
+        </div>
+    </div>
+
+    <div class="car-container">
+        <div class="car"> <!--Bentley Continental-->
+            <div class="car-attributes">
+                <span class="attribute-tag family" data-tooltip="This car is great for riding with your family">Family</span>
+            </div>
+            <img class="image" src="https://www.automobilesreview.com/gallery/2019-bentley-continental-gt/2019-bentley-continental-gt-01.jpg" alt="Bentley Continental GT" width="600" height="400">
+            <h2>Bentley Continental GT</h2>
+            <p>Price: $800/hour</p>
+            <p>$4000/day</p>
+            <a class="button-link" href="rent.html?carName=Bentley%20Continental%20GT&pricePerHour=800&pricePerDay=4000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=Continental&20GT">Info</a>
+        </div>
+        <div class="car"> <!--Porche 911 Targa-->
+            <div class="car-attributes">
+                <span class="attribute-tag lowCG" data-tooltip="This car is very low to the ground with a low center of gravity">CG</span>
+            </div>
+            <img class="image" src="https://th.bing.com/th/id/R.ed9c9a046a4a641ffc01d3c6eb0871be?rik=dQ%2bmo7EG32uNMw&pid=ImgRaw&r=0" alt="Porsche 911 Targa" width="600" height="400">
+            <h2>Porsche 911 Targa</h2>
+            <p>Price: $750/hour</p>
+            <p>$3750/day</p>
+            <a class="button-link" href="rent.html?carName=Porsche%20911%20Targa&pricePerHour=750&pricePerDay=3750">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=911%20Targa">Info</a>
+        </div>
+    </div>
+
+    <div class="car-container">
+        <div class="car"> <!--McLaren 7205-->
+            <img class="image" src="https://mclaren.scene7.com/is/image/mclaren/720S-Coupe_hero:crop-16x9?wid=1980&hei=1114" alt="McLaren 720S" width="600" height="400">
+            <h2>McLaren 720S</h2>
+            <p>Price: $1100/hour</p>
+            <p>$5500/day</p>
+            <a class="button-link" href="rent.html?carName=McLaren%20720S&pricePerHour=1100&pricePerDay=5500">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=720%20S">Info</a>
+        </div>
+        <div class="car"> <!--Maserati Quattroporte-->
+            <img class="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_T4tditPNdkKZ36-AN6c4mM-CH0beQYFy-J-Uv6aoTfBSgq620YKKuFvOA1iwa0sK7HY:https://maserati.scene7.com/is/image/maserati/maserati/international/model-page/quattroporte/design/214300M-exterior%2520%281%29.jpg%3F%241400x2000%24%26fit%3Dconstrain&usqp=CAU" alt="Maserati Quattroporte" width="600" height="400">
+            <h2>Maserati Quattroporte</h2>
+            <p>Price: $600/hour</p>
+            <p>$3000/day</p>
+            <a class="button-link" href="rent.html?carName=Maserati%20Quattroporte&pricePerHour=600&pricePerDay=3000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=Quattroporte">Info</a>
+        </div>
+    </div>
+        
+    <div class="car-container">
+        <div class="car"> <!--Audi R8 Spyder-->
+            <img class="image" src="https://www.cnet.com/a/img/resize/dc0eba421ebed7f4525e8a4167d41269470ac729/hub/2020/09/03/720fe8d8-f827-462c-be9d-d52df3e8b7f8/ogi1-2020-audi-r8-spyder-001.jpg?auto=webp&fit=crop&height=675&width=1200" alt="Audi R8 Spyder" width="600" height="400">
+            <h2>Audi R8 Spyder</h2>
+            <p>Price: $800/hour</p>
+            <p>$4000/day</p>
+            <a class="button-link" href="rent.html?carName=Audi%20R8%20Spyder&pricePerHour=800&pricePerDay=4000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=R8%20Spyder">Info</a>
+        </div>
+        <div class="car"> <!--Mercedes Benz 300SL Gullwing-->
+            <img class="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqHdxYrAhONRYH28N4qawr5PIjj4YLyDONNzCrjx9j39rlEDQTPhCmKUHE3Tr3J6MsIhc:https://www.motortrend.com/uploads/sites/11/2020/05/1956_Mercedes-Benz_300SL_Gullwing-33.jpg&usqp=CAU" alt="1955 Mercedes-Benz 300SL Gullwing" width="600" height="400">
+            <h2>1955 Mercedes-Benz 300SL Gullwing</h2>
+            <p>Price: $800/hour</p>
+            <p>$4000/day</p>
+            <a class="button-link" href="rent.html?carName=Mercedes%20Benz%20300SL%20Gullwing&pricePerHour=800&pricePerDay=4000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=300%20SL%20Gullwing">Info</a>
+        </div>
+    </div>
+
+    <div class="car-container">
+        <div class="car"> <!--Ferarri 250 GT California-->
+            <img class="image" src="https://images.drive.com.au/driveau/image/upload/c_fill,f_auto,g_auto,h_1080,q_auto:eco,w_1920/v1/cms/uploads/iwk6svavvz64tsr443jp" alt="1961 Ferrari 250 GT California" width="600" height="400">
+            <h2>1961 Ferrari 250 GT California</h2>
+            <p>Price: $1200/hour</p>
+            <p>$6000/day</p>
+            <a class="button-link" href="rent.html?carName=Ferrari%20250%20GT%20California&pricePerHour=1200&pricePerDay=6000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=250%20GT%20California">Info</a>
+        </div>
+        <div class="car"> <!--Bentley Flying Spur-->
+            <img class="image" src="data:image/jpeg;base64,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" alt="2022 Bentley Flying Spur" width="600" height="400">
+            <h2>2022 Bentley Flying Spur</h2>
+            <p>Price: $1000/hour</p>
+            <p>$5000/day</p>
+            <a class="button-link" href="rent.html?carName=Bentley%20Flying%20Spur&pricePerHour=1000&pricePerDay=5000">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=Flying%20Spur">Info</a>
+        </div>
+    </div>
+
+    <div class="car-container">
+        <div class="car"> <!--Audi A8-->
+            <img class="image" src="data:image/jpeg;base64,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" alt="Audi A8" width="600" height="400">
+            <h2>Audi A8</h2>
+            <p>Price: $800/hour</p>
+            <p>$4000/day</p>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/rent.html">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=A8">Info</a>
+        </div>
+        <div class="car"> <!--Jaguar F-Type-->
+            <img class="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyNEX0rJqnbyNZ_SIvsO7rKCwoso4sAvpF4D4bzC5qLgrlTN8IjkcTLiaQ1ompnfifCo4:https://upload.wikimedia.org/wikipedia/commons/d/d5/2017_Jaguar_F-Type_V6_R-Dynamic_Automatic_3.0_Front.jpg&usqp=CAU" alt="2022 Jaguar F-Type" width="600" height="400">
+            <h2>2022 Jaguar F-Type</h2>
+            <p>Price: $750/hour</p>
+            <p>$3750/day</p>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/rent.html">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=F-Type">Info</a>
+        </div>
+    </div>
+    
+    <div class="car-container">
+        <div class="car"> <!--Lamborghini Huracán-->
+            <div class="car-attributes">
+                <span class="attribute-tag luxury" data-tooltip="This car has a very luxurious interior">Luxury</span>
+                <span class="attribute-tag lowCG" data-tooltip="This car is very low to the ground with a low center of gravity">CG</span> 
+            </div>
+            <img class="image" src="data:image/jpeg;base64,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" alt="Lamborghini Huracán" width="600" height="400">
+            <h2>2022 Lamborghini Huracán</h2>
+            <p>Price: $1000/hour</p>
+            <p>$5000/day</p>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/rent.html">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=Huracan">Info</a>
+        </div>
+        <div class="car"> <!--Rivian R1S-->
+            <div class="car-attributes">
+                <span class="attribute-tag autopilot" data-tooltip="This car has self driving capabilities">Self-Driving</span>
+            </div>
+            <img class="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxVSeV8KQOcPj6ujk-Xn-xtq5lhnpG0uq9M1cPEajtHqXpITrhVdWkR_AUJpmVXUlk0mc:https://media.ed.edmunds-media.com/rivian/r1s/2023/oem/2023_rivian_r1s_4dr-suv_launch-edition_fq_oem_1_1600.jpg&usqp=CAU" alt="Rivian R1S" width="600" height="400">
+            <h2>Rivian R1S</h2>
+            <p>Price: $150/hour</p>
+            <p>$400/day</p>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/rent.html">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=R1S">Info</a>
+        </div>
+    </div>
+
+    <div class="car-container">
+        <div class="car"> <!--Mercedes Maybach S-Class-->
+            <img class="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7brQV8AJH-3guN-eWzjxKpjeP52HYj6IOaN3TAskCla3xqD2iuuesyDOD18WjZITuUQ:https://www.mbusa.com/content/dam/mb-nafta/us/maybach/Maybach-1-L_1746x540.jpg&usqp=CAU" alt="2022 Mercedes-Maybach S-Class" width="600" height="400">
+            <h2>2022 Mercedes-Maybach S-Class</h2>
+            <p>Price: $900/hour</p>
+            <p>$4500/day</p>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/rent.html">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=Maybach%20S%20Class">Info</a>
+        </div>
+        <div class="car"> <!--BMW 7 Series-->
+            <img class="image" src="data:image/jpeg;base64,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" alt="2022 BMW 7 Series" width="600" height="400">
+            <h2>2022 BMW 7 Series</h2>
+            <p>Price: $700/hour</p>
+            <p>$3500/day</p>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/rent.html">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=7%20Series">Info</a>
+        </div>
+    </div>
+
+    <div class="car-container">
+        <div class="car"> <!--Lincoln Continental-->
+            <img class="image" src="data:image/jpeg;base64,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" alt="2022 Lincoln Continental" width="600" height="400">
+            <h2>2022 Lincoln Continental</h2>
+            <p>Price: $500/hour</p>
+            <p>$2500/day</p>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/rent.html">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=Lincoln%20Continental">Info</a>
+        </div>
+        <div class="car"> <!--Rivian R1T-->
+            <div class="car-attributes">
+                <span class="attribute-tag offroad" data-tooltip="This car is great for off roading.">Off-Road</span>
+            </div>
+            <img class="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB0Mg0MyYDKzYGAO6TwKP7Tga7e2v4Rsd1p1HSAPdKN9l8yOHGxdt9V4loOpBpec2z-gI:https://upload.wikimedia.org/wikipedia/commons/e/e1/2022_Rivian_R1T_%2528in_Glacier_White%2529%252C_front_6.21.22.jpg&usqp=CAU " alt="Rivian R1T" width="600" height="400">
+            <h2>Rivian R1T</h2>
+            <p>Price: $500/hour</p>
+            <p>$2500/day</p>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/rent.html">Rent Now</a>
+            <a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/car-info.html?carName=R1T">Info</a>
+        </div>
+    </div>
+</body>
+
+<body>
+    </section>
+    <script>
+        function logCarDetailsFromURL() {
+            // Get car details from the URL query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const carName = urlParams.get('carName');
+            const pricePerHour = urlParams.get('pricePerHour');
+            const pricePerDay = urlParams.get('pricePerDay');
+        
+            // Update the header with car details
+            const header = document.querySelector('h1');
+            header.textContent = `Renting: ${carName}`;
+            
+            // Log car details to the console for demonstration purposes
+            console.log(`Renting ${carName}:\nPrice per hour: $${pricePerHour}\nPrice per day: $${pricePerDay}`);
+        }
+        
+        // Call the function when the page loads
+        window.onload = logCarDetailsFromURL;
+        
+        // Rest of your code for the rental form and handling form submission
+        document.getElementById("rental-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+            // Get form values and process the form data here
+        });
+        // Get all the rent buttons
+        const rentButtons = document.querySelectorAll('.rent-button');
+
+        // Add event listener to each rent button
+        rentButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const carName = button.previousElementSibling.previousElementSibling.textContent;
+                const pricePerHour = button.previousElementSibling.textContent.split('$')[1].split('/')[0];
+                const pricePerDay = button.previousElementSibling.nextElementSibling.textContent.split('$')[1].split('/')[0];
+
+                // Here, you can perform actions to initiate the renting process
+                // For example, you can display a modal with the car details and a form for user information.
+                // You can also send this information to a server to process the rental request.
+
+                // For demonstration purposes, let's just log the car details to the console.
+                console.log(`Renting ${carName}:\nPrice per hour: $${pricePerHour}\nPrice per day: $${pricePerDay}`);
+            });
+        });
+    </script>
+
+        <footer>
+            <p>&copy; 2023 Car Rental Service</p>
+        </footer>
+
+        <script src="script.js"></script>
+</body>
+
+
+</html>
+

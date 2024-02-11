@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesEverythingElse.css">
+
+    <title>Rental Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .price {
+            color: #ff6600;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body> <!--Header links-->
+    <div class="content">
+        <header>
+            <nav>
+                <ul>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/index.html">HOME</a></li>
+                    <li><a class="button-link1" target="_blank" rel="noopener" href="https://ths.li/CXry8ak">INSIGNIS GARAGE</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/about.html">ABOUT</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/contact.html">CONTACT</a></li>
+                    <li><a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/vehicles.html">VEHICLES</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/list.html">LIKES</a></li>
+                </ul>
+            </nav>
+        </header>
+</body>
+
+
+<body>
+    <header>
+        <h1>Rental Information</h1>
+    </header>
+    <div class="container">
+        <h1 id="car-name">Car Name</h1>
+        <img id="car-image" src="" alt="Car Image" width="300" height="200">
+        <p>Price per hour: $<span class="price" id="price-hour">0</span></p>
+        <p>Price per day: $<span class="price" id="price-day">0</span></p>
+
+        <label for="email">Enter your email:</label>
+        <input type="email" id="email" required>
+
+        <label for="rent-duration">Choose Rental Duration:</label>
+        <select id="rent-duration">
+            <option value="hour">Rent for an Hour</option>
+            <option value="day">Rent for a Day</option>
+        </select>
+
+        <button id="store-email">Send Confirmation Email</button>
+    </div>
+    <script>
+        
+        function displayRentalInfo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const carName = urlParams.get('carName');
+            const pricePerHour = urlParams.get('pricePerHour');
+            const pricePerDay = urlParams.get('pricePerDay');
+            const imageUrl = urlParams.get('imageUrl');
+
+            document.getElementById('car-name').textContent = carName;
+            document.getElementById('price-hour').textContent = pricePerHour;
+            document.getElementById('price-day').textContent = pricePerDay;
+            document.getElementById('car-image').src = imageUrl;
+        }
+
+        function storeEmail() {
+            const email = document.getElementById('email').value;
+            localStorage.setItem('userEmail', email);
+            alert(`We will contact you at ${email}.`);
+
+            const userEmail = email; // Replace with the actual email
+
+        const data = { email: email };
+
+        fetch('https://rapidprod-sendgrid-v1.p.rapidapi.com/alerts/%7Balert_id%7D', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Email sent successfully:', data);
+        })
+        .catch(error => {
+            console.error('Error sending email:', error);
+        });
+            
+        }
+
+        window.onload = displayRentalInfo;
+        document.getElementById('store-email').addEventListener('click', storeEmail);
+    </script>
+    
+</body>
+</html>

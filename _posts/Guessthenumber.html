@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        #game-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        #input-container {
+            margin-top: 20px;
+        }
+
+        #guess-input {
+            padding: 8px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        #guess-button {
+            padding: 8px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #444;
+            padding: 1em;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1em;
+            transition: color 0.3s ease-in-out;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
+    <a href="http://127.0.0.1:5500/_posts/igames.html">GAMES</a>
+    <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
+    <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
+    <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
+</nav>
+
+<div id="game-container">
+    <h2>Guess the Number Game</h2>
+    <p>Guess a number between 1 and 10:</p>
+
+    <div id="input-container">
+        <input type="number" id="guess-input" placeholder="Enter your guess" min="1" max="10">
+        <button id="guess-button" onclick="checkGuess()">Guess</button>
+    </div>
+
+    <p id="result"></p>
+</div>
+
+<script>
+    const secretNumber = Math.floor(Math.random() * 10) + 1;
+    let attempts = 0;
+
+    function checkGuess() {
+        const guessInput = document.getElementById('guess-input');
+        const resultElement = document.getElementById('result');
+        const userGuess = parseInt(guessInput.value);
+
+        if (isNaN(userGuess) || userGuess < 1 || userGuess > 10) {
+            resultElement.innerText = "Please enter a valid number between 1 and 10.";
+        } else {
+            attempts++;
+
+            if (userGuess === secretNumber) {
+                resultElement.innerText = `Congratulations! You guessed the number in ${attempts} attempts.`;
+                disableInput();
+            } else if (userGuess < secretNumber) {
+                resultElement.innerText = "Wrong guess. Try a higher number!";
+            } else {
+                resultElement.innerText = "Wrong guess. Try a lower number!";
+            }
+        }
+    }
+
+    function disableInput() {
+        document.getElementById('guess-input').disabled = true;
+        document.getElementById('guess-button').disabled = true;
+    }
+</script>
+
+</body>
+</html>

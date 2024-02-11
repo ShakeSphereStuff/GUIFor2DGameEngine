@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesEverythingElse.css">
+    <title>Car Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .car-table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .car-table th,
+        .car-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .car-table th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .car-table td {
+            background-color: #f2f2f2;
+        }
+
+        .like-button,
+        .dislike-button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .like-button:hover,
+        .dislike-button:hover {
+            background-color: #0056b3;
+        }
+
+        .dislike-button {
+            background-color: #FF0000;
+        }
+
+        .fetch-button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .fetch-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body> <!--Header links-->
+    <div class="content">
+        <header>
+            <nav>
+                <ul>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/index.html">HOME</a></li>
+                    <li><a class="button-link1" target="_blank" rel="noopener" href="https://ths.li/CXry8ak">INSIGNIS GARAGE</a></li>
+                    <li><a class="button-link" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/vehicles.html">VEHICLES</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/about.html">ABOUT</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/contact.html">CONTACT</a></li>
+                    <li><a class="button-link1" href="https://swaggerplayer33.github.io/Flask-Server-Front-End/Car.website/timebox.html">Timebox</a></li>
+                </ul>
+            </nav>
+        </header>
+</body>
+
+<body>
+    <div class="content">
+        <h1 style="color: black">Available Inventory Information</h1>
+        <h2>Here are the details for your car!</h2>
+        <button class="fetch-button" id="fetchData">Fetch Popularity Info</button>
+        <div id="carList"></div>
+    </div>
+
+    <script>
+        const cars = [
+            {
+                make: "Bugatti",
+                model: "Chiron",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Tesla",
+                model: "Roadster",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Rolls Royce",
+                model: "Phantom",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Mercedes Benz",
+                model: "G Class",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Aston Martin",
+                model: "DB11",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Ferrari",
+                model: "488GTB",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Bentley",
+                model: "Continental GT",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Porsche",
+                model: "911 Targa",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "McLaren",
+                model: "720 S",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Maserati",
+                model: "Quattroporte",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Audi",
+                model: "R8 Spyder",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Mercedes Benz",
+                model: "300 SL Gullwing",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Ferrari",
+                model: "250 GT California",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Bentley",
+                model: "Flying Spur",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Audi",
+                model: "A8",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Jaguar",
+                model: "F-Type",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Lamborghini",
+                model: "Huracan",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Rivian",
+                model: "R1S",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Mercedes Benz",
+                model: "Maybach S Class",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "BMW",
+                model: "7 Series",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Lincoln",
+                model: "Continental",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Tesla",
+                model: "Cybertruck",
+                likes: 0,
+                dislikes: 0,
+            },
+            {
+                make: "Lamborghini",
+                model: "Urus",
+                likes: 0,
+                dislikes: 0,
+            },
+        ];
+
+        const carList = document.getElementById("carList");
+
+        const renderTable = () => {
+            carList.innerHTML = "";
+
+            const table = document.createElement("table");
+            table.classList.add("car-table");
+
+            const headerRow = document.createElement("tr");
+            ['Make', 'Model', 'Likes', 'Dislikes', 'Options'].forEach(key => {
+                const th = document.createElement("th");
+                th.textContent = key;
+                headerRow.appendChild(th);
+            });
+            table.appendChild(headerRow);
+
+            cars.forEach(car => {
+                const row = document.createElement("tr");
+                ['make', 'model', 'likes', 'dislikes'].forEach(key => {
+                    const cell = document.createElement("td");
+                    cell.textContent = car[key];
+                    row.appendChild(cell);
+                });
+
+                const optionsCell = document.createElement("td");
+                row.appendChild(optionsCell);
+
+                const likeButton = document.createElement("button");
+                likeButton.textContent = "Like";
+                likeButton.classList.add("like-button");
+                likeButton.addEventListener("click", () => handleLike(car));
+                optionsCell.appendChild(likeButton);
+
+                const dislikeButton = document.createElement("button");
+                dislikeButton.textContent = "Dislike";
+                dislikeButton.classList.add("dislike-button");
+                dislikeButton.addEventListener("click", () => handleDislike(car));
+                optionsCell.appendChild(dislikeButton);
+
+                table.appendChild(row);
+            });
+
+            carList.appendChild(table);
+        };
+
+        const handleLike = (car) => {
+            car.likes += 1;
+            renderTable();
+        };
+
+        const handleDislike = (car) => {
+            car.dislikes += 1;
+            renderTable();
+        };
+
+        document.getElementById("fetchData").addEventListener("click", renderTable);
+    </script>
+</body>
+
+</html>
