@@ -2,9 +2,9 @@
   color:white;
   font-style: normal;
   font: 600;
-  height: 50px;
+  height: 40px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 45px;
+  font-size: 38px;
 }
 .row{
   position: relative;
@@ -37,7 +37,7 @@
 #mainWindow{
   display:inline-block;
   width: 100%;
-  height: calc(98vh - 50px);
+  height: calc(98vh - 55px);
   border: solid;
   border-width: 1%;
   border-style:dashed;
@@ -162,7 +162,8 @@ iframe{
   flex-direction: column;
   width: calc(100% - 5px);
   overflow: hidden;
-  height: calc(100% - 62px)
+  height: calc(100% - 62px);
+  overflow-y: auto;
 }
 .expandedControlsImage{
   width: 20px;
@@ -273,8 +274,9 @@ iframe{
 }
 #player{
   fill: aqua;
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
   position: absolute;
 }
 .loginPromptOptionInput{
@@ -287,12 +289,34 @@ iframe{
   border: solid whitesmoke;
   color: white;
 }
+.tileEditorScene{
+  width: calc(100%);
+  height: calc(100% - 18px);
+  background-color: black;
+  display: inline-block;
+}
+.mainTileLayerMenu{
+  margin: auto;
+  width: 160px;
+}
+.tileLayerAddLayer{
+  border: 0px;
+  background-color: transparent;
+  color: white;
+  transition: background-color 0.3s;
+}
+.tileLayerAddLayer:hover{
+  background-color: grey;
+}
+.tileLayerSelector{
+  background-color: transparent;
+  color:white;
+  border: 0px;
+}
 .mainTileEditor{
+  border: solid white;
   width: calc(100% - 5px);
   height: calc(100% - 32px);
-  background-color: black;
-  border: solid white;
-  display: inline-block;
 }
 .bottomObjectBar{
   border: solid white;
@@ -396,5 +420,23 @@ iframe{
 .tileEditorPixel:hover{
   stroke: red;
   stroke-dasharray: 5px;
-  stroke-width: 3px;
+  stroke-width: 5px;
+  z-index: 5;
+}
+.expadedControlsSlider{
+  background-color: transparent;
+  color: white;
+  user-select: none;
+  border-radius: 80px;
+  border-color: white;
+  border-width: 2px;
+}
+.addObjectLayerButton{
+  background-color: transparent;
+  color: white;
+  user-select: none;
+  border-color: white;
+  border-width: 2px;
+  user-select: none;
+  border-radius: 4px;
 }
