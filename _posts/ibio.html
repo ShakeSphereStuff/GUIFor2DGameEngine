@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Game Universe</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            font-size: 2em;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #444;
+            padding: 1em;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: color 0.3s ease-in-out;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
+        }
+
+        .image-slideshow {
+            max-width: 100%;
+            overflow: hidden;
+            margin-top: 1em;
+        }
+
+        .image {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: auto;
+        }
+
+        .fade {
+            animation: fadeAnimation 2s ease-in-out infinite;
+        }
+
+        @keyframes fadeAnimation {
+            from {
+                opacity: 0.4;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .discount {
+            background-color: #ffcc00;
+            padding: 2em;
+            text-align: center;
+            margin: 2em;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        Your Game Universe
+    </header>
+
+    <nav>
+        <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
+        <a href="http://127.0.0.1:5500/_posts/igames.html">GAMES</a>
+        <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
+        <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
+        <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
+    </nav>
+    
+    <script>
+        const slides = document.querySelectorAll('.image');
+        let currentSlide = 0;
+
+        function showSlide(n) {
+            slides.forEach((slide) => {
+                slide.style.display = 'none';
+            });
+
+            slides[n].style.display = 'block';
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 8000); // Change slide every 8 seconds
+    </script>
+ <div id="part1" class="bio-part visible">
+
+    <p>Hey! Welcome to the game store.</p>
+</div>
+
+<div id="part2" class="bio-part">
+    <p>Hit your first star! Congrats! Hit one more to hear a bit about us!</p>
+
+</div>
+
+<div id="part3" class="bio-part">
+    <p>We are the gaming store! Our team wanted to create a game designer, games, and a store site! So we settled with this!</p>
+
+</div>
+
+<div id="part4" class="bio-part">
+    <p>Go to the games tab to check out some of the games we worked on!</p>
+
+</div>
+
+<div id="part5" class="bio-part">
+    <p>That's it! Thanks for reading!</p>
+</div>
+   
+
+    <footer>
+        &copy; 2024 Your Game Universe. All rights reserved.
+    </footer>
+
+</body>
+</html>

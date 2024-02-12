@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Game Scroll</title>
+   <style>
+       body {
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+           background-color: #f9f9f9;
+           text-align: center;
+       }
+
+       header {
+           background-color: #333;
+           color: white;
+           text-align: center;
+           padding: 1.5em;
+           font-size: 2em;
+       }
+
+       nav {
+           display: flex;
+           justify-content: space-around;
+           background-color: #444;
+           padding: 1em;
+       }
+
+       nav a {
+           text-decoration: none;
+           color: white;
+           font-weight: bold;
+           font-size: 1.2em;
+           transition: color 0.3s ease-in-out;
+       }
+
+       nav a:hover {
+           color: #ffcc00;
+       }
+
+       .filter {
+           margin-top: 1em;
+       }
+
+       .game {
+           position: relative;
+           margin-bottom: 2em;
+           overflow: hidden;
+           border-radius: 8px;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+           transition: transform 0.3s ease-in-out;
+           cursor: pointer;
+       }
+
+       .game:hover {
+           transform: scale(1.05);
+       }
+
+       .game::before {
+           content: '';
+           position: absolute;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           width: 60px;
+           height: 60px;
+           background-color: rgba(255, 255, 255, 0.8);
+           border-radius: 50%;
+           cursor: pointer;
+           z-index: 1;
+       }
+
+       .game img {
+           width: 100%;
+           height: auto;
+           border-radius: 8px 8px 0 0;
+           z-index: 0;
+       }
+
+       .game-info {
+           padding: 1em;
+       }
+
+       footer {
+           background-color: #333;
+           color: white;
+           text-align: center;
+           padding: 1.5em;
+           position: fixed;
+           bottom: 0;
+           width: 100%;
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           margin: 0;
+           padding: 0;
+           background-color: #f9f9f9;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+       }
+   </style>
+</head>
+
+<body>
+   <nav>
+       <a href="http://youtube.com">Home</a>
+       <a href="http://google.docs.com">GAMES</a>
+       <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
+       <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
+       <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
+   </nav>
+
+   <div class="filter">
+       <label for="nameFilter">Filter by Name:</label>
+       <input type="text" id="nameFilter" oninput="filterGames()" placeholder="Enter name">
+
+       <label for="statusFilter">Filter by Status:</label>
+       <select id="statusFilter" onchange="filterGames()">
+           <option value="">All</option>
+           <option value="Free">Free</option>
+           <option value="Sign-in to Play">Sign-in to Play</option>
+           <option value="Buy">Buy</option>
+       </select>
+   </div>
+
+   <section id="gamesSection"></section>
+
+   <footer>&copy; 2024 Game Scroll. All rights reserved.</footer>
+
+   <script>
+       const gamesData = [
+           {
+               name: 'Tic Tac Toe',
+               description: 'Description of Awesome Game 1.',
+               image: '../images/gamescrollimages/tictactoe.png',
+               status: 'Sign-in to Play'
+           },
+           {
+               name: 'Super Game 2',
+               description: 'Description of Super Game 2.',
+               image: 'images/game2.jpg',
+               status: 'Free'
+           },
+           // Add more game entries as needed
+       ];
+
+       const gamesSection = document.getElementById('gamesSection');
+
+       function renderGames(data) {
+           gamesSection.innerHTML = '';
+
+           data.forEach((game, index) => {
+               const gameDiv = document.createElement('div');
+               gameDiv.className = 'game';
+
+               const img = document.createElement('img');
+               img.src = game.image;
+               img.alt = game.name;
+
+               const gameInfoDiv = document.createElement('div');
+               gameInfoDiv.className = 'game-info';
+
+               const h3 = document.createElement('h3');
+               h3.textContent = game.name;
+
+               const p = document.createElement('p');
+               p.textContent = game.description;
+
+               const statusDiv = document.createElement('div');
+               statusDiv.className = 'sign-in';
+               statusDiv.textContent = game.status;
+
+               gameInfoDiv.appendChild(h3);
+               gameInfoDiv.appendChild(p);
+               gameInfoDiv.appendChild(statusDiv);
+
+               gameDiv.appendChild(img);
+               gameDiv.appendChild(gameInfoDiv);
+
+               gameDiv.addEventListener('click', () => {
+                   if (index === 0) {
+                       window.location.href = 'http://youtube.com';
+                   } else if (index === 1) {
+                       window.location.href = 'http://google.docs.com';
+                   }
+               });
+
+               gamesSection.appendChild(gameDiv);
+           });
+       }
+
+       renderGames(gamesData);
+
+       function filterGames() {
+           const nameFilter = document.getElementById('nameFilter').value.toLowerCase();
+           const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+
+           const filteredGames = gamesData.filter(game => {
+               const isNameMatch = game.name.toLowerCase().includes(nameFilter);
+               const isStatusMatch = statusFilter === '' || game.status.toLowerCase().includes(statusFilter);
+               return isNameMatch && isStatusMatch;
+           });
+
+           renderGames(filteredGames);
+       }
+   </script>
+</body>
+</html>
+
