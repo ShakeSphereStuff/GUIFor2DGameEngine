@@ -1,187 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Scroll</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f9f9f9;
-            text-align: center;
-        }
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Game Scroll</title>
+   <style>
+       body {
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+           background-color: #f9f9f9;
+           text-align: center;
+       }
 
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1.5em;
-            font-size: 2em;
-        }
+       header {
+           background-color: #333;
+           color: white;
+           text-align: center;
+           padding: 1.5em;
+           font-size: 2em;
+       }
 
-        nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #444;
-            padding: 1em;
-        }
+       nav {
+           display: flex;
+           justify-content: space-around;
+           background-color: #444;
+           padding: 1em;
+       }
 
-        nav a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2em;
-            transition: color 0.3s ease-in-out;
-        }
+       nav a {
+           text-decoration: none;
+           color: white;
+           font-weight: bold;
+           font-size: 1.2em;
+           transition: color 0.3s ease-in-out;
+       }
 
-        nav a:hover {
-            color: #ffcc00;
-        }
+       nav a:hover {
+           color: #ffcc00;
+       }
 
-        .filter {
-            margin-top: 1em;
-        }
+       .filter {
+           margin-top: 1em;
+       }
 
-        .image-slideshow {
-            max-width: 100%;
-            overflow: hidden;
-            margin-top: 1em;
-        }
+       .game {
+           position: relative;
+           margin-bottom: 2em;
+           overflow: hidden;
+           border-radius: 8px;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+           transition: transform 0.3s ease-in-out;
+           cursor: pointer;
+       }
 
-        .image {
-            display: none;
-            position: absolute;
-            width: 100%;
-            height: auto;
-        }
+       .game:hover {
+           transform: scale(1.05);
+       }
 
-        .fade {
-            animation: fadeAnimation 2s ease-in-out infinite;
-        }
+       .game::before {
+           content: '';
+           position: absolute;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           width: 60px;
+           height: 60px;
+           background-color: rgba(255, 255, 255, 0.8);
+           border-radius: 50%;
+           cursor: pointer;
+           z-index: 1;
+       }
 
-        @keyframes fadeAnimation {
-            from {
-                opacity: 0.4;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+       .game img {
+           width: 100%;
+           height: auto;
+           border-radius: 8px 8px 0 0;
+           z-index: 0;
+       }
 
-        .discount {
-            background-color: #ffcc00;
-            padding: 2em;
-            text-align: center;
-            margin: 2em;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+       .game-info {
+           padding: 1em;
+       }
 
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1.5em;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-    </style>
+       footer {
+           background-color: #333;
+           color: white;
+           text-align: center;
+           padding: 1.5em;
+           position: fixed;
+           bottom: 0;
+           width: 100%;
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           margin: 0;
+           padding: 0;
+           background-color: #f9f9f9;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+       }
+   </style>
 </head>
 
 <body>
-    <nav>
-        <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
-        <a href="http://127.0.0.1:5500/_posts/igames.html">GAMES</a>
-        <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
-        <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
-        <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
-    </nav>
+   <nav>
+       <a href="http://youtube.com">Home</a>
+       <a href="http://google.docs.com">GAMES</a>
+       <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
+       <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
+       <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
+   </nav>
 
-    <div class="filter">
-        <label for="nameFilter">Filter by Name:</label>
-        <input type="text" id="nameFilter" oninput="filterGames()" placeholder="Enter name">
+   <div class="filter">
+       <label for="nameFilter">Filter by Name:</label>
+       <input type="text" id="nameFilter" oninput="filterGames()" placeholder="Enter name">
 
-        <label for="statusFilter">Filter by Status:</label>
-        <select id="statusFilter" onchange="filterGames()">
-            <option value="">All</option>
-            <option value="Free">Free</option>
-            <option value="Sign-in to Play">Sign-in to Play</option>
-            <option value="Buy">Buy</option>
-        </select>
-    </div>
+       <label for="statusFilter">Filter by Status:</label>
+       <select id="statusFilter" onchange="filterGames()">
+           <option value="">All</option>
+           <option value="Free">Free</option>
+           <option value="Sign-in to Play">Sign-in to Play</option>
+           <option value="Buy">Buy</option>
+       </select>
+   </div>
 
-    <section id="gamesSection"></section>
+   <section id="gamesSection"></section>
 
-    <footer>&copy; 2024 Game Scroll. All rights reserved.</footer>
+   <footer>&copy; 2024 Game Scroll. All rights reserved.</footer>
 
-    <script>
-       
-        const gamesSection = document.getElementById('gamesSection');
+   <script>
+       const gamesData = [
+           {
+               name: 'Tic Tac Toe',
+               description: 'Description of Awesome Game 1.',
+               image: 'tictacpngidk',
+               status: 'Sign-in to Play'
+           },
+           {
+               name: 'Super Game 2',
+               description: 'Description of Super Game 2.',
+               image: 'images/game2.jpg',
+               status: 'Free'
+           },
+           // Add more game entries as needed
+       ];
 
-        function renderGames(data) {
-            gamesSection.innerHTML = '';
+       const gamesSection = document.getElementById('gamesSection');
 
-            data.forEach(game => {
-                const gameDiv = document.createElement('div');
-                gameDiv.className = 'game';
+       function renderGames(data) {
+           gamesSection.innerHTML = '';
 
-                const img = document.createElement('img');
-                img.src = game.image;
-                img.alt = game.name;
+           data.forEach((game, index) => {
+               const gameDiv = document.createElement('div');
+               gameDiv.className = 'game';
 
-                const gameInfoDiv = document.createElement('div');
-                gameInfoDiv.className = 'game-info';
+               const img = document.createElement('img');
+               img.src = game.image;
+               img.alt = game.name;
 
-                const h3 = document.createElement('h3');
-                h3.textContent = game.name;
+               const gameInfoDiv = document.createElement('div');
+               gameInfoDiv.className = 'game-info';
 
-                const p = document.createElement('p');
-                p.textContent = game.description;
+               const h3 = document.createElement('h3');
+               h3.textContent = game.name;
 
-                const statusDiv = document.createElement('div');
-                statusDiv.className = 'sign-in';
-                statusDiv.textContent = game.status;
+               const p = document.createElement('p');
+               p.textContent = game.description;
 
-                gameInfoDiv.appendChild(h3);
-                gameInfoDiv.appendChild(p);
-                gameInfoDiv.appendChild(statusDiv);
+               const statusDiv = document.createElement('div');
+               statusDiv.className = 'sign-in';
+               statusDiv.textContent = game.status;
 
-                gameDiv.appendChild(img);
-                gameDiv.appendChild(gameInfoDiv);
+               gameInfoDiv.appendChild(h3);
+               gameInfoDiv.appendChild(p);
+               gameInfoDiv.appendChild(statusDiv);
 
-                gamesSection.appendChild(gameDiv);
-            });
-        }
+               gameDiv.appendChild(img);
+               gameDiv.appendChild(gameInfoDiv);
 
-        renderGames(gamesData);
+               gameDiv.addEventListener('click', () => {
+                   if (index === 0) {
+                       window.location.href = 'http://youtube.com';
+                   } else if (index === 1) {
+                       window.location.href = 'http://google.docs.com';
+                   }
+               });
 
-        function filterGames() {
-            const nameFilter = document.getElementById('nameFilter').value.toLowerCase();
-            const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+               gamesSection.appendChild(gameDiv);
+           });
+       }
 
-            const filteredGames = gamesData.filter(game => {
-                const isNameMatch = game.name.toLowerCase().includes(nameFilter);
-                const isStatusMatch = statusFilter === '' || game.status.toLowerCase().includes(statusFilter);
-                return isNameMatch && isStatusMatch;
-            });
+       renderGames(gamesData);
 
-            renderGames(filteredGames);
-        }
-    </script>
+       function filterGames() {
+           const nameFilter = document.getElementById('nameFilter').value.toLowerCase();
+           const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+
+           const filteredGames = gamesData.filter(game => {
+               const isNameMatch = game.name.toLowerCase().includes(nameFilter);
+               const isStatusMatch = statusFilter === '' || game.status.toLowerCase().includes(statusFilter);
+               return isNameMatch && isStatusMatch;
+           });
+
+           renderGames(filteredGames);
+       }
+   </script>
 </body>
 </html>
 
