@@ -728,7 +728,7 @@ function addObjectControls(editorID, editorObject){
     var expandedControlsImage = document.createElement("img")
     var objectName = document.createElement("p")
 
-    expandedControlsImage.src = "editorControlsFor2DGUI.png"
+    expandedControlsImage.src = "../images/gamecreatoriamges/editorControlsFor2DGUI.png"
     expandedControlsImage.className = "expandedControlsImage"
     expandedControlsImage.onclick = ()=>{
         expandControls(editorObject, editorID)
