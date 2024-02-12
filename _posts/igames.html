@@ -6,103 +6,102 @@
     <title>Game Scroll</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #121212;
-            color: #fff;
-            overflow: hidden;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            font-size: 2em;
         }
 
         nav {
-            background-color: #1e1e1e;
-            color: #ffcc00;
-            text-align: center;
+            display: flex;
+            justify-content: space-around;
+            background-color: #444;
             padding: 1em;
-            font-size: 2em;
-            position: relative;
-            z-index: 1;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: color 0.3s ease-in-out;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
         }
 
         .filter {
-            text-align: center;
-            margin: 20px 0;
+            margin-top: 1em;
         }
 
-        input, select {
-            padding: 8px;
-            margin: 0 10px;
-            background-color: #333;
-            color: #fff;
-            border: 1px solid #555;
-            border-radius: 5px;
-        }
-
-        section {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            padding: 20px;
-            margin-top: 50px;
-        }
-
-        .game {
-            flex: 0 0 300px;
-            margin-bottom: 20px;
-            background-color: #333;
-            border: 1px solid #555;
-            border-radius: 10px;
+        .image-slideshow {
+            max-width: 100%;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease-in-out;
-            color: #fff;
-            text-decoration: none;
+            margin-top: 1em;
         }
 
-        .game:hover {
-            transform: scale(1.05);
-        }
-
-        .game img {
+        .image {
+            display: none;
+            position: absolute;
             width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-bottom: 2px solid #555;
+            height: auto;
         }
 
-        .game-info {
-            padding: 20px;
+        .fade {
+            animation: fadeAnimation 2s ease-in-out infinite;
         }
 
-        h3 {
-            margin: 0;
-            font-size: 1.5em;
+        @keyframes fadeAnimation {
+            from {
+                opacity: 0.4;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
-        p {
-            margin: 10px 0;
-        }
-
-        .sign-in {
-            text-align: center;
+        .discount {
             background-color: #ffcc00;
-            padding: 10px;
-            color: #333;
-            font-weight: bold;
+            padding: 2em;
+            text-align: center;
+            margin: 2em;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         footer {
-            background-color: #1e1e1e;
-            color: #fff;
+            background-color: #333;
+            color: white;
             text-align: center;
-            padding: 1em;
-            font-size: 1.2em;
+            padding: 1.5em;
             position: fixed;
             bottom: 0;
             width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
+
 <body>
     <nav>
         <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
@@ -130,22 +129,7 @@
     <footer>&copy; 2024 Game Scroll. All rights reserved.</footer>
 
     <script>
-        const gamesData = [
-            {
-                name: 'Tic Tac Toe',
-                description: 'Description of Awesome Game 1.',
-                image: 'tictacpngidk',
-                status: 'Sign-in to Play'
-            },
-            {
-                name: 'Super Game 2',
-                description: 'Description of Super Game 2.',
-                image: 'images/game2.jpg',
-                status: 'Free'
-            },
-            // Add more game entries as needed
-        ];
-
+       
         const gamesSection = document.getElementById('gamesSection');
 
         function renderGames(data) {
@@ -200,3 +184,4 @@
     </script>
 </body>
 </html>
+
