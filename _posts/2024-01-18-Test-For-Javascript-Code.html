@@ -1,52 +1,54 @@
 <!DOCTYPE html>
 <html>
   <head>
-  </head>
-  <body>
     <style>
-      .cells{
+      .cells {
         min-height: 100%;
         width: calc(50% - 2px);
         border: solid black;
-        float: right
+        float: right;
       }
-      #runner{
+      .runner {
         width: 100%;
         border: 0px;
         height: 100%;
       }
-      body{
-        padding: 0px
+      .mainJavaScriptEditor {
+        padding: 0px;
       }
     </style>
-    <div style = "display: flex; width: 100%; height: calc(98vh - 50px)">
-      <textarea style = "resize: none;" class = "cells">
-Write Some Code Here!
+    <script>
+      function runCode(javaScriptIterator) {
+        var scriptContent = document.getElementsByTagName("textarea")[javaScriptIterator].value;
+        var scriptWindow = document.getElementsByClassName("runner")[javaScriptIterator].contentWindow;
+        var scriptElement = scriptWindow.document.createElement('script');
+        scriptElement.text = scriptContent;
+        scriptWindow.document.body.appendChild(scriptElement);
+      }
+    </script>
+  </head>
+  <body>
+    <div style="display: flex; width: 100%; height: calc(98vh - 50px)" class="mainJavaScriptEditor">
+      <textarea style="resize: none;" class="cells">
+// Write Some Code Here!
       </textarea>
       <script>
-        function runCode(){
-          console.log(document.getElementsByTagName("textarea")[0].value)
-          document.getElementById("runner").contentWindow.document.close()
-          document.getElementById("runner").contentWindow.document.write(document.getElementsByTagName("textarea")[0].value)
-        }
-        document.addEventListener("keydown", (event)=>{
-          if(event.keyCode == 9){
-            event.preventDefault()
-            var currentTextArea = document.getElementsByTagName("textarea")[0]
-            console.log("Getting elements", currentTextArea.selectionStart, currentTextArea.selectionEnd)
-            for(var testText = 0; testText < currentTextArea.selectionStart; testText++){
-            }
-            currentTextArea.value = currentTextArea.value.slice(0, currentTextArea.selectionStart) + "    " + currentTextArea.value.slice(currentTextArea.selectionEnd, currentTextArea.innerText.length - 1)
+        document.addEventListener("keydown", (event) => {
+          if (event.keyCode == 9) {
+            event.preventDefault();
+            var currentTextArea = document.getElementsByTagName("textarea")[0];
+            console.log("Getting elements", currentTextArea.selectionStart, currentTextArea.selectionEnd);
+            currentTextArea.value = currentTextArea.value.slice(0, currentTextArea.selectionStart) + "    " + currentTextArea.value.slice(currentTextArea.selectionEnd, currentTextArea.value.length).toString();
           }
-        })
+        });
       </script>
-      <div class = "cells">
-        <iframe id = "runner">
+      <div class="cells">
+        <iframe class = "runner">
         </iframe>
       </div>
       <br>
     </div>
-    <button style = "background-color: blue; border: 1px grey; border-radius: 5px; color: white; padding: 10px; margin-top: 10px; float: right;" onclick = "runCode()">
+    <button style="background-color: blue; border: 1px grey; border-radius: 5px; color: white; padding: 10px; margin-top: 10px; float: right;" onclick="runCode(0);">
       Run Code
     </button>
   </body>
