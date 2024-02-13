@@ -283,6 +283,7 @@ function createDropdown(currentCell, cellAssignment){
 
     for(var selectOption in cellModes){
         var dropDownOption = document.createElement("option");
+        dropDownOption.className = "dropDownOption"
         console.log("Cell assignment", cellAssignment)
         dropDownOption.innerText = cellModes[selectOption];
         if(selectOption == cellAssignment){
@@ -694,7 +695,7 @@ function createObjectForDisplay(objectCreator, sceneID){
 }
 
 function runCode(javaScriptIterator) {
-    console.log("Javascript Runner", javaScriptIterator)
+    //   console.log("Javascript Runner", javaScriptIterator)
     var scriptContent = document.getElementsByTagName("textarea")[javaScriptIterator].value;
     var scriptWindow = document.getElementsByClassName("codeSpaceIFrame")[javaScriptIterator].contentDocument.body;
     var scriptElement = document.createElement('script');
