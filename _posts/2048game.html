@@ -10,6 +10,20 @@
             margin: 0;
             font-family: 'Nunito', sans-serif;
         }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            font-size: 2em;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #444;
+            padding: 1em;
+        }
 
         /* head */
         .head {
@@ -184,18 +198,22 @@
 <body>
 
 <div class="game">
+    <header>
+        Your Game Universe
+    </header>
+
+    <nav>
+        <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
+        <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
+        <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
+        <a href="http://127.0.0.1:5500/_posts/igames.html">GAMES</a>
+        <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
+    </nav>
     <div class="head">
         <div class="a">2048 <button class="info" onclick='info()'>i</button> <button id="repeat" class="info repeat" onclick='reset()'>↻</button></div>
         <div class="score">Score<br/><span id="value"></span></div>
     </div>
-    <div class="description" id="description">
-        How to play:<br/><br/>
-        Use your arrow-keys to slide the tiles. <br/>
-        Two tiles with the same value in line can be merged. The goal is to merge the tiles and get the 2048 tile.<br/><br/>
-        The score is a sum of the merged tiles.<br><br/>
-        <span>_______________________________</span><br/><br/>
-        Made by da game store
-    </div>
+
     <div class="field">
 
         <div class="row">
