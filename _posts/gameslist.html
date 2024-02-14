@@ -48,7 +48,7 @@
 
         #gamesSection {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Multiple columns, adjust minmax as needed */
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
             justify-content: center;
             padding: 20px;
@@ -113,11 +113,11 @@
 
 <body>
     <nav>
-        <a href="http://youtube.com">Home</a>
-        <a href="http://google.docs.com">GAMES</a>
-        <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
         <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
         <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
+        <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
+        <a href="http://127.0.0.1:5500/_posts/igames.html">GAMES</a>
+        <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
     </nav>
 
     <div class="filter">
@@ -135,15 +135,15 @@
 
     <section id="gamesSection"></section>
 
-    <footer>&copy; 2024 Game Scroll. All rights reserved.</footer>
+    <footer>&copy; 2024 Your Game Universe. All rights reserved by... 
+        why are u reading this.</footer>
 
     <script>
         const gamesData = [
             {
                 name: 'Tic Tac Toe',
-                description: 'Tic-tac-toe, noughts and crosses, or Xs and Os is a paper-and-pencil game for two players who take turns marking the spaces in a three-by-three grid with X or O. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner. ',
+                description: 'Tic-tac-toe, noughts and crosses, or Xs and Os is a paper-and-pencil game for two players who take turns marking the spaces in a three-by-three grid with X or O. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner.',
                 image: '../images/gamescrollimages/tictactoe.png',
-        
                 status: 'Sign-in to Play'
             },
             {
@@ -164,7 +164,12 @@
                 image: '../images/gamescrollimages/2048.png',
                 status: 'Free'
             },
-
+            {
+                name: 'Game Creator',
+                description: 'Create Your Own Games!',
+                image: '../images/gamecreatoriamges/editorControlsFor2DGUI.png',
+                status: 'Sign-in to Play'
+            },
         ];
 
         const gamesSection = document.getElementById('gamesSection');
@@ -202,9 +207,15 @@
 
                 gameDiv.addEventListener('click', () => {
                     if (index === 0) {
-                        window.location.href = 'http://youtube.com';
+                        window.location.href = 'http://127.0.0.1:5500/_posts/Tictactoegame.html';
                     } else if (index === 1) {
-                        window.location.href = 'http://google.docs.com';
+                        window.location.href = 'http://127.0.0.1:5500/_posts/obstaclegame.html';
+                    } else if (index === 2) {
+                        window.location.href = 'http://127.0.0.1:5500/_posts/Guessthenumber.html';
+                    } else if (index === 3) {
+                        window.location.href = 'http://127.0.0.1:5500/_posts/2048game.html';
+                    } else if (index === 4) {
+                        window.location.href = 'http://127.0.0.1:5500/_posts/2024-01-11-GUI%20for%20Game%20Editor.html';
                     }
                 });
 
