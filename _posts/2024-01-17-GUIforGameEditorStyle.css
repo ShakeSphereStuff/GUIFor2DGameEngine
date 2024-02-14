@@ -444,7 +444,7 @@ iframe{
 .expadedControlsSlider{
   background-color: transparent;
   color: white;
-  user-select: none;
+  user-select: none; 
   border-radius: 80px;
   border-color: white;
   border-width: 2px;

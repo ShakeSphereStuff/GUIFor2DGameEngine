@@ -628,7 +628,7 @@ function selectMode(cellIteration, activeCell, cellType){
                 tileEditorSlider.max = "255"
                 tileEditorSlider.value = tileEditorSetColor[tileItterator]
                 tileEditorLabel.innerText = tileEditorLabels[tileItterator]
-                tileEditorColorLabel.innerText = tileEditorSetColor[tileItterator]
+                tileEditorColorLabel.innerText = tileEditorSetColor[tileItterator] 
 
                 tileEditorSlider.addEventListener("input", () => {
                     console.log(document.getElementsByClassName("tileEditorColorLabel")[tileItterator])
