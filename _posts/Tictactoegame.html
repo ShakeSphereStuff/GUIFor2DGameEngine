@@ -91,7 +91,41 @@
     <div id="ticTacToe"></div>
     <div id="result"></div>
     <button class="reset" onclick="resetGame()">Reset Game</button>
-
+    <script type="module">
+        const url = 'http://127.0.0.1:8084/api/users/';
+        // prepare HTML result container for new output
+        const resultContainer = document.getElementById("result");
+        const options = {
+            mode: 'cors', // no-cors, cors, same-origin
+            credentials: 'include', // include, same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'GET', // Override the method property
+            cache: 'no-cache', // Set the cache property
+        };
+        // fetch the API
+        fetch(url, options)
+            // response is a RESTful "promise" on any successful fetch
+            .then(response => {
+                // check for response errors and display
+                if (response.status !== 200) {
+                    const errorMsg = 'Database response error: ' + response.status;
+                    window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-401error.html";
+                    console.log(errorMsg);
+                    resultContainer.textContent = errorMsg;
+                    return;
+                }
+                // If you don't want to display the data, you can leave this part empty
+            })
+            // catch fetch errors (i.e., ACCESS to server blocked)
+            .catch(err => {
+                window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-403error.html"
+                console.error(err);
+                resultContainer.innerHTML = err + ": " + url;
+            });
+    </script>
+    
     <script>
         let currentPlayer = 'X';
         let gameBoard = ['', '', '', '', '', '', '', '', ''];
