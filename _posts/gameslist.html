@@ -1,112 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Scroll</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #121212;
-            color: #fff;
-            overflow: hidden;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            font-size: 2em;
         }
 
         nav {
-            background-color: #1e1e1e;
-            color: #ffcc00;
-            text-align: center;
+            display: flex;
+            justify-content: space-around;
+            background-color: #444;
             padding: 1em;
-            font-size: 2em;
-            position: relative;
-            z-index: 1;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: color 0.3s ease-in-out;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
         }
 
         .filter {
-            text-align: center;
-            margin: 20px 0;
+            margin-top: 1em;
         }
 
-        input, select {
-            padding: 8px;
-            margin: 0 10px;
-            background-color: #333;
-            color: #fff;
-            border: 1px solid #555;
-            border-radius: 5px;
-        }
-
-        section {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
+        #gamesSection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Multiple columns, adjust minmax as needed */
+            gap: 20px;
+            justify-content: center;
             padding: 20px;
-            margin-top: 50px;
         }
 
         .game {
-            flex: 0 0 300px;
-            margin-bottom: 20px;
-            background-color: #333;
-            border: 1px solid #555;
-            border-radius: 10px;
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out;
-            color: #fff;
-            text-decoration: none;
+            cursor: pointer;
         }
 
         .game:hover {
             transform: scale(1.05);
         }
 
+        .game::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1;
+        }
+
         .game img {
             width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-bottom: 2px solid #555;
+            height: auto;
+            border-radius: 8px 8px 0 0;
+            z-index: 0;
         }
 
         .game-info {
-            padding: 20px;
-        }
-
-        h3 {
-            margin: 0;
-            font-size: 1.5em;
-        }
-
-        p {
-            margin: 10px 0;
-        }
-
-        .sign-in {
-            text-align: center;
-            background-color: #ffcc00;
-            padding: 10px;
-            color: #333;
-            font-weight: bold;
+            padding: 1em;
         }
 
         footer {
-            background-color: #1e1e1e;
-            color: #fff;
+            background-color: #333;
+            color: white;
             text-align: center;
-            padding: 1em;
-            font-size: 1.2em;
+            padding: 1.5em;
             position: fixed;
             bottom: 0;
             width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
+
 <body>
     <nav>
-        <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
-        <a href="http://127.0.0.1:5500/_posts/igames.html">GAMES</a>
+        <a href="http://youtube.com">Home</a>
+        <a href="http://google.docs.com">GAMES</a>
         <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
         <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
         <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
@@ -133,17 +141,30 @@
         const gamesData = [
             {
                 name: 'Tic Tac Toe',
-                description: 'Description of Awesome Game 1.',
-                image: 'tictacpngidk',
+                description: 'Tic-tac-toe, noughts and crosses, or Xs and Os is a paper-and-pencil game for two players who take turns marking the spaces in a three-by-three grid with X or O. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner. ',
+                image: '../images/gamescrollimages/tictactoe.png',
+        
                 status: 'Sign-in to Play'
             },
             {
-                name: 'Super Game 2',
-                description: 'Description of Super Game 2.',
-                image: 'images/game2.jpg',
+                name: 'Obstacle Maze',
+                description: 'Navigate your way through the randomly generated maze!',
+                image: '../images/gamescrollimages/mazedgames.png',
                 status: 'Free'
             },
-            // Add more game entries as needed
+            {
+                name: 'Guess the Number (1-100!)',
+                description: 'Guess the number from 1 to 100! Whats the least amount of attempts you can get the number in!',
+                image: '../images/gamescrollimages/guesshtenumber.png',
+                status: 'Sign-in to Play'
+            },
+            {
+                name: '2048',
+                description: 'Merge the tiles in order to get 2048!',
+                image: '../images/gamescrollimages/2048.png',
+                status: 'Free'
+            },
+
         ];
 
         const gamesSection = document.getElementById('gamesSection');
@@ -151,7 +172,7 @@
         function renderGames(data) {
             gamesSection.innerHTML = '';
 
-            data.forEach(game => {
+            data.forEach((game, index) => {
                 const gameDiv = document.createElement('div');
                 gameDiv.className = 'game';
 
@@ -179,6 +200,14 @@
                 gameDiv.appendChild(img);
                 gameDiv.appendChild(gameInfoDiv);
 
+                gameDiv.addEventListener('click', () => {
+                    if (index === 0) {
+                        window.location.href = 'http://youtube.com';
+                    } else if (index === 1) {
+                        window.location.href = 'http://google.docs.com';
+                    }
+                });
+
                 gamesSection.appendChild(gameDiv);
             });
         }
@@ -199,4 +228,5 @@
         }
     </script>
 </body>
+
 </html>

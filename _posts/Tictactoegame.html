@@ -9,12 +9,30 @@
         body {
             font-family: 'Arial', sans-serif;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
             background-color: #282c34;
             color: #61dafb;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            font-size: 2em;
+            width: 100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #444;
+            padding: 1em;
+            width: 100%;
         }
 
         #ticTacToe {
@@ -60,6 +78,16 @@
 </head>
 
 <body>
+    <header>
+        Your Game Universe
+    </header>
+
+    <nav>
+        <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
+        <a href="http://127.0.0.1:5500/_posts/igames.html">GAMES</a>
+        <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
+
+    </nav>
     <div id="ticTacToe"></div>
     <div id="result"></div>
     <button class="reset" onclick="resetGame()">Reset Game</button>

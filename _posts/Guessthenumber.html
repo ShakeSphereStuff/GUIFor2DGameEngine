@@ -11,6 +11,14 @@
             margin: 20px;
         }
 
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            font-size: 2em;
+        }
+
         #game-container {
             max-width: 400px;
             margin: auto;
@@ -68,7 +76,9 @@
     </style>
 </head>
 <body>
-
+<header>
+    Your Game Universe
+</header>
 <nav>
     <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
     <a href="http://127.0.0.1:5500/_posts/igames.html">GAMES</a>
@@ -79,7 +89,7 @@
 
 <div id="game-container">
     <h2>Guess the Number Game</h2>
-    <p>Guess a number between 1 and 10:</p>
+    <p>Guess a number between 1 and 100:</p>
 
     <div id="input-container">
         <input type="number" id="guess-input" placeholder="Enter your guess" min="1" max="10">
@@ -90,7 +100,7 @@
 </div>
 
 <script>
-    const secretNumber = Math.floor(Math.random() * 10) + 1;
+    const secretNumber = Math.floor(Math.random() * 100) + 1;
     let attempts = 0;
 
     function checkGuess() {
@@ -98,8 +108,8 @@
         const resultElement = document.getElementById('result');
         const userGuess = parseInt(guessInput.value);
 
-        if (isNaN(userGuess) || userGuess < 1 || userGuess > 10) {
-            resultElement.innerText = "Please enter a valid number between 1 and 10.";
+        if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+            resultElement.innerText = "Please enter a valid number between 1 and 100.";
         } else {
             attempts++;
 

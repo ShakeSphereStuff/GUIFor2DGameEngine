@@ -287,6 +287,7 @@ function createDropdown(currentCell, cellAssignment){
 
     for(var selectOption in cellModes){
         var dropDownOption = document.createElement("option");
+        dropDownOption.className = "dropDownOption"
         console.log("Cell assignment", cellAssignment)
         dropDownOption.innerText = cellModes[selectOption];
         if(selectOption == cellAssignment){
@@ -426,17 +427,37 @@ function selectMode(cellIteration, activeCell, cellType){
             break
         
         case "Javascript Runner":
+            var mainCodeSpace = document.createElement("div")
             var codeSpace = document.createElement("textarea")
+            var codeSpaceRunButton = document.createElement("button")
+            var codeSpaceIFrame = document.createElement("iframe")
+            codeSpaceIFrame.className = "codeSpaceIFrame"
+            codeSpaceRunButton.className = "codeSpaceRunButton"
+            codeSpaceRunButton.innerText = "Run Code"
             codeSpace.className = "codeSpace"
+            mainCodeSpace.style.height = "100%"
             codeSpace.addEventListener("focus", (event) => {
                 menuOptions["Scene Editor"]["player"]["canMove"] = false
             })
             codeSpace.addEventListener("focusout", () => {
                 menuOptions["Scene Editor"]["player"]["canMove"] = true
             })
-            
-            currentCell.appendChild(codeSpace)
+            currentCell.getElementsByClassName("header")[0].appendChild(codeSpaceIFrame)
+            mainCodeSpace.appendChild(codeSpace)
+            mainCodeSpace.appendChild(codeSpaceRunButton)
+            currentCell.appendChild(mainCodeSpace)
+            codeSpaceRunButton.onclick = function(){runCode(document.getElementsByClassName("codeSpaceRunButton").length - 1)}
             break
+            
+            // Initialize CodeMirror
+
+            var editor = CodeMirror.fromTextArea(codeSpace, {
+                mode: "javascript",
+                theme: "default",
+                lineNumbers: true,
+                autofocus: true // Optional: focus the editor when it's created
+            });
+            break;
 
         case "Tile Editor":
             var mainTileEditor = document.createElement("div")
@@ -748,6 +769,16 @@ function createObjectForDisplay(objectCreator, sceneID){
     document.getElementsByClassName("sceneEditor")[sceneID].appendChild(sceneElement)
 }
 
+function runCode(javaScriptIterator) {
+    //   console.log("Javascript Runner", javaScriptIterator)
+    var scriptContent = document.getElementsByTagName("textarea")[javaScriptIterator].value;
+    var scriptWindow = document.getElementsByClassName("codeSpaceIFrame")[javaScriptIterator].contentDocument.body;
+    var scriptElement = document.createElement('script');
+    scriptElement.text = scriptContent;
+    // document.getElementsByClassName("codeSpaceIFrame")[javaScriptIterator].appendChild(scriptElement);
+    scriptWindow.appendChild(scriptElement);
+  }
+
 function createObjectControls(cellIteration){
     var currentAddObjectButton = document.getElementsByClassName("addObjectButton")[cellIteration]
     var addObjectPrompt = document.createElement("div")
@@ -805,7 +836,7 @@ function addObjectControls(editorID, editorObject){
     var expandedControlsImage = document.createElement("img")
     var objectName = document.createElement("p")
 
-    expandedControlsImage.src = "editorControlsFor2DGUI.png"
+    expandedControlsImage.src = "../images/gamecreatoriamges/editorControlsFor2DGUI.png"
     expandedControlsImage.className = "expandedControlsImage"
     expandedControlsImage.onclick = ()=>{
         expandControls(editorObject, editorID)
@@ -1152,6 +1183,12 @@ document.addEventListener("keydown", function(event){
 
         }
     }
+    else if (event.key == "Tab") {
+        event.preventDefault();
+        var currentTextArea = document.getElementsByTagName("textarea")[0];
+        console.log("Getting elements", currentTextArea.selectionStart, currentTextArea.selectionEnd);
+        currentTextArea.value = currentTextArea.value.slice(0, currentTextArea.selectionStart) + "    " + currentTextArea.value.slice(currentTextArea.selectionEnd, currentTextArea.value.length).toString();
+      }
 })
 
 function movePlayer(x, y){
