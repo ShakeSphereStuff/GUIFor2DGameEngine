@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Login Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  background-color: #ebeef1;
+
+}
+/* Style for the button */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Button color */
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .button:hover {
+    background-color: #0056b3; /* Darker button color on hover */
+  }
+
+header {
+    background-color: #333;
+    color: white\;
+    text-align: center;
+    padding: 1.5em;
+    font-size: 2em;
+}
+
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+
+    background-image: url('http://127.0.0.1:5500/images/galaxy.jpeg'); /* Replace 'path/to/your/image.jpg' with the path to your image */
+    background-size: cover; /* Cover the entire background */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+}
+
+.container{
+  width: 100%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 150px;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 10px 10px 10px -1px rgba(10,99,169,0.16),
+  -10px -10px 10px -1px rgba(2255,255,255,0.7);
+}
+
+.container .img-box{
+  height: 100%;
+  width: 50%;
+  /* background-color: rgb(233, 62,91); */
+}
+
+.container .img-box img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.container .content-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+.container .content-box .content{
+  width: 65%;
+}
+
+.container .content-box .content h2{
+  color: rgba(0, 0,0,0.8);
+  border-bottom: 3px solid rgb(42, 122, 126);
+  text-align: center;
+  display: inline-block;
+  margin-bottom: 30px;
+  font-size: 1.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.input-box label{
+  display: block;
+  color: rgba(0, 0,0,0.7);
+  letter-spacing: 1px;
+}
+
+.input-box input{
+  width: 100%;
+  height: 50px;
+  padding: 0 30px;
+  border-radius: 60px;
+  margin: 10px 0;
+  outline: none;
+  border: none;
+  font-size: 0.9rem;
+  box-shadow: 5px 5px 5px -1px rgba(10,99,169,0.16),
+  -7px -7px 5px -1px rgba(2255,255,255,0.7);
+}
+
+.input-box input[type="checkbox"]{
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+.input-box input[type="submit"]{
+  background-color: rgb(42, 122, 126);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.social-media{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .container{
+    margin: 40px;
+  }
+  .container .img-box{
+    display: none;
+  }
+  .container .content-box{
+    width: 100%;
+  }
+  .container .content-box .content{
+    width: 75%;
+  }
+}
+
+@media (max-width: 962px) {
+  .container{
+    margin: 40px;
+  }
+ 
+  .container .content-box{
+    width: 100%;
+  }
+  .container .content-box .content{
+    width: 75%;
+  }
+}
+@media (max-width: 768px) {
+    .container{
+      margin: 40px;
+    }
+    .container .img-box{
+      display: none;
+    }
+    .container .content-box{
+      width: 100%;
+    }
+    .container .content-box .content{
+      width: 75%;
+    }
+  }
+  
+  @media (max-width: 962px) {
+    .container{
+      margin: 40px;
+    }
+   
+    .container .content-box{
+      width: 100%;
+    }
+    .container .content-box .content{
+      width: 75%;
+    }
+  }
+</style>
+<body>
+    <a href="http://127.0.0.1:5500/_posts/index.html" class="button">Home</a>
+  <div class="container">
+    <div class="img-box">
+      <img src="http://127.0.0.1:5500/images/YGUlogo.png" alt="">
+    </div>
+    <div class="content-box">
+      <div class="content">
+        <h2>Login</h2>
+        <form action="javascript:login_user()">
+          <div class="input-box">
+            <label for="inputUserName">Username</label>
+            <input type="text" name="uid" id="uid" required="" />
+          </div>
+
+          <div class="input-box">
+            <label for="inputPass">Password</label>
+            <input type="password" name="password" id="password" required="" />
+          </div>
+          <p id="loginStatus" name="loginStatus"></p>
+          <div class="input-box">
+            <input type="submit" value="Login">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
+<!-- 
+Below JavaScript code is designed to handle user authentication in a web application. It's written to work with a backend server that uses JWT (JSON Web Tokens) for authentication.
+
+The script defines a function when the page loads. This function is triggered when the Login button in the HTML form above is pressed. 
+ -->
+<script type="module">
+    // uri variable and options object are obtained from config.js
+
+
+    function login_user(){
+        // Set Authenticate endpoint
+        const url ='http://127.0.0.1:8084/api/users/authenticate';
+
+        // Set the body of the request to include login data from the DOM
+        const body = {
+            uid: document.getElementById("uid").value,
+            password: document.getElementById("password").value,
+        };
+
+        // Change options according to Authentication requirements
+        const authOptions = {
+            mode: 'cors', // no-cors, *cors, same-origin
+            credentials: 'include', // include, same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST', // Override the method property
+            cache: 'no-cache', // Set the cache property
+            body: JSON.stringify(body)
+        };
+
+        // Fetch JWT
+        fetch(url, authOptions)
+        .then(response => {
+            // handle error response from Web API
+            if (!response.ok) {
+                const errorMsg = 'Login error: ' + response.status;
+                console.log(errorMsg);
+                if (response.status == 400) {
+                    document.getElementById("loginStatus").innerHTML = "incorrect username or password";
+                    return;
+                }
+            }
+            
+            // Success!!!
+            // Redirect to the database page
+            window.location.href = "http://127.0.0.1:5500/_posts/gameslist.html"
+            ;
+        })
+        // catch fetch errors (ie ACCESS to server blocked)
+        .catch(err => {
+            window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-403error.html"
+            console.error(err);
+        });
+    }
+
+    // Attach login_user to the window object, allowing access to form action
+    window.login_user = login_user;
+</script>
