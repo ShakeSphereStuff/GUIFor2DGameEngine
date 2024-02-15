@@ -402,6 +402,14 @@ iframe{
   margin-top: 10px; 
   float: right;
 }
+.delBoxButton{
+  background-color: green;
+  border: 1px grey; 
+  border-radius: 3px; 
+  color: white; 
+  padding: 3px; 
+  float: right;
+}
 .codeSpaceIFrame{
   border: transparent;
   width: 0%;

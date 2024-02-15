@@ -832,6 +832,8 @@ function createObjectControls(cellIteration){
 
 function addObjectControls(editorID, editorObject){
     console.log("Items for controls are", editorID, editorObject)
+    // create a button to delete test box
+    var delBoxButton = document.createElement("button")
     var editorItem = document.createElement("div")
     var expandedControlsImage = document.createElement("img")
     var objectName = document.createElement("p")
@@ -843,18 +845,44 @@ function addObjectControls(editorID, editorObject){
     }
     console.log("I'm getting inputed", editorID)
 
+    delBoxButton.innerText = "Delete Box"
     objectName.innerText = menuOptions["Scene Editor"]["objectData"][editorObject]["name"]
+
     objectName.style.display = "inline-block"
-    objectName.className = "objectNameLabel"
-    
     editorItem.style.float = "left"
+
+    objectName.className = "objectNameLabel"
+    delBoxButton.className = "delBoxButton"
     editorItem.className = "editorItem"
+    
+    delBoxButton.onclick = function(){
+        deleteBox(editorObject, editorItem);
+    };
 
-
+    editorItem.appendChild(delBoxButton)
     editorItem.appendChild(expandedControlsImage)
     editorItem.appendChild(objectName)
+    editorID.appendChild(editorItem)
+    // when delete button is clicked
+
     for(var appendChildIterator = 0; appendChildIterator < document.getElementsByClassName("mainEditorControls").length; appendChildIterator++){
         editorID.appendChild(editorItem)
+    }
+}
+
+function deleteBox(objectIndex, editorItem){
+    var sceneObject = document.getElementsByClassName("sceneObject")[objectIndex];
+    if (sceneObject) {
+        // Remove the sceneObject from the document
+        sceneObject.remove();
+
+        // Remove the object from the data
+        menuOptions["Scene Editor"]["objectData"].splice(objectIndex, 1); 
+
+        // Remove the corresponding editorItem
+        editorItem.remove();
+    } else {
+        console.log("Scene object not found in DOM.");
     }
 }
 
