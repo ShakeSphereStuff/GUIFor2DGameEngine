@@ -329,7 +329,7 @@
         e = e || window.event;
         var d = 0;
 
-        if (e.keyCode == '38') {
+        if (e.keyCode == '38' || e.keyCode == '87') {
             var count = 2;
 
             for (var x = 2; x > 1; x--) {
@@ -348,7 +348,7 @@
             cellReset();
         }
 
-        else if (e.keyCode == '40') {
+        else if (e.keyCode == '40' || e.keyCode == '83') {
             var count = -2;
             var test = 1;
             for (var x = 3; x < 4; x++) {
@@ -366,7 +366,7 @@
             cellReset();
         }
 
-        else if (e.keyCode == '37') {
+        else if (e.keyCode == '37' || e.keyCode == '65') {
             var count = 2;
             var test = 1;
             for (var x = 2; x > 1; x--) {
@@ -384,7 +384,7 @@
             cellReset();
         }
 
-        else if (e.keyCode == '39') {
+        else if (e.keyCode == '39' || e.keyCode == '68') {
             var count = -2;
             var noCell = 0;
             var c = 1;
