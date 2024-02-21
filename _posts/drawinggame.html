@@ -3,19 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Drawing Game</title>
-    <link rel="stylesheet" href="drawinggame.css">
+    <title>Drawing Game</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            font-size: 2em;
+        }
+
+        nav {
+            background-color: #444;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .toolbar {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        canvas {
+            border: 1px solid black;
+            margin: 10px;
+            display: block; /* Ensures no margin is applied by browsers by default */
+        }
+    </style>
 </head>
 <body>
+    <header>
+        Your Game Universe
+    </header>
+
+    <nav>
+        <a href="http://127.0.0.1:5501/_posts/index.html">Home</a>
+        <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
+        <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
+        <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin.html">Login</a>
+        <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">Sign Up</a>
+    </nav>
+
     <div class="toolbar">
         <button id="clearBtn">Clear</button>
-        <input type="color" id="colorPicker">
+        <input type="color" id="colorPicker" title="Brush Color">
+        <input type="color" id="bgColorPicker" title="Background Color">
         <label for="brushSize">Brush Size:</label>
         <select id="brushSize">
-            <option value="5">Small</option>
+            <option value="1">Very Thin</option>
+            <option value="5">Thin</option>
             <option value="10" selected>Medium</option>
-            <option value="20">Large</option>
+            <option value="20">Thick</option>
+            <option value="40">Very Thick</option>
         </select>
+        <label for="opacity">Opacity:</label>
+        <input type="range" id="opacity" min="1" max="100" value="100">
+        <button id="saveImageBtn">Save Image</button>
+        <button id="saveDataBtn">Save File</button>
     </div>
     <canvas id="drawingCanvas"></canvas>
     <script src="drawinggame.js"></script>
