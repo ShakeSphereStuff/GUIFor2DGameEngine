@@ -74,7 +74,8 @@
             z-index: 0;
         }
 
-        .favorite-icon {
+        /*.
+        favorite-icon {
             position: absolute;
             bottom: 10px;
             right: 10px;
@@ -83,6 +84,7 @@
             cursor: pointer;
             transition: transform 0.2s ease-in-out;
         }
+        */
 
         .notification {
             position: fixed;
@@ -115,11 +117,12 @@
 
 <body>
     <nav>
-        <a href="http://127.0.0.1:5501/_posts/index.html">Home</a>
+        <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
         <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
+        <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
         <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
-        <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin.html">Login</a>
-        <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">Sign Up</a>
+        <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
+        <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
     </nav>
     <button onclick="getInfo()">Click me</button>
     <!-- <div class="filter">
@@ -257,7 +260,9 @@
                     });
             });
         }
+        
         const gamesSection = document.getElementById('gamesSection');
+
         function renderGame(gameNum, data)
         {
             gamesSection.innerHTML = '';
@@ -313,7 +318,7 @@
             });
         }
         
-
+        /*
         function filterGames() {
             const nameFilter = document.getElementById('nameFilter').value.toLowerCase();
             const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
@@ -364,6 +369,7 @@
                 }
             });
         }
+        */
         
     </script>
     <script type="module">
