@@ -591,21 +591,46 @@ function selectMode(cellIteration, activeCell, cellType){
             var tileEditorColorRow = document.createElement("div")
             var tileEditorSetColor = [127, 127, 127, 255]
 
+            // secondary color feature
+            var secondTileEditorColorName = document.createElement("p")
+            var secondTileEditorColorShowcase = document.createElement("div")
+            var secondTileEditorSetColor = [127, 127, 127, 255]
+            
+            // switch between primary & secondary colors button
+            var switchColorsButton = document.createElement("button")
+            switchColorsButton.className = "switchColorsButton"
+            switchColorsButton.innerText = "Switch Colors"
+
+            switchColorsButton.onclick = function(){
+                switchColors(tileEditorSetColor, secondTileEditorSetColor, tileEditorLabels);
+            };       
+
             tileEditorMainMenu.className = "tileEditorMainMenu"
             tileEditorColorShowcase.className = "tileEditorColorShowcase"
+            
+            secondTileEditorColorShowcase.className = "secondTileEditorColorShowcase"
 
             tileEditorColorShowcase.style.width = "40px"
             tileEditorColorShowcase.style.height = "20px"
+            
+            secondTileEditorColorShowcase.style.width = "40px"
+            secondTileEditorColorShowcase.style.height = "20px"
 
-            tileEditorColorName.innerText = "Resulting Color:"
+            tileEditorColorName.innerText = "Primary Color:"
             tileEditorColorName.style.color = "white"
             tileEditorColorName.style.marginBottom = "0px"
+            
+            secondTileEditorColorName.innerText = "Secondary Color:"
+            secondTileEditorColorName.style.color = "white"
+            secondTileEditorColorName.style.marginBottom = "0px"
 
             tileEditorColorRow.style.display = "flex"
 
             tileEditorColorRow.appendChild(tileEditorColorName)
             tileEditorColorRow.appendChild(tileEditorColorShowcase)
-
+            tileEditorColorRow.appendChild(secondTileEditorColorName)
+            tileEditorColorRow.appendChild(secondTileEditorColorShowcase)
+            tileEditorColorRow.appendChild(switchColorsButton)
             tileEditorMainMenu.appendChild(tileEditorColorRow)
 
             for(let tileItterator in tileEditorLabels){
@@ -644,6 +669,74 @@ function selectMode(cellIteration, activeCell, cellType){
             }
 
             currentCell.appendChild(tileEditorMainMenu)
+    }
+}
+
+function createSliders(labels, color, container, showcaseClass) {
+    for (let i = 0; i < labels.length; i++) {
+        var tileEditorRow = document.createElement("div");
+        var tileEditorLabel = document.createElement("p");
+        var tileEditorSlider = document.createElement("input");
+        var tileEditorColorLabel = document.createElement("p");
+
+        tileEditorSlider.className = "tileEditorSlider";
+        tileEditorLabel.className = "tileEditorLabel";
+        tileEditorLabel.style.width = "75px";
+        tileEditorColorLabel.className = "tileEditorColorLabel tileEditorLabel";
+
+        tileEditorRow.style.display = "flex";
+        tileEditorRow.style.height = "20px";
+        tileEditorColorLabel.style.right = "10px";
+        tileEditorColorLabel.style.position = "absolute";
+
+        tileEditorSlider.type = "range";
+        tileEditorSlider.max = "255";
+        tileEditorSlider.value = color[i];
+        tileEditorLabel.innerText = labels[i];
+        tileEditorColorLabel.innerText = color[i]; 
+
+        tileEditorSlider.addEventListener("input", () => {
+            tileEditorColorLabel.innerText = tileEditorSlider.value;
+            color[i] = tileEditorSlider.value;
+            updateColorShowcase(color, showcaseClass);
+        });
+
+        tileEditorRow.appendChild(tileEditorLabel);
+        tileEditorRow.appendChild(tileEditorSlider);
+        tileEditorRow.appendChild(tileEditorColorLabel);
+        container.appendChild(tileEditorRow);
+    }
+}
+
+function switchColors(tileEditorSetColor, secondTileEditorSetColor) {
+    // Copy the primary and secondary color values
+    var tempColor = tileEditorSetColor.slice(); // Creating a copy
+    var tempSecondColor = secondTileEditorSetColor.slice(); // Creating a copy
+    
+    // Swap the primary and secondary color values
+    tileEditorSetColor.splice(0, tileEditorSetColor.length, ...tempSecondColor);
+    secondTileEditorSetColor.splice(0, secondTileEditorSetColor.length, ...tempColor);
+
+    // Update the color showcases directly
+    updateColorShowcase(tileEditorSetColor, document.getElementsByClassName("tileEditorColorShowcase")[0]);
+    updateColorShowcase(secondTileEditorSetColor, document.getElementsByClassName("secondTileEditorColorShowcase")[0]);
+
+    // Update slider positions
+    updateSliderPositions(tileEditorSetColor);
+    updateSliderPositions(secondTileEditorSetColor);
+}
+
+
+function updateColorShowcase(color, showcase) {
+    showcase.style.backgroundColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`;
+}
+
+function updateSliderPositions(color, labels) {
+    const sliders = document.getElementsByClassName("tileEditorSlider");
+
+    for (let i = 0; i < sliders.length; i++) {
+        sliders[i].value = color[i];
+        sliders[i].nextElementSibling.innerText = color[i];
     }
 }
 
@@ -870,8 +963,11 @@ function addObjectControls(editorID, editorObject){
     }
 }
 
+// chatgpt suggested that i should add editorItem in order to despawn both the selected row and the corresponding box
+
 function deleteBox(objectIndex, editorItem){
-    var sceneObject = document.getElementsByClassName("sceneObject")[objectIndex];
+    var sceneObjects = document.getElementsByClassName("sceneObject");
+    var sceneObject = sceneObjects[objectIndex];
     if (sceneObject) {
         // Remove the sceneObject from the document
         sceneObject.remove();

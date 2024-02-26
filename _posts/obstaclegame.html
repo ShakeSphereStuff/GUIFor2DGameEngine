@@ -143,8 +143,9 @@
     function movePlayer(event) {
         const { key } = event;
 
-        const newRow = playerPosition.row + (key === 'ArrowDown' ? 1 : key === 'ArrowUp' ? -1 : 0);
-        const newCol = playerPosition.col + (key === 'ArrowRight' ? 1 : key === 'ArrowLeft' ? -1 : 0);
+        const newRow = playerPosition.row + (key === 'ArrowDown' || key === 'S' ? 1 : key === 'ArrowUp' || key === 'W' ? -1 : 0);
+        const newCol = playerPosition.col + (key === 'ArrowRight' || key === 'D' ? 1 : key === 'ArrowLeft' || key === 'A' ? -1 : 0);
+
 
         if (newRow >= 0 && newRow < mazeSize && newCol >= 0 && newCol < mazeSize) {
             const targetCell = mazeLayout[newRow][newCol];

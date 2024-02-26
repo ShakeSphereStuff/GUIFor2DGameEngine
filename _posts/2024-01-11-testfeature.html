@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Swapper</title>
+<style>
+  /* Define your primary and secondary colors */
+  :root {
+    --primary-color: blue;
+    --secondary-color: red;
+  }
+
+  /* Use primary and secondary colors in your styles */
+  .thumbnail {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    border-radius: 5px;
+  }
+
+  #primaryThumbnail {
+    background-color: var(--primary-color);
+  }
+
+  #secondaryThumbnail {
+    background-color: var(--secondary-color);
+  }
+
+  button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <div class="thumbnail" id="primaryThumbnail"></div>
+  <div class="thumbnail" id="secondaryThumbnail"></div>
+  <button id="swapButton">Swap Colors</button>
+
+  <script>
+    const primaryThumbnail = document.getElementById('primaryThumbnail');
+    const secondaryThumbnail = document.getElementById('secondaryThumbnail');
+    const swapButton = document.getElementById('swapButton');
+
+    swapButton.addEventListener('click', () => {
+      // Get the current values of primary and secondary colors
+      const currentPrimaryColor = getComputedStyle(primaryThumbnail).getPropertyValue('background-color');
+      const currentSecondaryColor = getComputedStyle(secondaryThumbnail).getPropertyValue('background-color');
+
+      // Swap the colors
+      primaryThumbnail.style.backgroundColor = currentSecondaryColor;
+      secondaryThumbnail.style.backgroundColor = currentPrimaryColor;
+    });
+  </script>
+</body>
+</html>
