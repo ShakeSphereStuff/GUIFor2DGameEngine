@@ -9,6 +9,10 @@ var layOutSelectionMenu = [
     {
         "name": "Tile Layout",
         "layOut":[["Scene Editor"], ["Tile Editor", "Tile Editor Colors"]]
+    },
+    {
+        "name": "Object Layout",
+        "layOut":[["Scene Editor", "Tile Editor Colors"], ["Tile Editor", "Editor Controls"]]
     }
 ]
 var layOut = [["Scene Editor"], ["Javascript Runner", "Editor Controls"]]
@@ -36,7 +40,8 @@ var menuOptions = {
         "screenData" : [], 
         "player" :{
             "speed" : 1,
-            "canMove": true
+            "canMove": true,
+            "coords": [0, 0]
         },
         "selectedObjectIndex" : 0,
     },
@@ -63,6 +68,7 @@ var tileYSpacing = 18
 var tilesOnXAxis = 10
 var tilesOnYAxis = 15
 var gridSnaping = 10
+var gridSizing = 15
 var defaultObjectParameters = [
     ["X:", "number", 100, "x"], 
     ["Y:", "number", 100, "y"], 
@@ -71,13 +77,14 @@ var defaultObjectParameters = [
     ["Selected Texture Index:", "select", 0, menuOptions["Tile Editor"]["tileLayers"]]
 ]
 var defaultTexture = []
+var tileEditorMouseDown = false
 
 for(var objectItterator in menuOptions["Tile Editor"]["tileLayers"]){
     for(var y = 0; y < tilesOnYAxis; y++){
         defaultTexture.push([])
         for(var x = 0; x < tilesOnXAxis; x++){
             console.log("Accessing the array of", menuOptions["Tile Editor"]["tileLayers"][menuOptions["Scene Editor"]["objectData"][objectItterator]["selectedLayerIndex"]][1])
-            defaultTexture[y].push([127, 0, 127])
+            defaultTexture[y].push([127, 0, 127, 1])
         }
     }
 }
@@ -95,7 +102,10 @@ function compileWindows(){
         for(let layOutOfCells in layOut[layOutOfRows]){
             var startingCell = document.createElement("div")
             startingCell.className = "cell"
-            startingCell.style.height = `calc(${100 / layOut[layOutOfRows].length}% - ${10 / layOut[layOutOfRows].length}px)`
+            startingCell.style.height = `calc(${100 / layOut[layOutOfRows].length}% - ${10 / (layOut[layOutOfRows].length)}px)`
+            if(layOut[layOutOfRows].length == 1){
+                startingCell.style.height = `calc(100%)`
+            }
             startingRow.appendChild(startingCell)
             cellsToAppend.push([startingCell, layOut[layOutOfRows][layOutOfCells]])
             document.getElementById("mainWindow").appendChild(startingRow)
@@ -308,8 +318,8 @@ function startUp(){
     cellType = compileWindows()
     for(let current = 0; current < cell.length; current++){
         let currentCell = document.getElementsByClassName("cell")[current]
-        console.log("Selecting Values of", cellType[current])
-        createDropdown(currentCell, (cellModes.indexOf(cellType[current][1])))
+        console.log("Selecting Values of", cellType[current], cellModes.indexOf(cellType[current][1]))
+        createDropdown(currentCell, cellModes.indexOf(cellType[current][1]))
         selectMode(current, cellType[current][0], cellType[current][1])
     }
 
@@ -329,26 +339,28 @@ function startUp(){
         newMainWindow.id = "mainWindow"
         document.getElementById("mainContainer").insertBefore(newMainWindow, document.getElementById("cellSettingsOpener"))
         layOut = layOutSelectionMenu[submitedEvent.target.selectedIndex]["layOut"]
-        while(document.getElementById("cellSettingsControls").firstChild){
+        /* while(document.getElementById("cellSettingsControls").firstChild){
             document.getElementById("cellSettingsControls").removeChild(document.getElementById("cellSettingsControls").firstChild)
         }
         document.getElementById("cellSettingsControls").innerHTML = `<p class = "currentSelectedCellValue" id = "0" hidden></p>
     <p style = "display: inline-block; vertical-align: middle;">Width</p><input type = "range" style="width:75px" value = "0"><br>
-    <p style = "display: inline-block; vertical-align: middle">Height</p><input type = "range" style="width:75px" value = "0"><br><br>`
+    <p style = "display: inline-block; vertical-align: middle">Height</p><input type = "range" style="width:75px" value = "0"><br><br>` */
         startUp()
     })
 }
 
-function changeCell(typeOfCell, cellID){
+function changeCell(typeOfCell, cellID, cellLabel){
+
+    console.log("cellLabel")
     // typeOfCell = document.getElementsByClassName("cell")[cellID - 1]
     console.log("Change Cell has", typeOfCell, (cellID))
-    var cellLabel = typeOfCell.getElementsByTagName("select")[0].value
+    var cellLabel = typeOfCell.getElementsByTagName("select")[0].selectedIndex
     console.log("Testing", typeOfCell.getElementsByTagName("select")[0].value)
 
     typeOfCell.getElementsByClassName("header")[0].remove()
     typeOfCell.lastChild.remove()
-    createDropdown(typeOfCell, cellModes.indexOf(cellLabel))
-    selectMode((parseInt(cellID) - 1) , typeOfCell, cellLabel)
+    createDropdown(typeOfCell, cellLabel)
+    selectMode(cellID, typeOfCell, cellModes[cellLabel])
 }
 
 function selectMode(cellIteration, activeCell, cellType){
@@ -356,6 +368,9 @@ function selectMode(cellIteration, activeCell, cellType){
     var currentCell = activeCell
     console.log("Cell Variables are", activeCell, cellIteration, cellType)
 
+    if(activeCell.className.search("hasSceneEditor") > -1){
+        activeCell.className = "cell"
+    }
     // Does not work at all! 
     switch(cellType){
         case "Scene Editor":
@@ -372,10 +387,11 @@ function selectMode(cellIteration, activeCell, cellType){
                 for(var sceneEditorTexelYItterator = 0; sceneEditorTexelYItterator < (defaultObjectParameters[3][2] / gridSnaping); sceneEditorTexelYItterator++){
                     for(var sceneEditorTexelXItterator = 0; sceneEditorTexelXItterator < (defaultObjectParameters[2][2] / gridSnaping); sceneEditorTexelXItterator++){
                         var sceneEditorTexel = document.createElementNS("http://www.w3.org/2000/svg", "rect")
-                        sceneEditorTexel.setAttribute("fill", `rgb(
-                            ${menuOptions["Tile Editor"]["tileLayers"][cellIteration][1][sceneEditorTexelYItterator][sceneEditorTexelXItterator][0]},
-                            ${menuOptions["Tile Editor"]["tileLayers"][cellIteration][1][sceneEditorTexelYItterator][sceneEditorTexelXItterator][1]},
-                            ${menuOptions["Tile Editor"]["tileLayers"][cellIteration][1][sceneEditorTexelYItterator][sceneEditorTexelXItterator][2]}
+                        sceneEditorTexel.setAttribute("fill", `rgba(
+                            ${menuOptions["Tile Editor"]["tileLayers"][sceneEditorGroupMaker][1][sceneEditorTexelYItterator][sceneEditorTexelXItterator][0]},
+                            ${menuOptions["Tile Editor"]["tileLayers"][sceneEditorGroupMaker][1][sceneEditorTexelYItterator][sceneEditorTexelXItterator][1]},
+                            ${menuOptions["Tile Editor"]["tileLayers"][sceneEditorGroupMaker][1][sceneEditorTexelYItterator][sceneEditorTexelXItterator][2]},
+                            ${menuOptions["Tile Editor"]["tileLayers"][sceneEditorGroupMaker][1][sceneEditorTexelYItterator][sceneEditorTexelXItterator][3]}
                         )`)
                         sceneEditorTexel.setAttribute("width", gridSnaping)
                         sceneEditorTexel.setAttribute("height", gridSnaping)
@@ -385,6 +401,7 @@ function selectMode(cellIteration, activeCell, cellType){
                     }
                 }
                 sceneEditorTextures.appendChild(sceneEditorGroup)
+                
             }
 
             // Need to set scene editor to be avaliable for multiple windows
@@ -396,10 +413,13 @@ function selectMode(cellIteration, activeCell, cellType){
             currentCell.appendChild(sceneEditor)
             currentCell.className += " hasSceneEditor"
             for(var objectCreator in (menuOptions["Scene Editor"]["objectData"])){
-                createObjectForDisplay(objectCreator, (document.getElementsByClassName("sceneEditor").length - 1))
+                createObjectForDisplay(objectCreator, cellIteration)
             }
 
-            screenControlsHUD(currentCell)
+            screenControlsHUD(currentCell, cellIteration)
+
+            // resizeSceneEditor(cellIteration)
+
             break
         case "Editor Controls":
             var mainEditorControls = document.createElement("nav")
@@ -447,16 +467,6 @@ function selectMode(cellIteration, activeCell, cellType){
             mainCodeSpace.appendChild(codeSpaceRunButton)
             currentCell.appendChild(mainCodeSpace)
             codeSpaceRunButton.onclick = function(){runCode(document.getElementsByClassName("codeSpaceRunButton").length - 1)}
-            break
-            
-            // Initialize CodeMirror
-
-            var editor = CodeMirror.fromTextArea(codeSpace, {
-                mode: "javascript",
-                theme: "default",
-                lineNumbers: true,
-                autofocus: true // Optional: focus the editor when it's created
-            });
             break;
 
         case "Tile Editor":
@@ -478,9 +488,19 @@ function selectMode(cellIteration, activeCell, cellType){
             tileEditorZoomBarNormalize.innerText = "0"
             tileEditorZoomBarDecrease.innerText = "-"
 
-            tileEditorZoomBarIncrease.onclick = () => {console.log('Zoom In')}
-            tileEditorZoomBarNormalize.onclick = () => {console.log('Zoom to 0')}
-            tileEditorZoomBarDecrease.onclick = () => {console.log('Zoom Out')}
+            tileEditorZoomBarIncrease.onclick = () => {
+                if(gridSizing + 1.5 < 30){
+                    tileEditorZoomChanges(1.5, cellIteration)
+                }
+            }
+            tileEditorZoomBarNormalize.onclick = () => {
+                tileEditorZoomChanges(15 - gridSizing, cellIteration)
+            }
+            tileEditorZoomBarDecrease.onclick = () => {
+                if(gridSizing - 1.5 > 5){
+                    tileEditorZoomChanges(-1.5, cellIteration)
+                }
+            }
 
             tileEditorZoomBarIncrease.className = "tileEditorZoomBarText"
             tileEditorZoomBarNormalize.className = "tileEditorZoomBarText"
@@ -504,18 +524,18 @@ function selectMode(cellIteration, activeCell, cellType){
             for(var tileLayerSelectorName in menuOptions["Tile Editor"]["tileLayers"]){
                 var tileLayerSelectorLabel = document.createElement("option") 
                 tileLayerSelectorLabel.innerText = menuOptions["Tile Editor"]["tileLayers"][tileLayerSelectorName][0]
-                if(tileLayerSelectorName == menuOptions["Scene Editor"]["objectData"][cellIteration]["selectedLayerIndex"]){
+                if(tileLayerSelectorName == menuOptions["Scene Editor"]["objectData"][menuOptions["Scene Editor"]["selectedObjectIndex"]]["selectedLayerIndex"]){
                     tileLayerSelectorLabel.selected = "true"
                 }
                 tileLayerSelector.appendChild(tileLayerSelectorLabel)
             }
-                tileEditorItemChanger.setAttribute("width", (menuOptions["Tile Editor"]["tileLayers"][tileLayerSelectorName][1][0].length) * tileXSpacing - (tileXSpacing - 15))
-                tileEditorItemChanger.setAttribute("height", (menuOptions["Tile Editor"]["tileLayers"][tileLayerSelectorName][1].length) * tileYSpacing - (tileXSpacing - 15))
+                tileEditorItemChanger.setAttribute("width", (menuOptions["Tile Editor"]["tileLayers"][tileLayerSelectorName][1][0].length) * tileXSpacing - (tileXSpacing - gridSizing))
+                tileEditorItemChanger.setAttribute("height", (menuOptions["Tile Editor"]["tileLayers"][tileLayerSelectorName][1].length * tileYSpacing - (tileYSpacing - gridSizing)))
 
             tileLayerSelector.addEventListener("input", () => {
                 var tileEditorScene = tileLayerSelector.parentElement.parentElement.getElementsByClassName("tileEditorScene")[0]
                 tileEditorScene.lastChild.remove()
-                console.log("Variables are", tileEditorScene.clientHeight, tileEditorScene.clientWidth)
+                menuOptions["Scene Editor"]["objectData"][menuOptions["Scene Editor"]["selectedObjectIndex"]]["selectedLayerIndex"] = tileLayerSelector.selectedIndex
                 var tileEditorItemChanger = document.createElementNS("http://www.w3.org/2000/svg", "g")
                 
                 tileEditorItemChanger.setAttribute("width", (menuOptions["Tile Editor"]["tileLayers"][tileLayerSelector.selectedIndex][1][0].length) * tileXSpacing - (tileXSpacing - 15))
@@ -526,12 +546,14 @@ function selectMode(cellIteration, activeCell, cellType){
 
                 tileEditorItemChanger.onmousedown = (event) => {
                     setTileEditorClickItem(event, tileEditorItemChanger)
+                    tileEditorMouseDown = true
                 }
                 tileEditorItemChanger.onmouseup = (event) => {
                     document.getElementsByClassName("selectedTile")[0].remove()
+                    tileEditorMouseDown = false
                 }
                     
-                tileEditorSceneGridSize(tileLayerSelector.selectedIndex, tileEditorItemChanger)
+                tileEditorSceneGridSize(tileLayerSelector.selectedIndex, tileEditorItemChanger, gridSizing)
                 tileEditorScene.appendChild(tileEditorItemChanger)
             })
 
@@ -544,15 +566,62 @@ function selectMode(cellIteration, activeCell, cellType){
             tileEditorScene.setAttribute("y", 0)
             tileEditorScene.setAttribute("viewbox", `0 0 ${currentCell.clientWidth} ${currentCell.clientHeight}`)
 
+            tileEditorItemChanger.onmouseup = () => {
+                tileEditorMouseDown = false
+                if(document.getElementsByClassName("selectedTile").length > 0){
+                    document.getElementsByClassName("selectedTile")[0].remove()
+                }
+            }
+
             tileEditorItemChanger.onmousedown = (event) => {
                 setTileEditorClickItem(event, tileEditorItemChanger)
+                tileEditorMouseDown = true
             }
 
-            tileEditorItemChanger.onmouseup = (event) => {
-                document.getElementsByClassName("selectedTile")[0].remove()
-            }
+            tileEditorItemChanger.onmouseover = (event) => {
+                if(tileEditorMouseDown == true){
+            
+                    let tileEditorSelectedX = Math.floor((event.clientX - Math.floor(tileEditorItemChanger.getBoundingClientRect().x)) / tileXSpacing)
+                    let tileEditorSelectedY = Math.floor((event.clientY - Math.floor(tileEditorItemChanger.getBoundingClientRect().y)) / tileYSpacing)
 
-            tileEditorSceneGridSize(menuOptions["Scene Editor"]["objectData"][cellIteration]["selectedLayerIndex"], tileEditorItemChanger)
+                    var selectedTile = document.getElementsByClassName("selectedTile")[0]
+                    selectedTile.setAttribute("x", tileEditorSelectedX * tileXSpacing)
+                    selectedTile.setAttribute("y", tileEditorSelectedY * tileYSpacing)
+                
+                    if(document.getElementsByClassName("tileEditorColorShowcase").length == 0){
+                        return
+                    }
+
+                    var currentSelectedTile = document.getElementsByClassName("tileLayerSelector")[0].selectedIndex
+                
+                    var selectedTileLayer = document.getElementsByClassName("tileEditorSlider")
+                    console.log("Accessing", currentSelectedTile, tileEditorSelectedX, tileEditorSelectedY, selectedTileLayer[3].value)
+                
+                    menuOptions["Tile Editor"]["tileLayers"][currentSelectedTile][1][tileEditorSelectedY][tileEditorSelectedX] = [
+                        selectedTileLayer[0].value, 
+                        selectedTileLayer[1].value, 
+                        selectedTileLayer[2].value,
+                        selectedTileLayer[3].value,
+                    ]
+                    
+                    document.getElementById(String(menuOptions["Tile Editor"]["tileLayers"][currentSelectedTile][0])).children[tileEditorSelectedY * tilesOnXAxis + tileEditorSelectedX].setAttribute("fill", `rgba(
+                        ${parseInt(selectedTileLayer[0].value)},
+                        ${parseInt(selectedTileLayer[1].value)},
+                        ${parseInt(selectedTileLayer[2].value)},
+                        ${parseFloat(selectedTileLayer[3].value)})`)
+                    
+                
+                    document.getElementsByClassName("tileEditorPixel")[(tileEditorSelectedY * tilesOnXAxis) + tileEditorSelectedX].setAttribute("style", `fill: rgba(
+                        ${selectedTileLayer[0].value}, 
+                        ${selectedTileLayer[1].value}, 
+                        ${selectedTileLayer[2].value},
+                        ${selectedTileLayer[3].value}); 
+                        user-select:none;`)
+                }
+            }
+            
+
+            tileEditorSceneGridSize(menuOptions["Scene Editor"]["objectData"][menuOptions["Scene Editor"]["selectedObjectIndex"]]["selectedLayerIndex"], tileEditorItemChanger, gridSizing)
 
             tileEditorZoomBarBackground.appendChild(tileEditorZoomBarIncrease)
             tileEditorZoomBarBackground.appendChild(tileEditorZoomBarNormalize)
@@ -576,12 +645,6 @@ function selectMode(cellIteration, activeCell, cellType){
             ${(tileEditorScene.clientWidth / 2) - (tileEditorItemChanger.getAttribute("width")) / 2}, 
             ${(tileEditorScene.clientHeight / 2) - (tileEditorItemChanger.getAttribute("height") / 2)})`)
 
-            tileEditorZoomBarBackground.setAttribute("y", `${tileEditorScene.clientHeight / 2 - (tileEditorZoomBarBackground.clientWidth / 2)}`)
-
-            tileEditorZoomBarIncrease.setAttribute("y", `${parseInt(tileEditorZoomBarBackground.getAttribute("y")) + 30 + (parseInt(tileEditorZoomBarBackground.getAttribute("height")) / 2)}`)
-            tileEditorZoomBarNormalize.setAttribute("y", `${parseInt(tileEditorZoomBarBackground.getAttribute("y")) + (parseInt(tileEditorZoomBarBackground.getAttribute("height")) / 2)}`)
-            tileEditorZoomBarDecrease.setAttribute("y", `${parseInt(tileEditorZoomBarBackground.getAttribute("y")) - 30 + (parseInt(tileEditorZoomBarBackground.getAttribute("height")) / 2)}`)
-
             break
         case "Tile Editor Colors":
             var tileEditorMainMenu = document.createElement("div")
@@ -589,7 +652,7 @@ function selectMode(cellIteration, activeCell, cellType){
             var tileEditorColorName = document.createElement("p")
             var tileEditorColorShowcase = document.createElement("div")
             var tileEditorColorRow = document.createElement("div")
-            var tileEditorSetColor = [127, 127, 127, 255]
+            var tileEditorSetColor = [127, 127, 127, 1]
 
             tileEditorMainMenu.className = "tileEditorMainMenu"
             tileEditorColorShowcase.className = "tileEditorColorShowcase"
@@ -628,11 +691,16 @@ function selectMode(cellIteration, activeCell, cellType){
                 tileEditorSlider.max = "255"
                 tileEditorSlider.value = tileEditorSetColor[tileItterator]
                 tileEditorLabel.innerText = tileEditorLabels[tileItterator]
-                tileEditorColorLabel.innerText = tileEditorSetColor[tileItterator] 
+                tileEditorColorLabel.innerText = tileEditorSetColor[tileItterator]
+                
+                if(tileItterator == 3){
+                    tileEditorSlider.step = `${1/255}`
+                    tileEditorSlider.max = "1"
+                }
 
                 tileEditorSlider.addEventListener("input", () => {
                     console.log(document.getElementsByClassName("tileEditorColorLabel")[tileItterator])
-                    document.getElementsByClassName("tileEditorColorLabel")[tileItterator].innerText = document.getElementsByClassName("tileEditorSlider")[tileItterator].value
+                    document.getElementsByClassName("tileEditorColorLabel")[tileItterator].innerText = Math.floor(document.getElementsByClassName("tileEditorSlider")[tileItterator].value * 1000) / 1000
                     tileEditorSetColor[tileItterator] = document.getElementsByClassName("tileEditorSlider")[tileItterator].value
                     document.getElementsByClassName("tileEditorColorShowcase")[0].style.backgroundColor = `rgba(${tileEditorSetColor[0]}, ${tileEditorSetColor[1]}, ${tileEditorSetColor[2]}, ${tileEditorSetColor[3]})`
                 })
@@ -647,6 +715,15 @@ function selectMode(cellIteration, activeCell, cellType){
     }
 }
 
+function tileEditorZoomChanges(modifyer, cellIteration){
+    gridSizing += modifyer
+    tileXSpacing = gridSizing + 3 * (gridSizing / 15)
+    tileYSpacing = gridSizing + 3 * (gridSizing / 15)
+    console.log("Tile Editor Zoom Changes Inputed Variables are", cellIteration)
+    changeCell(document.getElementsByClassName("cell")[cellIteration], cellIteration)
+    // document.getElementsByClassName("cell")[cellIteration].remove()
+}
+
 function setTileEditorClickItem(event, tileEditorItemChanger){
     if(document.getElementsByClassName("selectedTile").length != 0){
         document.getElementsByClassName("selectedTile")[0].remove()
@@ -655,71 +732,65 @@ function setTileEditorClickItem(event, tileEditorItemChanger){
     let tileEditorSelectedY = Math.floor((event.clientY - Math.floor(tileEditorItemChanger.getBoundingClientRect().y)) / tileYSpacing)
 
     var selectedTile = document.createElementNS("http://www.w3.org/2000/svg", "rect")
-    selectedTile.setAttribute("width", 15)
-    selectedTile.setAttribute("height", 15)
+    selectedTile.setAttribute("width", gridSizing)
+    selectedTile.setAttribute("height", gridSizing)
     selectedTile.setAttribute("x", tileEditorSelectedX * tileXSpacing)
     selectedTile.setAttribute("y", tileEditorSelectedY * tileYSpacing)
     selectedTile.setAttribute("class", "selectedTile")
-    selectedTile.setAttribute("style", "fill: transparent; stroke: red; stroke-width: 3")
+    selectedTile.setAttribute("style", `fill: transparent; stroke: red; stroke-width: ${gridSizing / 5}`)
     tileEditorItemChanger.appendChild(selectedTile)
 
     if(document.getElementsByClassName("tileEditorColorShowcase").length == 0){
         return
     }
 
-    /* menuOptions["Tile Editor"]["tileLayers"][
-        menuOptions["Scene Editor"]["objectData"][
-            menuOptions["Scene Editor"]["selectedObjectIndex"]
-        ]["selectedLayerIndex"]
-    ][1][tileEditorSelectedY][tileEditorSelectedX]  = [ 
-        document.getElementsByClassName("tileEditorSlider")[0].value,
-        document.getElementsByClassName("tileEditorSlider")[1].value,
-        document.getElementsByClassName("tileEditorSlider")[2].value
-    ]    
-    */
     var currentSelectedTile = document.getElementsByClassName("tileLayerSelector")[0].selectedIndex
 
     console.log("Accessing", currentSelectedTile, tileEditorSelectedX, tileEditorSelectedY)
 
-    menuOptions["Tile Editor"]["tileLayers"][currentSelectedTile][1][tileEditorSelectedY][tileEditorSelectedX][0] = parseInt(document.getElementsByClassName("tileEditorSlider")[0].value)
-    menuOptions["Tile Editor"]["tileLayers"][currentSelectedTile][1][tileEditorSelectedY][tileEditorSelectedX][1] = parseInt(document.getElementsByClassName("tileEditorSlider")[1].value)
-    menuOptions["Tile Editor"]["tileLayers"][currentSelectedTile][1][tileEditorSelectedY][tileEditorSelectedX][2] = parseInt(document.getElementsByClassName("tileEditorSlider")[2].value)
+    menuOptions["Tile Editor"]["tileLayers"][currentSelectedTile][1][tileEditorSelectedY][tileEditorSelectedX] = [
+    parseInt(document.getElementsByClassName("tileEditorSlider")[0].value),
+    parseInt(document.getElementsByClassName("tileEditorSlider")[1].value),
+    parseInt(document.getElementsByClassName("tileEditorSlider")[2].value),
+    parseFloat(document.getElementsByClassName("tileEditorSlider")[3].value)]
     
-    document.getElementById(String(menuOptions["Tile Editor"]["tileLayers"][currentSelectedTile][0])).childNodes[tileEditorSelectedY * tilesOnXAxis + tileEditorSelectedX].setAttribute("fill", `rgb(
+    document.getElementById(String(menuOptions["Tile Editor"]["tileLayers"][currentSelectedTile][0])).childNodes[tileEditorSelectedY * tilesOnXAxis + tileEditorSelectedX].setAttribute("fill", `rgba(
         ${parseInt(document.getElementsByClassName("tileEditorSlider")[0].value)},
         ${parseInt(document.getElementsByClassName("tileEditorSlider")[1].value)},
-        ${parseInt(document.getElementsByClassName("tileEditorSlider")[2].value)})
+        ${parseInt(document.getElementsByClassName("tileEditorSlider")[2].value)},
+        ${parseFloat(document.getElementsByClassName("tileEditorSlider")[3].value)})
     `)
 
-    document.getElementsByClassName("tileEditorPixel")[(tileEditorSelectedY * tilesOnXAxis) + tileEditorSelectedX].setAttribute("style", `fill: rgb(
+    document.getElementsByClassName("tileEditorPixel")[(tileEditorSelectedY * tilesOnXAxis) + tileEditorSelectedX].setAttribute("style", `fill: rgba(
         ${document.getElementsByClassName("tileEditorSlider")[0].value}, 
         ${document.getElementsByClassName("tileEditorSlider")[1].value}, 
-        ${document.getElementsByClassName("tileEditorSlider")[2].value}); 
+        ${document.getElementsByClassName("tileEditorSlider")[2].value},
+        ${document.getElementsByClassName("tileEditorSlider")[3].value}); 
         user-select:none;`)
 
 }
 
-function tileEditorSceneGridSize(objectIndex, tileEditorItemChanger){
+function tileEditorSceneGridSize(objectIndex, tileEditorItemChanger, tileGridSize){
     // console.log("My inputed variables are", menuOptions["Tile Editor"]["tileLayers"][menuOptions["Scene Editor"]["objectData"][objectIndex]["selectedLayerIndex"]][1][0].length, menuOptions["Tile Editor"]["tileLayers"][objectIndex][1].length)
-    
+
     for(let tileYItterator = 0; tileYItterator < menuOptions["Tile Editor"]["tileLayers"][objectIndex][1].length; tileYItterator++){
         for(let tileXItterator = 0; tileXItterator < menuOptions["Tile Editor"]["tileLayers"][objectIndex][1][tileYItterator].length; tileXItterator++){
             
             var mainObstacle = document.createElementNS("http://www.w3.org/2000/svg" , "rect")
-            let tileEditorObjectColor = menuOptions["Tile Editor"]["tileLayers"][objectIndex][1][tileYItterator][tileXItterator]
+            let tileEditorObjectColor = menuOptions["Tile Editor"]["tileLayers"][objectIndex][1][tileYItterator][tileXItterator] 
 
             console.log("Set value for Tile Editor is", tileEditorObjectColor)
 
-            mainObstacle.setAttribute("height", 15)
-            mainObstacle.setAttribute("width", 15)
+            mainObstacle.setAttribute("height", tileGridSize)
+            mainObstacle.setAttribute("width", tileGridSize)
             mainObstacle.setAttribute("x", (tileXItterator * tileXSpacing))
             mainObstacle.setAttribute("y", (tileYItterator * tileYSpacing))
-            console.log("Setting cordinates of", tileXItterator, tileYItterator)
             mainObstacle.setAttribute("class", "tileEditorPixel")
-            mainObstacle.setAttribute("style", `fill: rgb(
+            mainObstacle.setAttribute("style", `fill: rgba(
             ${tileEditorObjectColor[0]}, 
             ${tileEditorObjectColor[1]}, 
-            ${tileEditorObjectColor[2]}); user-select: none`)
+            ${tileEditorObjectColor[2]},
+            ${tileEditorObjectColor[3]}); user-select: none`)
 
             tileEditorItemChanger.appendChild(mainObstacle)
         }
@@ -756,17 +827,15 @@ function addTileLayer(tileWidth, tileHeight){
 }
 
 function createObjectForDisplay(objectCreator, sceneID){
-    console.log("Accessing", objectCreator)
-    console.log("Accessing", objectCreator, menuOptions["Tile Editor"]["tileLayers"][menuOptions["Scene Editor"]["objectData"][objectCreator]["selectedLayerIndex"]])
+    console.log("Accessing", sceneID, objectCreator, menuOptions["Tile Editor"]["tileLayers"][menuOptions["Scene Editor"]["objectData"][objectCreator]["selectedLayerIndex"]])
     var sceneElement = document.createElementNS("http://www.w3.org/2000/svg", "use")
     sceneElement.setAttribute("height", menuOptions["Scene Editor"]["objectData"][objectCreator]["height"])
     sceneElement.setAttribute("width", menuOptions["Scene Editor"]["objectData"][objectCreator]["width"])
     sceneElement.setAttribute("x", menuOptions["Scene Editor"]["objectData"][objectCreator]["x"])
     sceneElement.setAttribute("y", menuOptions["Scene Editor"]["objectData"][objectCreator]["y"])
     sceneElement.setAttribute("class", "sceneObject")
-    sceneElement.setAttribute("style", "fill: purple;")
     sceneElement.setAttribute("href", `#${menuOptions["Tile Editor"]["tileLayers"][menuOptions["Scene Editor"]["objectData"][objectCreator]["selectedLayerIndex"]][0]}`)
-    document.getElementsByClassName("sceneEditor")[sceneID].appendChild(sceneElement)
+    document.getElementsByClassName("cell")[sceneID].getElementsByClassName("sceneEditor")[0].appendChild(sceneElement)
 }
 
 function runCode(javaScriptIterator) {
@@ -832,8 +901,6 @@ function createObjectControls(cellIteration){
 
 function addObjectControls(editorID, editorObject){
     console.log("Items for controls are", editorID, editorObject)
-    // create a button to delete test box
-    var delBoxButton = document.createElement("button")
     var editorItem = document.createElement("div")
     var expandedControlsImage = document.createElement("img")
     var objectName = document.createElement("p")
@@ -845,49 +912,26 @@ function addObjectControls(editorID, editorObject){
     }
     console.log("I'm getting inputed", editorID)
 
-    delBoxButton.innerText = "Delete Box"
     objectName.innerText = menuOptions["Scene Editor"]["objectData"][editorObject]["name"]
-
     objectName.style.display = "inline-block"
-    editorItem.style.float = "left"
-
     objectName.className = "objectNameLabel"
-    delBoxButton.className = "delBoxButton"
-    editorItem.className = "editorItem"
     
-    delBoxButton.onclick = function(){
-        deleteBox(editorObject, editorItem);
-    };
+    editorItem.style.float = "left"
+    editorItem.className = "editorItem"
 
-    editorItem.appendChild(delBoxButton)
+
     editorItem.appendChild(expandedControlsImage)
     editorItem.appendChild(objectName)
-    editorID.appendChild(editorItem)
-    // when delete button is clicked
-
     for(var appendChildIterator = 0; appendChildIterator < document.getElementsByClassName("mainEditorControls").length; appendChildIterator++){
         editorID.appendChild(editorItem)
     }
 }
 
-function deleteBox(objectIndex, editorItem){
-    var sceneObject = document.getElementsByClassName("sceneObject")[objectIndex];
-    if (sceneObject) {
-        // Remove the sceneObject from the document
-        sceneObject.remove();
+function screenControlsHUD(svgWindow, cellIteration){
+    svgWindow = svgWindow.getElementsByTagName("svg")[0]
 
-        // Remove the object from the data
-        menuOptions["Scene Editor"]["objectData"].splice(objectIndex, 1); 
+    console.log("Inputed variables are", svgWindow, cellIteration)
 
-        // Remove the corresponding editorItem
-        editorItem.remove();
-    } else {
-        console.log("Scene object not found in DOM.");
-    }
-}
-
-function screenControlsHUD(svgWindow){
-    svgWindow = document.getElementsByClassName("sceneEditor")[0]
     var player = document.createElementNS("http://www.w3.org/2000/svg", "rect")
     player.setAttribute("id", "player")
     player.setAttribute("x", Math.floor((svgWindow.clientWidth / 2 - 12) / gridSnaping + 0.5) * gridSnaping)
@@ -1011,10 +1055,13 @@ function resizeWindows(events){
     var allCells = document.querySelectorAll(".cell")
     for(let layOutOfRows in layOut){
         for(let layOutOfCells in layOut[layOutOfRows]){
-            console.log("Layout of this is", (allCells[currentAccessedCell]))
+            console.log("Layout of this is", (allCells[currentAccessedCell].children[0].className))
             allRows[layOutOfRows].style.width = `calc(${String(100 / layOut.length)}% - ${30 / layOut.length}px)`
             if(String(allCells[currentAccessedCell].className).search("hasSceneEditor") > -1){
                 resizeSceneEditor(currentAccessedCell)
+            }
+            else if(allCells[currentAccessedCell].children[0].className.search("mainTileLayerMenu") > -1){
+                resizeTileEditor(currentAccessedCell)
             }
             currentAccessedCell += 1
         }
@@ -1025,13 +1072,26 @@ function resizeSceneEditor(currentAccessedCell){
     var allCells = document.querySelectorAll(".cell")
     for(var svgShapes = 0; svgShapes < document.getElementsByClassName("sceneObject").length; svgShapes++){
         var svgShape = document.getElementsByClassName("sceneObject")[svgShapes]
-        console.log(svgShape)
-        console.log("X is", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
-        svgShape.setAttribute("x", (gridResizing((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2) + parseInt(menuOptions["Scene Editor"]["objectData"][svgShapes]["x"])))
-        svgShape.setAttribute("y", (gridResizing((allCells[currentAccessedCell].clientHeight - menuOptions["Scene Editor"]["screenData"][3]) / 2)  + parseInt(menuOptions["Scene Editor"]["objectData"][svgShapes]["y"])))
-    }
+        // console.log(svgShape)
+        // console.log("X is", Math.floor((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2))
+        svgShape.setAttribute("x", (
+            gridResizing((allCells[currentAccessedCell].clientWidth - menuOptions["Scene Editor"]["screenData"][2]) / 2) + svgShape.clientWidth))
+        svgShape.setAttribute("y", (
+            gridResizing((allCells[currentAccessedCell].clientHeight - menuOptions["Scene Editor"]["screenData"][3]) / 2) + svgShape.clientHeight))
+        // svgShape.setAttribute("x", )
+    }  
     document.getElementById("player").setAttribute("x", gridResizing((allCells[currentAccessedCell].clientWidth / 2 - 12)))
     document.getElementById("player").setAttribute("y", gridResizing((allCells[currentAccessedCell].clientHeight / 2 - 12)))
+}
+
+function resizeTileEditor(currentAccessedCell){
+    var tileEditorScene = document.getElementsByClassName("cell")[currentAccessedCell].getElementsByClassName("tileEditorScene")[0]
+    var tileEditorItemChanger = document.getElementsByClassName("cell")[currentAccessedCell].getElementsByClassName("tileEditorScene")[0].children[0] 
+    tileEditorItemChanger.setAttribute("transform", `translate(
+            ${(tileEditorScene.clientWidth / 2) - (tileEditorItemChanger.getAttribute("width")) / 2}, 
+            ${(tileEditorScene.clientHeight / 2) - (tileEditorItemChanger.getAttribute("height") / 2)})`)
+
+    
 }
 
 function horMoveDivider(e){
@@ -1042,19 +1102,23 @@ function horMoveDivider(e){
         var firstHalf = allRows[currentDivider.id.toString().replace("horizontal", "")[0]]
         var secondHalf = allRows[currentDivider.id.toString().replace("horizontal", "")[1]]
 
-        console.log("The Class Name is", document.getElementsByClassName("cell")[0].className)
+        // console.log("The Class Name is", document.getElementsByClassName("cell")[0].className)
         secondHalf.style.width = `${((secondHalf.clientWidth + firstHalf.clientWidth) - (e.clientX - 25))}px`
         firstHalf.style.width = `${(e.clientX - 25)}px`
 
-        console.log("Selected Elements for rows are", firstHalf, secondHalf)
-        console.log("Number of rows are", allRows.length)
+        // console.log("Selected Elements for rows are", firstHalf, secondHalf)
+        // console.log("Number of rows are", allRows.length)
     
-        console.log("Multiple Cells for", Math.floor(firstHalf.childNodes.length / 2) + 1, Math.floor(secondHalf.childNodes.length) + 1)
+        // console.log("Multiple Cells for", Math.floor(firstHalf.childNodes.length / 2) + 1, Math.floor(secondHalf.childNodes.length) + 1)
         for(var cellIndexSearch = 0; cellIndexSearch < document.getElementsByClassName("cell").length; cellIndexSearch++){
-            console.log("Checking for instance", (allCells[cellIndexSearch].getAttributeNode("class").value))
+            console.log("Layout of this is", (allCells[cellIndexSearch].children[1].className))
+            // console.log("Checking for instance", (allCells[cellIndexSearch].getAttributeNode("class").value))
             if((allCells[cellIndexSearch].getAttributeNode("class")).value.includes("hasSceneEditor")){
-                console.log("Detected for a Scene Editor")
+                // console.log("Detected for a Scene Editor")
                 resizeSceneEditor(cellIndexSearch)
+            }
+            else if(allCells[cellIndexSearch].children[1].className.includes("mainTileEditor")){
+                resizeTileEditor(cellIndexSearch)
             }
         }
     }
@@ -1182,6 +1246,10 @@ window.addEventListener("mousedown", function (e) {
 window.addEventListener("mouseup", function(e){
     horIsMouseDown = horIsMouseDown.map((setValue) => [false])
     vertIsMouseDown = vertIsMouseDown.map((setValue) => [false])
+    tileEditorMouseDown = false
+    if(document.getElementsByClassName("selectedTile").length > 0){
+        document.getElementsByClassName("selectedTile")[0].remove()
+    }
 })
 
 var menu = document.getElementById("mainContainer");
@@ -1220,6 +1288,8 @@ document.addEventListener("keydown", function(event){
 })
 
 function movePlayer(x, y){
+    menuOptions["Scene Editor"]["player"]["coords"][0] += x
+    menuOptions["Scene Editor"]["player"]["coords"][1] += y
     for(var sceneObjectIndex = 0; sceneObjectIndex < document.getElementsByClassName("sceneObject").length; sceneObjectIndex++){
         var currentSceneObject = document.getElementsByClassName("sceneObject")[sceneObjectIndex]
         currentSceneObject.setAttribute("x", (parseInt(currentSceneObject.getAttribute("x")) + x))
@@ -1228,7 +1298,7 @@ function movePlayer(x, y){
 }
 
 var settingsIsOpened = true
-document.getElementById("cellSettingsOpener").onclick = function(){
+/* document.getElementById("cellSettingsOpener").onclick = function(){
     
     if(settingsIsOpened == false){
         settingsIsOpened = true
@@ -1241,9 +1311,9 @@ document.getElementById("cellSettingsOpener").onclick = function(){
     cellSettingsOpener.style.right = (cellSettingsControls.clientWidth) + "px"
     cellSettingsControls.style.right = "0px" 
     cellSettingsOpener.innerText = ">"
-}
+} */ 
 
-preloadCellSettings()
+// preloadCellSettings()
 
 function preloadCellSettings(){
     var cellSettingsOpener = document.getElementById("cellSettingsOpener")

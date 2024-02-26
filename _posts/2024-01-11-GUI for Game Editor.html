@@ -16,16 +16,16 @@
                 <select style = "height: 25px; font-size: 20px; color:white; background-color: transparent; border-radius: 30px; border-color: white; position: absolute; right:0px; display: inline-block; padding: 0px 10px 0px 10px; top: 17px; width: calc(100% - 280px); max-width: 180px; text-overflow: ellipsis" id = "layOutSelectionMenu">
                 </select>
             </div>
-            <div id = "cellSettingsOpener">&lt;</div>
-            <div id = "cellSettingsControls">
+            <!-- div id = "cellSettingsOpener">&lt;</div -->
+            <!-- div id = "cellSettingsControls">
                 <p class = "currentSelectedCellValue" id = "0" hidden></p>
                 <p style = "display: inline-block; vertical-align: middle;">Width</p><input type = "range" style="width:75px" value = "0"><br>
                 <p style = "display: inline-block; vertical-align: middle">Height</p><input type = "range" style="width:75px" value = "0"><br><br>
-            </div>
+            </div-->
             <div id = "mainWindow">
             </div>
         </div>
-        <script type="module">
+        <!--script type="module">
             const url = 'http://127.0.0.1:8084/api/users/';
             // prepare HTML result container for new output
             const resultContainer = document.getElementById("result");
@@ -58,7 +58,7 @@
                     console.error(err);
                     resultContainer.innerHTML = err + ": " + url;
                 });
-        </script>
+        </script-->
         <script src = "2024-01-17-GUIforGameEditorCode.js">
         </script>
     </body>
