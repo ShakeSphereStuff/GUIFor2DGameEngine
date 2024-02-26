@@ -6,81 +6,158 @@
 <title>Fetch Request Example</title>
 <style>
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
     }
+
+    header {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 1.5em;
+        font-size: 2em;
+    }
+
+    nav {
+        background-color: #444;
+        overflow: hidden;
+    }
+
+    nav a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+    
     form {
         margin: 20px;
+        max-width: 400px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
     }
-    input[type="text"], input[type="password"] {
-        padding: 10px;
-        margin-bottom: 10px;
-        width: 300px;
+    
+    input[type="text"],
+    input[type="password"] {
+        padding: 12px;
+        margin-bottom: 20px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
     }
+    
     button {
-        padding: 10px 20px;
+        padding: 12px 24px;
         background-color: #007bff;
         color: #fff;
         border: none;
+        border-radius: 4px;
         cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
     }
+    
     button:hover {
         background-color: #0056b3;
     }
+    
+    /* Add more styles for other elements if needed */
+    
 </style>
 </head>
 <body>
+
+    <header>
+        Your Game Universe
+    </header>
+
+    <nav>
+        <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
+        <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
+        <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
+        <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
+        <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
+        <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
+        <a href="http://127.0.0.1:5501/_posts/edit.html">UPDATE</a>
+    </nav>
+
 <form id="form">
     <input type="text" id="nameInput" placeholder="New name"><br>
-    <button type="button" onclick="sendData('name')">Submit Name</button><br>
+    <button type="button" onclick="update('name')">Submit Name</button><br>
     <input type="password" id="passwordInput" placeholder="New password"><br>
-    <button type="button" onclick="sendData('password')">Submit Password</button>
+    <button type="button" onclick="update('password')">Submit Password</button><br>
+    <input type="text" id="favoriteInput" placeholder="New favorite"><br>
+    <button type="button" onclick="update('favorite')">Submit Favorite</button><br>
     <p id="error"></p>
 </form>
-
+<!-- <form action="javascript:update()">
+    <p><input type="text" id="nameInput" placeholder="New name"><br></p>
+    <p><input type="password" id="passwordInput" placeholder="New password"><br></p>
+    <p><input type="text" id="favoriteInput" placeholder="New favorite"><br></p>
+     <p><label>
+        Food:
+        <input type="text" name="Food" id="Food" required="" />
+    </label></p>
+    <p>
+        <button>Update User</button>
+    </p>
+</form> -->
+<p id="error"></p>
 <script>
-function sendData(type) {
-    const url ='http://127.0.0.1:8084/api/users/';
+    function update() {
+        const url ='http://127.0.0.1:8084/api/users/';
 
-    // Set the body of the request to include login data from the DOM
-    const body = {
-        password: document.getElementById("passwordInput").value,
-        name: document.getElementById("nameInput").value,
-    };
+        // Set the body of the request to include login data from the DOM
+        const body = {
+            name: document.getElementById("nameInput").value,
+            password: document.getElementById("passwordInput").value,
+            favorite: document.getElementById("favoriteInput").value,
+        };
 
-    // Change options according to Authentication requirements
-    const authOptions = {
-        mode: 'cors', // no-cors, *cors, same-origin
-        credentials: 'include', // include, same-origin, omit
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        method: 'PUT    ', // Override the method property
-        cache: 'no-cache', // Set the cache property
-        body: JSON.stringify(body)
-    };
+        // Change options according to Authentication requirements
+        const authOptions = {
+            mode: 'cors', // no-cors, *cors, same-origin
+            credentials: 'include', // include, same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'PUT', // Override the method property
+            cache: 'no-cache', // Set the cache property
+            body: JSON.stringify(body)
+        };
 
-    // Fetch JWT
-    fetch(url, authOptions)
-    .then(response => {
-        // handle error response from Web API
-        if (!response.ok) {
-            const errorMsg = 'Login error: ' + response.status;
+        // Fetch JWT
+        fetch(url, authOptions)
+        .then(response => {
+            // handle error response from Web API
+            if (!response.ok) {
+                const errorMsg = 'Login error: ' + response.status;
+                document.getElementById("error").value = "Could not change information"
+                console.log(errorMsg);
+                return;
+            }
+            // Success!!!
+            // Redirect to the database page
+            document.getElementById("error").value = ""
+            window.location.href = "http://127.0.0.1:5501/_posts/favorites.html"
+            ;
+        })
+        // catch fetch errors (ie ACCESS to server blocked)
+        .catch(err => {
             document.getElementById("error").value = "Could not change information"
-            console.log(errorMsg);
-            return;
-        }
-        // Success!!!
-        // Redirect to the database page
-        document.getElementById("error").value = ""
-        window.location.href = "http://127.0.0.1:5501/_posts/_posts/2024-02-06-DataBase.html"
-        ;
-    })
-    // catch fetch errors (ie ACCESS to server blocked)
-    .catch(err => {
-        document.getElementById("error").value = "Could not change information"
-        console.error(err);
-    });
-}
+            console.error(err);
+        });
+    }
 </script>
 </body>
 </html>
