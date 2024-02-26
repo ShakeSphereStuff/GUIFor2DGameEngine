@@ -83,10 +83,12 @@
     </header>
 
     <nav>
-        <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
-        <a href="http://127.0.0.1:5500/_posts/gameslist.html">GAMES</a>
-        <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
-
+        <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
+        <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
+        <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
+        <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
+        <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
+        <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
     </nav>
     <div id="ticTacToe"></div>
     <div id="result"></div>
@@ -111,7 +113,7 @@
                 // check for response errors and display
                 if (response.status !== 200) {
                     const errorMsg = 'Database response error: ' + response.status;
-                    window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-401error.html";
+                    window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-401error.html";
                     console.log(errorMsg);
                     resultContainer.textContent = errorMsg;
                     return;
@@ -120,7 +122,7 @@
             })
             // catch fetch errors (i.e., ACCESS to server blocked)
             .catch(err => {
-                window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-403error.html"
+                window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-403error.html"
                 console.error(err);
                 resultContainer.innerHTML = err + ": " + url;
             });

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fetch Request Example</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    form {
+        margin: 20px;
+    }
+    input[type="text"], input[type="password"] {
+        padding: 10px;
+        margin-bottom: 10px;
+        width: 300px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+<form id="form">
+    <input type="text" id="nameInput" placeholder="New name"><br>
+    <button type="button" onclick="sendData('name')">Submit Name</button><br>
+    <input type="password" id="passwordInput" placeholder="New password"><br>
+    <button type="button" onclick="sendData('password')">Submit Password</button>
+    <p id="error"></p>
+</form>
+
+<script>
+function sendData(type) {
+    const url ='http://127.0.0.1:8084/api/users/';
+
+    // Set the body of the request to include login data from the DOM
+    const body = {
+        password: document.getElementById("passwordInput").value,
+        name: document.getElementById("nameInput").value,
+    };
+
+    // Change options according to Authentication requirements
+    const authOptions = {
+        mode: 'cors', // no-cors, *cors, same-origin
+        credentials: 'include', // include, same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'PUT    ', // Override the method property
+        cache: 'no-cache', // Set the cache property
+        body: JSON.stringify(body)
+    };
+
+    // Fetch JWT
+    fetch(url, authOptions)
+    .then(response => {
+        // handle error response from Web API
+        if (!response.ok) {
+            const errorMsg = 'Login error: ' + response.status;
+            document.getElementById("error").value = "Could not change information"
+            console.log(errorMsg);
+            return;
+        }
+        // Success!!!
+        // Redirect to the database page
+        document.getElementById("error").value = ""
+        window.location.href = "http://127.0.0.1:5501/_posts/_posts/2024-02-06-DataBase.html"
+        ;
+    })
+    // catch fetch errors (ie ACCESS to server blocked)
+    .catch(err => {
+        document.getElementById("error").value = "Could not change information"
+        console.error(err);
+    });
+}
+</script>
+</body>
+</html>
