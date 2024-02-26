@@ -69,12 +69,11 @@
     Your Game Universe
 </header>
 <nav>
-    <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
-    <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
-    <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
-    <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
-    <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
-    <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
+    <a href="http://127.0.0.1:5500/_posts/index.html">Home</a>
+    <a href="http://127.0.0.1:5500/_posts/gameslist.html">GAMES</a>
+    <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
+    <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin.html">Login</a>
+    <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">Sign Up</a>
 </nav>
 <div id="maze"></div>
 <div id="message"></div>
@@ -142,8 +141,9 @@
     function movePlayer(event) {
         const { key } = event;
 
-        const newRow = playerPosition.row + (key === 'ArrowDown' ? 1 : key === 'ArrowUp' ? -1 : 0);
-        const newCol = playerPosition.col + (key === 'ArrowRight' ? 1 : key === 'ArrowLeft' ? -1 : 0);
+        const newRow = playerPosition.row + (key === 'ArrowDown' || key === 'S' ? 1 : key === 'ArrowUp' || key === 'W' ? -1 : 0);
+        const newCol = playerPosition.col + (key === 'ArrowRight' || key === 'D' ? 1 : key === 'ArrowLeft' || key === 'A' ? -1 : 0);
+
 
         if (newRow >= 0 && newRow < mazeSize && newCol >= 0 && newCol < mazeSize) {
             const targetCell = mazeLayout[newRow][newCol];
