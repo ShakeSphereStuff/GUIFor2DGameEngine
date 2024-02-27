@@ -1,297 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Game Universe</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f9f9f9;
-            text-align: center;
-        }
+   <!-- Meta tag -->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Your Game Universe</title>
+   <!-- styles for the webpage using CSS -->
+   <style>
+       /* styles for the body element */
+       body {
+           /* Font and layout settings */
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+           background-color: #f9f9f9;
+           text-align: center;
+       }
 
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1.5em;
-            font-size: 2em;
-        }
+       /* sytles for the header element */
+       header {
+           background-color: #333;
+           color: white;
+           text-align: center;
+           padding: 1.5em;
+           font-size: 2em;
+       }
 
-        nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #444;
-            padding: 1em;
-        }
+       /* styles for the navigation bar */
+       nav {
+           display: flex;
+           justify-content: space-around;
+           background-color: #444;
+           padding: 1em;
+       }
 
-        nav a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2em;
-            transition: color 0.3s ease-in-out;
-        }
+       /* styles for navigation links */
+       nav a {
+           text-decoration: none;
+           color: white;
+           font-weight: bold;
+           font-size: 1.2em;
+           transition: color 0.3s ease-in-out;
+       }
 
-        nav a:hover {
-            color: #ffcc00;
-        }
+       /* Hover effect for navigation links */
+       nav a:hover {
+           color: #ffcc00;
+       }
 
-        .filter {
-            margin-top: 1em;
-        }
+       /* styles for filter section */
+       .filter {
+           margin-top: 1em;
+       }
 
-        #gamesSection {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            justify-content: center;
-            padding: 20px;
-        }
+       /* styles for games section */
+       #gamesSection {
+           display: grid;
+           grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+           gap: 20px;
+           justify-content: center;
+           padding: 20px;
+       }
 
-        .game {
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out;
-            cursor: pointer;
-        }
+       /* styles for individual game cards/bubble looking thingies*/
+       .game {
+           position: relative;
+           overflow: hidden;
+           border-radius: 8px;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+           transition: transform 0.3s ease-in-out;
+           cursor: pointer;
+       }
 
-        .game:hover {
-            transform: scale(1.05);
-        }
+       /* scale game cards to mkae it look like its hovering*/
+       .game:hover {
+           transform: scale(1.05);
+       }
 
-        .game img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px 8px 0 0;
-            z-index: 0;
-        }
+       /* styles for game images */
+       .game img {
+           width: 100%;
+           height: auto;
+           border-radius: 8px 8px 0 0;
+           z-index: 0;
+       }
 
-        /*
-        .favorite-icon {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out;
-        }
-        */
+       /* styles for the notif message */
+       .notification {
+           position: fixed;
+           bottom: 10px;
+           right: 10px;
+           background-color: #4CAF50;
+           color: white;
+           padding: 15px;
+           display: none;
+       }
 
-        .notification {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            display: none;
-        }
-
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1.5em;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-    </style>
+       /* style footer */
+       footer {
+           background-color: #333;
+           color: white;
+           text-align: center;
+           padding: 1.5em;
+           position: fixed;
+           bottom: 0;
+           width: 100%;
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           margin: 0;
+           padding: 0;
+           background-color: #f9f9f9;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+       }
+   </style>
 </head>
+
+<!-- header  -->
 <header>
-    Your Game Universe
+   Your Game Universe
 </header>
+
 <body>
-    <nav>
-        <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
-        <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
-        <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
-        <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
-        <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
-        <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
-        <a href="http://127.0.0.1:5501/_posts/edit.html">UPDATE</a>
-    </nav>
+   <!-- nav bar  -->
+   <nav>
+       <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
+       <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
+       <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
+       <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
+       <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
+       <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
+       <a href="http://127.0.0.1:5501/_posts/edit.html">UPDATE</a>
+   </nav>
 
-    <div class="filter">
-        <label for="nameFilter">Filter by Name:</label>
-        <input type="text" id="nameFilter" oninput="filterGames()" placeholder="Enter name">
+   <!-- Filters -> buy free sign in etc -->
+   <div class="filter">
+       <label for="nameFilter">Filter by Name:</label>
+       <input type="text" id="nameFilter" oninput="filterGames()" placeholder="Enter name">
 
-        <label for="statusFilter">Filter by Status:</label>
-        <select id="statusFilter" onchange="filterGames()">
-            <option value="">All</option>
-            <option value="Free">Free</option>
-            <option value="Sign-in to Play">Sign-in to Play</option>
-            <option value="Buy">Buy</option>
-        </select>
-    </div>
+       <label for="statusFilter">Filter by Status:</label>
+       <select id="statusFilter" onchange="filterGames()">
+           <option value="">All</option>
+           <option value="Free">Free</option>
+           <option value="Sign-in to Play">Sign-in to Play</option>
+           <option value="Buy">Buy</option>
+       </select>
+   </div>
+   <section id="gamesSection"></section>
+   <!-- notif Section -->
+   <div class="notification" id="notification">
+       Game Favorited!
+   </div>
 
-    <section id="gamesSection"></section>
+   <!-- Footer thingy -->
+   <footer>&copy; 2024 Your Game Universe. All rights reserved by... why are u reading this.</footer>
 
-    <div class="notification" id="notification">
-        Game Favorited!
-    </div>
+   <!-- Js code -->
+   <script>
+       // Array containing game data
+       const gamesData = [
+           // Game objects with name, description, image, status
+       ];
 
-    <footer>&copy; 2024 Your Game Universe. All rights reserved by... why are u reading this.</footer>
+       // reference to the games section in the HTML
+       const gamesSection = document.getElementById('gamesSection');
 
-    <script>
-        const gamesData = [
-            {
-                name: 'Tic Tac Toe',
-                description: 'Tic-tac-toe, noughts and crosses, or Xs and Os is a paper-and-pencil game for two players who take turns marking the spaces in a three-by-three grid with X or O. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner.',
-                image: '../images/gamescrollimages/tictactoe.png',
-                status: 'Sign-in to Play',
-            },
-            {
-                name: 'Obstacle Maze',
-                description: 'Navigate your way through the randomly generated maze!',
-                image: '../images/gamescrollimages/mazedgames.png',
-                status: 'Free',
-            },
-            {
-                name: 'Guess the Number (1-100!)',
-                description: 'Guess the number from 1 to 100! Whats the least amount of attempts you can get the number in!',
-                image: '../images/gamescrollimages/guesshtenumber.png',
-                status: 'Sign-in to Play',
-            },
-            {
-                name: '2048',
-                description: 'Merge the tiles in order to get 2048!',
-                image: '../images/gamescrollimages/2048.png',
-                status: 'Free',
-            },
-            {
-                name: 'Game Creator',
-                description: 'Create Your Own Games!',
-                image: '../images/gamecreatoriamges/editorControlsFor2DGUI.png',
-                status: 'Sign-in to Play',
+       // function to render game cards based on data
+       function renderGames(data) {
+           // clear existing content in the games section
+           gamesSection.innerHTML = '';
 
-            },
-            {
-                name: 'Ping Pong',
-                description: 'Play Ping Pong!',
-                image: '',
-                status: 'Free',
-            },
-            {
-                name: 'Drawing Game',
-                description: 'Draw Whatever You Want!',
-                image: '',
-                status: 'Sign-in to Play',
+           // loop through each game in the data and create a corresponding card
+           data.forEach((game, index) => {
+               // creating elements for the game card
+               
 
-            },
-        ];
+               // Add event listeners for interaction
+               
+
+               // put the card to the games section
+               gamesSection.appendChild(gameDiv);
+           });
+       }
+
+       // function to filter games based on name and status
+       function filterGames() {
+           // Get values from filter inputs
+           
+
+           // filter the games based on criteria
+           const filteredGames = gamesData.filter(game => {
+               // Return if the game should be included in the filtered list
+               return isNameMatch && isStatusMatch;
+           });
+           renderGames(filteredGames);
+       }
+       // function to toggle the favorite status of a game
+       function toggleFavorite(index) {
+           // show games list after being rendered
+           renderGames(gamesData);
+       }
+
+       // Function to navigate to the selected game
+       function navigateToGame(index) {
+           // redirect to the URL of game, unless ur not signed in
+           window.location.href = gameUrls[index];
+       }
 
 
-        const gamesSection = document.getElementById('gamesSection');
-
-        function renderGames(data) {
-            gamesSection.innerHTML = '';
-
-            data.forEach((game, index) => {
-                const gameDiv = document.createElement('div');
-                gameDiv.className = 'game';
-
-                const img = document.createElement('img');
-                img.src = game.image;
-                img.alt = game.name;
-
-                const gameInfoDiv = document.createElement('div');
-                gameInfoDiv.className = 'game-info';
-
-                const h3 = document.createElement('h3');
-                h3.textContent = game.name;
-
-                const p = document.createElement('p');
-                p.textContent = game.description;
-
-                const statusDiv = document.createElement('div');
-                statusDiv.className = 'sign-in';
-                statusDiv.textContent = game.status;
-
-                const favoriteIcon = document.createElement('img');
-                favoriteIcon.className = 'favorite-icon';
-                favoriteIcon.src = game.favorited
-                    ? ''
-                    : '';
-
-                favoriteIcon.addEventListener('click', (event) => {
-                    event.stopPropagation(); // Prevents the game click event from triggering
-                    toggleFavorite(index);
-                });
-
-                gameInfoDiv.appendChild(h3);
-                gameInfoDiv.appendChild(p);
-                gameInfoDiv.appendChild(statusDiv);
-
-                gameDiv.appendChild(img);
-                gameDiv.appendChild(favoriteIcon);
-                gameDiv.appendChild(gameInfoDiv);
-
-                gameDiv.addEventListener('click', () => {
-                    navigateToGame(index);
-                });
-
-                gamesSection.appendChild(gameDiv);
-            });
-        }
-
-        function filterGames() {
-            const nameFilter = document.getElementById('nameFilter').value.toLowerCase();
-            const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
-
-            const filteredGames = gamesData.filter(game => {
-                const isNameMatch = game.name.toLowerCase().includes(nameFilter);
-                const isStatusMatch = statusFilter === '' || game.status.toLowerCase().includes(statusFilter);
-                return isNameMatch && isStatusMatch;
-            });
-
-            renderGames(filteredGames);
-        }
-
-        function toggleFavorite(index) {
-            gamesData[index].favorited = !gamesData[index].favorited;
-            renderGames(gamesData);
-
-            const notification = document.getElementById('notification');
-            notification.style.display = 'block';
-
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 2000); // Hide the notification after 2 seconds
-        }
-
-        function navigateToGame(index) {
-            const gameUrls = [
-                'http://127.0.0.1:5501/_posts/Tictactoegame.html',
-                'http://127.0.0.1:5501/_posts/obstaclegame.html',
-                'http://127.0.0.1:5501/_posts/Guessthenumber.html',
-                'http://127.0.0.1:5501/_posts/2048game.html',
-                'http://127.0.0.1:5501/_posts/2024-01-11-GUI%20for%20Game%20Editor.html',
-                'http://127.0.0.1:5501/_posts/pingpong.html',
-                'http://127.0.0.1:5501/_posts/drawinggame.html',
-            ];
-
-            window.location.href = gameUrls[index];
-        }
-
-        renderGames(gamesData);
-    </script>
+       renderGames(gamesData);
+   </script>
 </body>
 
 </html>
+
+
