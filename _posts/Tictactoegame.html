@@ -1,211 +1,239 @@
+<!-- HTML Structure -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazing Tic Tac Toe</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #282c34;
-            color: #61dafb;
-        }
+   <!-- Meta tags etcc -->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- Title of the page -->
+   <title>Tic Tac Toe</title>
+   <!-- styling for the webpage  CSS -->
+   <style>
+       /* styling for the body element */
+       body {
+           /* Font and layout settings */
+           font-family: 'Arial', sans-serif;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+           height: 100vh;
+           margin: 0;
+           background-color: #282c34;
+           color: #61dafb;
+       }
 
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1.5em;
-            font-size: 2em;
-            width: 100%;
-        }
+       /* styling for the header element */
+       header {
+           background-color: #333;
+           color: white;
+           text-align: center;
+           padding: 1.5em;
+           font-size: 2em;
+           width: 100%;
+       }
 
-        nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #444;
-            padding: 1em;
-            width: 100%;
-        }
+       /* styling for the navigation bar */
+       nav {
+           display: flex;
+           justify-content: space-around;
+           background-color: #444;
+           padding: 1em;
+           width: 100%;
+       }
 
-        #ticTacToe {
-            display: grid;
-            grid-template-columns: repeat(3, 100px);
-            grid-template-rows: repeat(3, 100px);
-            gap: 5px;
-        }
+       /* styles the Tic Tac Toe grid */
+       #ticTacToe {
+           display: grid;
+           grid-template-columns: repeat(3, 100px);
+           grid-template-rows: repeat(3, 100px);
+           gap: 5px;
+       }
 
-        .cell {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2em;
-            background-color: #61dafb;
-            color: #282c34;
-            cursor: pointer;
-        }
+       /* styles individual cells in the grid */
+       .cell {
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           font-size: 2em;
+           background-color: #61dafb;
+           color: #282c34;
+           cursor: pointer;
+       }
 
-        .cell:hover {
-            background-color: #48a1d9;
-        }
+       /* styles hover effect for cells */
+       .cell:hover {
+           background-color: #48a1d9;
+       }
 
-        .winner {
-            background-color: #28a745;
-        }
+       /* Styling for the winner, draw, and reset button */
+       .winner {
+           background-color: #28a745;
+       }
 
-        .draw {
-            background-color: #ffc107;
-        }
+       .draw {
+           background-color: #ffc107;
+       }
 
-        .reset {
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 1.2em;
-            cursor: pointer;
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-        }
-    </style>
+       .reset {
+           margin-top: 20px;
+           padding: 10px;
+           font-size: 1.2em;
+           cursor: pointer;
+           background-color: #dc3545;
+           color: #fff;
+           border: none;
+           border-radius: 5px;
+       }
+   </style>
 </head>
-
 <body>
-    <header>
-        Your Game Universe
-    </header>
+   <!-- Header and Navigation bar -->
+   <header>
+       Your Game Universe
+   </header>
+   <nav>
+       <!-- Navigation links -->
+       <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
+       <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
+       <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
+       <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
+       <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
+       <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
+       <a href="http://127.0.0.1:5501/_posts/edit.html">UPDATE</a>
+   </nav>
+   <!-- Container for Tic Tac Toe grid and result display -->
+   <div id="ticTacToe"></div>
+   <div id="result"></div>
+   <!-- Reset button with associated JavaScript function -->
+   <button class="reset" onclick="resetGame()">Reset Game</button>
+   <!-- JavaScript code -->
+   <script type="module">
+       // API endpoint for user data
+       const url = 'http://127.0.0.1:8084/api/users/';
+       // HTML result container for displaying API response or errors
+       const resultContainer = document.getElementById("result");
+       // Options for the fetch request
+       const options = {
+           mode: 'cors', // Specify CORS mode
+           credentials: 'include', // Include credentials
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           method: 'GET', // HTTP GET method
+           cache: 'no-cache', // Do not cache the response
+       };
+       // Fetch user data from the API
+       fetch(url, options)
+           .then(response => {
+               // Check for errors in the API response
+               if (response.status !== 200) {
+                   // Handle errors and redirect
+                   const errorMsg = 'Database response error: ' + response.status;
+                   window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-401error.html";
+                   console.log(errorMsg);
+                   resultContainer.textContent = errorMsg;
+                   return;
+               }
+               // If successful, you can choose to display the data (current implementation leaves it empty)
+           })
+           // Handle fetch errors
+           .catch(err => {
+               window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-403error.html"
+               console.error(err);
+               resultContainer.innerHTML = err + ": " + url;
+           });
+   </script>
+   <!-- JavaScript code for the Tic Tac Toe game -->
+   <script>
+       // Variables to track game state
+       let currentPlayer = 'X';
+       let gameBoard = ['', '', '', '', '', '', '', '', ''];
+       let gameActive = true;
 
-    <nav>
-        <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
-        <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
-        <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
-        <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
-        <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
-        <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
-        <a href="http://127.0.0.1:5501/_posts/edit.html">UPDATE</a>
-    </nav>
-    <div id="ticTacToe"></div>
-    <div id="result"></div>
-    <button class="reset" onclick="resetGame()">Reset Game</button>
-    <script type="module">
-        const url = 'http://127.0.0.1:8084/api/users/';
-        // prepare HTML result container for new output
-        const resultContainer = document.getElementById("result");
-        const options = {
-            mode: 'cors', // no-cors, cors, same-origin
-            credentials: 'include', // include, same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'GET', // Override the method property
-            cache: 'no-cache', // Set the cache property
-        };
-        // fetch the API
-        fetch(url, options)
-            // response is a RESTful "promise" on any successful fetch
-            .then(response => {
-                // check for response errors and display
-                if (response.status !== 200) {
-                    const errorMsg = 'Database response error: ' + response.status;
-                    window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-401error.html";
-                    console.log(errorMsg);
-                    resultContainer.textContent = errorMsg;
-                    return;
-                }
-                // If you don't want to display the data, you can leave this part empty
-            })
-            // catch fetch errors (i.e., ACCESS to server blocked)
-            .catch(err => {
-                window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-403error.html"
-                console.error(err);
-                resultContainer.innerHTML = err + ": " + url;
-            });
-    </script>
-    
-    <script>
-        let currentPlayer = 'X';
-        let gameBoard = ['', '', '', '', '', '', '', '', ''];
-        let gameActive = true;
+       // HTML elements for game board and result display
+       const ticTacToe = document.getElementById('ticTacToe');
+       const resultDisplay = document.getElementById('result');
 
-        const ticTacToe = document.getElementById('ticTacToe');
-        const resultDisplay = document.getElementById('result');
+       // Function to handle cell clicks
+       function handleCellClick(index) {
+           if (gameBoard[index] === '' && gameActive) {
+               // Update the game board, render, and check for win/draw
+               gameBoard[index] = currentPlayer;
+               renderBoard();
+               checkForWinner();
+               checkForDraw();
+               switchPlayer();
+           }
+       }
 
-        function handleCellClick(index) {
-            if (gameBoard[index] === '' && gameActive) {
-                gameBoard[index] = currentPlayer;
-                renderBoard();
-                checkForWinner();
-                checkForDraw();
-                switchPlayer();
-            }
-        }
+       // Function to switch players (X to O, O to X)
+       function switchPlayer() {
+           currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+       }
 
-        function switchPlayer() {
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        }
+       // Function to check for a winner based on win patterns
+       function checkForWinner() {
+           const winPatterns = [
+               [0, 1, 2],
+               [3, 4, 5],
+               [6, 7, 8],
+               [0, 3, 6],
+               [1, 4, 7],
+               [2, 5, 8],
+               [0, 4, 8],
+               [2, 4, 6]
+           ];
 
-        function checkForWinner() {
-            const winPatterns = [
-                [0, 1, 2],
-                [3, 4, 5],
-                [6, 7, 8],
-                [0, 3, 6],
-                [1, 4, 7],
-                [2, 5, 8],
-                [0, 4, 8],
-                [2, 4, 6]
-            ];
+           for (const pattern of winPatterns) {
+               const [a, b, c] = pattern;
+               if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                   // Highlight winning cells, display result, and end the game
+                   ticTacToe.childNodes[a].classList.add('winner');
+                   ticTacToe.childNodes[b].classList.add('winner');
+                   ticTacToe.childNodes[c].classList.add('winner');
+                   resultDisplay.textContent = `${currentPlayer} wins!`;
+                   gameActive = false;
+                   return;
+               }
+           }
+       }
 
-            for (const pattern of winPatterns) {
-                const [a, b, c] = pattern;
-                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
-                    ticTacToe.childNodes[a].classList.add('winner');
-                    ticTacToe.childNodes[b].classList.add('winner');
-                    ticTacToe.childNodes[c].classList.add('winner');
-                    resultDisplay.textContent = `${currentPlayer} wins!`;
-                    gameActive = false;
-                    return;
-                }
-            }
-        }
+       // Function to check for a draw
+       function checkForDraw() {
+           if (!gameBoard.includes('')) {
+               // Display draw result and end the game
+               resultDisplay.textContent = 'It\'s a draw!';
+               ticTacToe.childNodes.forEach(cell => cell.classList.add('draw'));
+               gameActive = false;
+           }
+       }
 
-        function checkForDraw() {
-            if (!gameBoard.includes('')) {
-                resultDisplay.textContent = 'It\'s a draw!';
-                ticTacToe.childNodes.forEach(cell => cell.classList.add('draw'));
-                gameActive = false;
-            }
-        }
+       // Function to reset the game
+       function resetGame() {
+           gameBoard = ['', '', '', '', '', '', '', '', ''];
+           gameActive = true;
+           currentPlayer = 'X';
+           resultDisplay.textContent = '';
+           renderBoard();
+       }
 
-        function resetGame() {
-            gameBoard = ['', '', '', '', '', '', '', '', ''];
-            gameActive = true;
-            currentPlayer = 'X';
-            resultDisplay.textContent = '';
-            renderBoard();
-        }
+       // Function to render the game board
+       function renderBoard() {
+           ticTacToe.innerHTML = '';
+           for (let i = 0; i < 9; i++) {
+               // Create cell elements with appropriate styling and event listeners
+               const cell = document.createElement('div');
+               cell.className = `cell ${gameBoard[i] === 'X' ? 'X' : gameBoard[i] === 'O' ? 'O' : ''}`;
+               cell.textContent = gameBoard[i];
+               cell.addEventListener('click', () => handleCellClick(i));
+               ticTacToe.appendChild(cell);
+           }
+       }
 
-        function renderBoard() {
-            ticTacToe.innerHTML = '';
-            for (let i = 0; i < 9; i++) {
-                const cell = document.createElement('div');
-                cell.className = `cell ${gameBoard[i] === 'X' ? 'X' : gameBoard[i] === 'O' ? 'O' : ''}`;
-                cell.textContent = gameBoard[i];
-                cell.addEventListener('click', () => handleCellClick(i));
-                ticTacToe.appendChild(cell);
-            }
-        }
-
-        // Initial render
-        renderBoard();
-    </script>
+       // Initial render of the game board
+       renderBoard();
+   </script>
 </body>
-
 </html>
+
