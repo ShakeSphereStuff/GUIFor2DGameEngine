@@ -589,39 +589,39 @@ function selectMode(cellIteration, activeCell, cellType){
             var tileEditorColorName = document.createElement("p")
             var tileEditorColorShowcase = document.createElement("div")
             var tileEditorColorRow = document.createElement("div")
+            var tileEditorSetColor = [127, 127, 127, 1]
             var tileEditorSetColor = [127, 127, 127, 255]
 
             // secondary color feature
             var secondTileEditorColorName = document.createElement("p")
             var secondTileEditorColorShowcase = document.createElement("div")
             var secondTileEditorSetColor = [127, 127, 127, 255]
-            
+
             // switch between primary & secondary colors button
             var switchColorsButton = document.createElement("button")
             switchColorsButton.className = "switchColorsButton"
             switchColorsButton.innerText = "Switch Colors"
 
             switchColorsButton.onclick = function(){
-                switchColors(document.getElementsByClassName("cell")[cellIteration].getElementsByClassName("tileEditorColorShowcase")[0].style.backgroundColor, document.getElementsByClassName("cell")[cellIteration].getElementsByClassName("secondTileEditorColorShowcase")[0].style.backgroundColor, cellIteration);
+                switchColors(tileEditorSetColor, secondTileEditorSetColor, tileEditorLabels);
             };       
 
             tileEditorMainMenu.className = "tileEditorMainMenu"
             tileEditorColorShowcase.className = "tileEditorColorShowcase"
-            
+
             secondTileEditorColorShowcase.className = "secondTileEditorColorShowcase"
 
             tileEditorColorShowcase.style.width = "40px"
             tileEditorColorShowcase.style.height = "20px"
-            tileEditorColorShowcase.style.backgroundColor = "rgba(0, 0, 0, 1)"
-            
+
             secondTileEditorColorShowcase.style.width = "40px"
             secondTileEditorColorShowcase.style.height = "20px"
-            secondTileEditorColorShowcase.style.backgroundColor = "rgba(255, 255, 255, 1)"
 
+            tileEditorColorName.innerText = "Resulting Color:"
             tileEditorColorName.innerText = "Primary Color:"
             tileEditorColorName.style.color = "white"
             tileEditorColorName.style.marginBottom = "0px"
-            
+
             secondTileEditorColorName.innerText = "Secondary Color:"
             secondTileEditorColorName.style.color = "white"
             secondTileEditorColorName.style.marginBottom = "0px"
@@ -630,6 +630,7 @@ function selectMode(cellIteration, activeCell, cellType){
 
             tileEditorColorRow.appendChild(tileEditorColorName)
             tileEditorColorRow.appendChild(tileEditorColorShowcase)
+
             tileEditorColorRow.appendChild(secondTileEditorColorName)
             tileEditorColorRow.appendChild(secondTileEditorColorShowcase)
             tileEditorColorRow.appendChild(switchColorsButton)
@@ -640,40 +641,50 @@ function selectMode(cellIteration, activeCell, cellType){
                 var tileEditorLabel = document.createElement("p")
                 var tileEditorSlider = document.createElement("input")
                 var tileEditorColorLabel = document.createElement("p")
-
                 tileEditorSlider.className = "tileEditorSlider"
                 tileEditorLabel.className = "tileEditorLabel"
                 tileEditorLabel.style.width = "75px"
                 tileEditorColorLabel.className = "tileEditorColorLabel tileEditorLabel"
-
                 tileEditorRow.style.display = "flex"
                 tileEditorRow.style.height = "20px"
                 tileEditorColorLabel.style.right = "10px"
                 tileEditorColorLabel.style.position = "absolute"
-
                 tileEditorSlider.type = "range"
                 tileEditorSlider.max = "255"
                 tileEditorSlider.value = tileEditorSetColor[tileItterator]
                 tileEditorLabel.innerText = tileEditorLabels[tileItterator]
+                tileEditorColorLabel.innerText = tileEditorSetColor[tileItterator]
+
+                if(tileItterator == 3){
+                    tileEditorSlider.step = `${1/255}`
+                    tileEditorSlider.max = "1"
+                }
                 tileEditorColorLabel.innerText = tileEditorSetColor[tileItterator] 
 
                 tileEditorSlider.addEventListener("input", () => {
                     console.log(document.getElementsByClassName("tileEditorColorLabel")[tileItterator])
+                    document.getElementsByClassName("tileEditorColorLabel")[tileItterator].innerText = Math.floor(document.getElementsByClassName("tileEditorSlider")[tileItterator].value * 1000) / 1000
                     document.getElementsByClassName("tileEditorColorLabel")[tileItterator].innerText = document.getElementsByClassName("tileEditorSlider")[tileItterator].value
                     tileEditorSetColor[tileItterator] = document.getElementsByClassName("tileEditorSlider")[tileItterator].value
                     document.getElementsByClassName("tileEditorColorShowcase")[0].style.backgroundColor = `rgba(${tileEditorSetColor[0]}, ${tileEditorSetColor[1]}, ${tileEditorSetColor[2]}, ${tileEditorSetColor[3]})`
                 })
-
                 tileEditorRow.appendChild(tileEditorLabel)
                 tileEditorRow.appendChild(tileEditorSlider)
                 tileEditorRow.appendChild(tileEditorColorLabel)
                 tileEditorMainMenu.appendChild(tileEditorRow)
             }
-
             currentCell.appendChild(tileEditorMainMenu)
     }
 }
 
+function tileEditorZoomChanges(modifyer, cellIteration){
+    gridSizing += modifyer
+    tileXSpacing = gridSizing + 3 * (gridSizing / 15)
+    tileYSpacing = gridSizing + 3 * (gridSizing / 15)
+    console.log("Tile Editor Zoom Changes Inputed Variables are", cellIteration)
+    changeCell(document.getElementsByClassName("cell")[cellIteration], cellIteration)
+    // document.getElementsByClassName("cell")[cellIteration].remove()
+}
 function createSliders(labels, color, container, showcaseClass) {
     for (let i = 0; i < labels.length; i++) {
         var tileEditorRow = document.createElement("div");
@@ -710,21 +721,18 @@ function createSliders(labels, color, container, showcaseClass) {
     }
 }
 
-function switchColors(tileEditorSetColor, secondTileEditorSetColor, cellIteration) {
+function switchColors(tileEditorSetColor, secondTileEditorSetColor) {
     // Copy the primary and secondary color values
-    var tempColor = tileEditorSetColor; // Creating a copy
-    var tempSecondColor = secondTileEditorSetColor; // Creating a copy
-    
-    // Swap the primary and secondary color values
-    // tileEditorSetColor.splice(0, tileEditorSetColor.length, ...tempSecondColor);
-    // secondTileEditorSetColor.splice(0, secondTileEditorSetColor.length, ...tempColor);
+    var tempColor = tileEditorSetColor.slice(); // Creating a copy
+    var tempSecondColor = secondTileEditorSetColor.slice(); // Creating a copy
 
-    document.getElementsByClassName("cell")[cellIteration].getElementsByClassName("tileEditorColorShowcase")[0].style.backgroundColor = tempSecondColor
-    document.getElementsByClassName("cell")[cellIteration].getElementsByClassName("secondTileEditorColorShowcase")[0].style.backgroundColor = tempColor
+    // Swap the primary and secondary color values
+    tileEditorSetColor.splice(0, tileEditorSetColor.length, ...tempSecondColor);
+    secondTileEditorSetColor.splice(0, secondTileEditorSetColor.length, ...tempColor);
 
     // Update the color showcases directly
-    // updateColorShowcase(tileEditorSetColor, document.getElementsByClassName("tileEditorColorShowcase")[0]);
-    // updateColorShowcase(secondTileEditorSetColor, document.getElementsByClassName("secondTileEditorColorShowcase")[0]);
+    updateColorShowcase(tileEditorSetColor, document.getElementsByClassName("tileEditorColorShowcase")[0]);
+    updateColorShowcase(secondTileEditorSetColor, document.getElementsByClassName("secondTileEditorColorShowcase")[0]);
 
     // Update slider positions
     updateSliderPositions(tileEditorSetColor);
@@ -738,7 +746,6 @@ function updateColorShowcase(color, showcase) {
 
 function updateSliderPositions(color, labels) {
     const sliders = document.getElementsByClassName("tileEditorSlider");
-    console.log("Colors", color)
 
     for (let i = 0; i < sliders.length; i++) {
         sliders[i].value = color[i];
