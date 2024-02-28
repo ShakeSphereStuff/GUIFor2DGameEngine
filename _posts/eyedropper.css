@@ -1,0 +1,147 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Monsterrat", "sans-serif";
+}
+
+html {
+  font-size: 16px;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: rgb(51, 122, 255);
+  transition: background-color 0.5s ease-in-out;
+  padding: 30px;
+}
+
+.inner{
+  width: 100%;
+  max-width: 560px;
+  padding: 30px;
+  text-align: center;
+  background: #2D2736;
+  border-radius: 15px;
+}
+
+.heading{
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: white;
+}
+
+@media only screen and (max-width: 42.5rem) {
+  .heading{
+    font-size: 1.5rem;
+  }
+}
+
+.btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  margin: 32px auto 0 auto;
+  background: white;
+  border: 3px solid white;
+  border-radius: 50%;
+  outline: 0;
+  cursor: pointer;
+  color: #111111;
+  transform: scale(1.001);
+  transition: transform 0.35 ease-in-out, border-color 0.35 ease-in-out, background-color 0.35s ease-in-out;
+}
+
+.btn:focus-visible {
+  border-color: #90CBFB;
+}
+
+.btn:hover {
+  transform: scale(1.05); 
+}
+
+.btn__icon{
+  width: 50%;
+  height: 50%;
+  fill: currentColor;
+}
+
+.error {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  font-size: 1.25rem;
+  text-align: center;
+  background: white;
+  color: red;
+}
+
+.error a {
+  text-decoration: none;
+  color: orange;
+}
+
+.info {
+  margin-top: 32px;
+  line-height: 1.5;
+  color: white;
+}
+
+.info strong {
+  text-transform: uppercase;
+  font-size: 2rem;
+}
+
+.palette {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 20px;
+  margin-top: 32px;
+  width: 100%;
+  max-width: 560px;
+  padding: 30px;
+  text-align: center;
+  background: #FFFFFF;
+  border-radius: 15px;
+}
+
+.swatch {
+  height: 66px;
+  aspect-ratio: 1/1;
+  background: #F3FEB0;
+  border-radius: 50%;
+}
+
+@supports (aspect-ratio: 1/1) {
+  .swatch {
+    height: auto;
+  }
+}
+
+.swatch:nth-child(2) {
+  background-color: #FEA443;
+}
+
+.swatch:nth-child(3) {
+  background-color: #705E78;
+}
+
+.swatch:nth-child(4) {
+  background-color: #A5AAA3;
+}
+
+.swatch:nth-child(5) {
+  background-color: #812F33;
+}
+
+.swatch:nth-child(6) {
+  background-color: #90CBFB;
+}

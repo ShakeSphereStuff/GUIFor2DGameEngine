@@ -602,7 +602,7 @@ function selectMode(cellIteration, activeCell, cellType){
             switchColorsButton.innerText = "Switch Colors"
 
             switchColorsButton.onclick = function(){
-                switchColors(tileEditorSetColor, secondTileEditorSetColor, tileEditorLabels);
+                switchColors(document.getElementsByClassName("cell")[cellIteration].getElementsByClassName("tileEditorColorShowcase")[0].style.backgroundColor, document.getElementsByClassName("cell")[cellIteration].getElementsByClassName("secondTileEditorColorShowcase")[0].style.backgroundColor, cellIteration);
             };       
 
             tileEditorMainMenu.className = "tileEditorMainMenu"
@@ -612,9 +612,11 @@ function selectMode(cellIteration, activeCell, cellType){
 
             tileEditorColorShowcase.style.width = "40px"
             tileEditorColorShowcase.style.height = "20px"
+            tileEditorColorShowcase.style.backgroundColor = "rgba(0, 0, 0, 1)"
             
             secondTileEditorColorShowcase.style.width = "40px"
             secondTileEditorColorShowcase.style.height = "20px"
+            secondTileEditorColorShowcase.style.backgroundColor = "rgba(255, 255, 255, 1)"
 
             tileEditorColorName.innerText = "Primary Color:"
             tileEditorColorName.style.color = "white"
@@ -708,18 +710,21 @@ function createSliders(labels, color, container, showcaseClass) {
     }
 }
 
-function switchColors(tileEditorSetColor, secondTileEditorSetColor) {
+function switchColors(tileEditorSetColor, secondTileEditorSetColor, cellIteration) {
     // Copy the primary and secondary color values
-    var tempColor = tileEditorSetColor.slice(); // Creating a copy
-    var tempSecondColor = secondTileEditorSetColor.slice(); // Creating a copy
+    var tempColor = tileEditorSetColor; // Creating a copy
+    var tempSecondColor = secondTileEditorSetColor; // Creating a copy
     
     // Swap the primary and secondary color values
-    tileEditorSetColor.splice(0, tileEditorSetColor.length, ...tempSecondColor);
-    secondTileEditorSetColor.splice(0, secondTileEditorSetColor.length, ...tempColor);
+    // tileEditorSetColor.splice(0, tileEditorSetColor.length, ...tempSecondColor);
+    // secondTileEditorSetColor.splice(0, secondTileEditorSetColor.length, ...tempColor);
+
+    document.getElementsByClassName("cell")[cellIteration].getElementsByClassName("tileEditorColorShowcase")[0].style.backgroundColor = tempSecondColor
+    document.getElementsByClassName("cell")[cellIteration].getElementsByClassName("secondTileEditorColorShowcase")[0].style.backgroundColor = tempColor
 
     // Update the color showcases directly
-    updateColorShowcase(tileEditorSetColor, document.getElementsByClassName("tileEditorColorShowcase")[0]);
-    updateColorShowcase(secondTileEditorSetColor, document.getElementsByClassName("secondTileEditorColorShowcase")[0]);
+    // updateColorShowcase(tileEditorSetColor, document.getElementsByClassName("tileEditorColorShowcase")[0]);
+    // updateColorShowcase(secondTileEditorSetColor, document.getElementsByClassName("secondTileEditorColorShowcase")[0]);
 
     // Update slider positions
     updateSliderPositions(tileEditorSetColor);
@@ -733,6 +738,7 @@ function updateColorShowcase(color, showcase) {
 
 function updateSliderPositions(color, labels) {
     const sliders = document.getElementsByClassName("tileEditorSlider");
+    console.log("Colors", color)
 
     for (let i = 0; i < sliders.length; i++) {
         sliders[i].value = color[i];
