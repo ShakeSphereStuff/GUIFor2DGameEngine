@@ -94,13 +94,13 @@
    </header>
    <nav>
        <!-- Navigation links -->
-       <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
-       <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
-       <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
-       <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
-       <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
-       <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
-       <a href="http://127.0.0.1:5501/_posts/edit.html">UPDATE</a>
+       <a href="http://127.0.0.1:5500/_posts/index.html">HOME</a>
+       <a href="http://127.0.0.1:5500/_posts/gameslist.html">GAMES</a>
+       <a href="http://127.0.0.1:5500/_posts/favorites.html">FAVORITE</a>
+       <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
+       <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin copy.html">LOGIN</a>
+       <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">SIGN UP</a>
+       <a href="http://127.0.0.1:5500/_posts/edit.html">UPDATE</a>
    </nav>
    <!-- Container for Tic Tac Toe grid and result display -->
    <div id="ticTacToe"></div>
@@ -130,7 +130,7 @@
                if (response.status !== 200) {
                    // Handle errors and redirect
                    const errorMsg = 'Database response error: ' + response.status;
-                   window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-401error.html";
+                   window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-401error.html";
                    console.log(errorMsg);
                    resultContainer.textContent = errorMsg;
                    return;
@@ -139,7 +139,7 @@
            })
            // Handle fetch errors
            .catch(err => {
-               window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-403error.html"
+               window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-403error.html"
                console.error(err);
                resultContainer.innerHTML = err + ": " + url;
            });

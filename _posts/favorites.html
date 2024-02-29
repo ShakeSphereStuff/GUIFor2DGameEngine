@@ -119,13 +119,13 @@
 </header>
 <body>
     <nav>
-        <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
-        <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
-        <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
-        <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
-        <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
-        <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
-        <a href="http://127.0.0.1:5501/_posts/edit.html">UPDATE</a>
+        <a href="http://127.0.0.1:5500/_posts/index.html">HOME</a>
+        <a href="http://127.0.0.1:5500/_posts/gameslist.html">GAMES</a>
+        <a href="http://127.0.0.1:5500/_posts/favorites.html">FAVORITE</a>
+        <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
+        <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin copy.html">LOGIN</a>
+        <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">SIGN UP</a>
+        <a href="http://127.0.0.1:5500/_posts/edit.html">UPDATE</a>
     </nav>
     <button onclick="getInfo()">Click me</button>
     <section id="gamesSection"></section>
@@ -203,7 +203,7 @@
                 // check for response errors and display
                 if (response.status !== 200) {
                     const errorMsg = 'Database response error: ' + response.status;
-                    window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-401error.html";
+                    window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-401error.html";
                     console.log(errorMsg);
                     const tr = document.createElement("tr");
                     const td = document.createElement("td");
@@ -238,7 +238,7 @@
                 })
                     // catch fetch errors (i.e., ACCESS to server blocked)
                     .catch(err => {
-                        //window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-403error.html"
+                        //window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-403error.html"
                         console.error(err);
                         const tr = document.createElement("tr");
                         const td = document.createElement("td");
@@ -335,11 +335,11 @@
 
         function navigateToGame(index) {
             const gameUrls = [
-                'http://127.0.0.1:5501/_posts/Tictactoegame.html',
-                'http://127.0.0.1:5501/_posts/obstaclegame.html',
-                'http://127.0.0.1:5501/_posts/Guessthenumber.html',
-                'http://127.0.0.1:5501/_posts/2048game.html',
-                'http://127.0.0.1:5501/_posts/2024-01-11-GUI%20for%20Game%20Editor.html',
+                'http://127.0.0.1:5500/_posts/Tictactoegame.html',
+                'http://127.0.0.1:5500/_posts/obstaclegame.html',
+                'http://127.0.0.1:5500/_posts/Guessthenumber.html',
+                'http://127.0.0.1:5500/_posts/2048game.html',
+                'http://127.0.0.1:5500/_posts/2024-01-11-GUI%20for%20Game%20Editor.html',
             ];
 
             window.location.href = gameUrls[index];
@@ -358,7 +358,7 @@
                 }
             });
         }
-        */
+
     </script>
     <script type="module">
     </script>
