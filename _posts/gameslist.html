@@ -211,9 +211,9 @@
                 const favoriteIcon = document.createElement('img');
                 favoriteIcon.className = 'favorite-icon';
                 favoriteIcon.src = game.favorited
-                    ? '../images/FavoriteImages/Screenshot_2024-02-15_3.01.45_PM.png'
-                    : '../images/FavoriteImages/Screenshot_2024-02-15_3.01.28_PM.png';
-                favoriteIcon.alt = 'Favorite Icon';
+                    ? '' 
+                    : '';
+                favoriteIcon.alt = '';
                 favoriteIcon.addEventListener('click', (event) => {
                     event.stopPropagation(); // Prevents the game click event from triggering
                     toggleFavorite(index);

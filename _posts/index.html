@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,8 +12,8 @@
             padding: 0;
             box-sizing: border-box;
             background-color: #f9f9f9;
+            transition: background-color 1s ease-in-out;
         }
-
 
         header {
             background-color: #333;
@@ -22,131 +21,353 @@
             text-align: center;
             padding: 1.5em;
             font-size: 2em;
+            position: relative;
+            overflow: hidden;
         }
-
 
         nav {
             display: flex;
-            justify-content: space-around;
+            flex-wrap: wrap;
+            justify-content: center;
             background-color: #444;
             padding: 1em;
         }
 
-
         nav a {
-            color: white; /* Updated color to white */
-            text-decoration: none; /* Remove underline */
+            color: white;
+            text-decoration: none;
+            margin: 0.5em;
         }
-
 
         nav a:hover {
             color: #ffcc00;
         }
 
-
-        .slideshow {
-           /* overflow: hidden; */  
-            margin-top: 1em;
-        }
-
-
-        .slide {
-            display: inline-block;
-            width: 100%;
-            height: auto;
-        }
-
-
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1.5em;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-
         .image-slideshow {
+            position: relative;
             overflow: hidden;
             margin-top: 1em;
             white-space: nowrap;
         }
-
 
         .image {
             display: inline-block;
             width: 100%;
             height: auto;
             animation: moveAnimation 8s linear infinite;
+            position: relative;
         }
-
 
         @keyframes moveAnimation {
             0% {
                 transform: translateX(0);
             }
 
-
             100% {
                 transform: translateX(-300%);
             }
         }
+
+        .featured-games {
+            text-align: center;
+            padding: 2em;
+            background-color: #eee;
+        }
+
+        .featured-game {
+            display: inline-block;
+            margin: 0 1em;
+        }
+
+        .featured-label {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 12px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #sidebar {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            background-color: #333;
+            padding: 1em;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transform: translateY(-50%);
+            z-index: 3;
+        }
+
+        #styleButton,
+        #snowButton {
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            color: #fff;
+            background-color: transparent;
+            outline: none;
+        }
+
+        #styleButton:hover,
+        #snowButton:hover {
+            color: #ffcc00;
+        }
+
+        .snowfall {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            animation: snowfallAnimation 10s linear;
+            z-index: 2;
+        }
+
+        .snowflake {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #00f; /* Blue dot */
+            border-radius: 50%;
+            animation-iteration-count: infinite;
+            animation-play-state: running;
+        }
+
+        @keyframes snowfallAnimation {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        @keyframes snowflakeAnimation {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            25% {
+                transform: translateY(10px) translateX(5px);
+            }
+
+            50% {
+                transform: translateY(20px) translateX(-5px);
+            }
+
+            75% {
+                transform: translateY(30px) translateX(5px);
+            }
+        }
+
+        /* Additional Section Styles */
+        .additional-section {
+            padding: 2em;
+            background-color: #eee;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 1em;
+        }
+
+        .social-link {
+            margin: 0 10px;
+            font-size: 20px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .faq-section {
+            padding: 2em;
+            text-align: center;
+            background-color: #eee;
+        }
+
+        .faq-section details {
+            margin: 1em 0;
+        }
+
+        .faq-section summary {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .faq-section p {
+            margin-top: 0.5em;
+        }
     </style>
 </head>
 
-
 <body>
 
+    <div id="sidebar">
+        <button id="styleButton" onclick="changeStyle()">✧</button>
+        <p>Change Style</p>
+        <button id="snowButton" onclick="startSnowfall()">❄</button>
+        <p>Add Snowflakes!</p>
+    </div>
 
     <header>
         Your Game Universe
+        <div class="snowfall" id="snowfallContainer">
+            <!-- Snowflakes will be added here dynamically -->
+        </div>
     </header>
 
-
     <nav>
-        <a href="http://127.0.0.1:5500/_posts/index.html">HOME</a>
-        <a href="http://127.0.0.1:5500/_posts/gameslist.html">GAMES</a>
-        <a href="http://127.0.0.1:5500/_posts/favorites.html">FAVORITE</a>
-        <a href="http://127.0.0.1:5500/_posts/ibio.html">BIO</a>
-        <a href="http://127.0.0.1:5500/_posts/2024-02-07-SLogin copy.html">LOGIN</a>
-        <a href="http://127.0.0.1:5500/_posts/2024-02-06-SignUp.html">SIGN UP</a>
-        <a href="http://127.0.0.1:5500/_posts/edit.html">UPDATE</a>
+        <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
+        <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
+        <a href="http://127.0.0.1:5501/_posts/favorites.html">FAVORITE</a>
+        <a href="http://127.0.0.1:5501/_posts/ibio.html">BIO</a>
+        <a href="http://127.0.0.1:5501/_posts/2024-02-07-SLogin Copy.html">LOGIN</a>
+        <a href="http://127.0.0.1:5501/_posts/2024-02-06-SignUp.html">SIGN UP</a>
+        <a href="http://127.0.0.1:5501/_posts/edit.html">UPDATE</a>
     </nav>
 
     <div class="image-slideshow">
         <div class="image">
-            <img src="../images/gamescrollimages/tictactoe.png" alt="Tic Tac Toe" onclick="window.location.href='http://127.0.0.1:5500/_posts/gameslist.html';">
-            <img src="../images/gamescrollimages/tictactoe.png" alt="Tic Tac Toe" onclick="window.location.href='http://127.0.0.1:5500/_posts/gameslist.html';">
+            <img src="../images/gamescrollimages/tictactoe.png" alt="Tic Tac Toe" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
+            <img src="../images/gamescrollimages/tictactoe.png" alt="Tic Tac Toe" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
         </div>
         <div class="image">
-            <img src="../images/gamescrollimages/mazedgames.png" alt="Obstacle" onclick="window.location.href='http://127.0.0.1:5500/_posts/gameslist.html';">
-            <img src="../images/gamescrollimages/mazedgames.png" alt="Obstacle" onclick="window.location.href='http://127.0.0.1:5500/_posts/gameslist.html';">
+            <img src="../images/gamescrollimages/mazedgames.png" alt="Obstacle" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
+            <img src="../images/gamescrollimages/mazedgames.png" alt="Obstacle" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
         </div>
         <div class="image">
-            <img src="../images/gamescrollimages/guesshtenumber.png" alt="Guess the Number" onclick="window.location.href='http://127.0.0.1:5500/_posts/gameslist.html';">
-            <img src="../images/gamescrollimages/guesshtenumber.png" alt="Guess the Number" onclick="window.location.href='http://127.0.0.1:5500/_posts/gameslist.html';">
+            <img src="../images/gamescrollimages/guesshtenumber.png" alt="Guess the Number" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
+            <img src="../images/gamescrollimages/guesshtenumber.png" alt="Guess the Number" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
         </div>
         <div class="image">
-            <img src="../images/gamescrollimages/2048.png" alt="2048" onclick="window.location.href='http://127.0.0.1:5500/_posts/gameslist.html';">
-            <img src="../images/gamescrollimages/2048.png" alt="2048" onclick="window.location.href='http://127.0.0.1:5500/_posts/gameslist.html';">
-        </div>
-        <div class="image">
-            <img src="../images/gamescrollimages/2048.png" alt="Eyedropper" onclick="window.location.href='http://127.0.0.1:5500/_posts/gameslist.html';">
-            <img src="../images/gamescrollimages/2048.png" alt="Eyedropper" onclick="window.location.href='http://127.0.0.1:5500/_posts/gameslist.html';">
+            <img src="../images/gamescrollimages/2048.png" alt="2048" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
+            <img src="../images/gamescrollimages/2048.png" alt="2048" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
         </div>
     </div>
 
+    <div class="featured-games">
+        <h2>Featured Games</h2>
+        <div class="featured-game">
+            <img src="../images/gamescrollimages/tictactoe.png" alt="Featured Game 1" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
+            <p>Game 1</p>
+        </div>
+        <div class="featured-game">
+            <img src="../images/gamescrollimages/mazedgames.png" alt="Featured Game 2" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
+            <p>Game 2</p>
+        </div>
+        <div class="featured-game">
+            <img src="../images/gamescrollimages/guesshtenumber.png" alt="Featured Game 3" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
+            <p>Game 3</p>
+        </div>
+        <div class="featured-game">
+            <img src="../images/gamescrollimages/2048.png" alt="Featured Game 4" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
+            <p>Game 4</p>
+        </div>
+    </div>
+
+    <div class="faq-section">
+        <h2>Frequently Asked Questions (FAQ)</h2>
+
+        <details>
+            <summary>Why should I create an account?</summary>
+            <p>Because it's more fun when the computer knows your gaming secrets! Plus, who doesn't love personalized game recommendations from a machine?</p>
+        </details>
+
+        <details>
+            <summary>How do I find the coolest games?</summary>
+            <p>Follow the floating bubbles, they are the wise sages of game recommendations. Or you could just check our Games section, that works too!</p>
+        </details>
+
+        <details>
+            <summary>What happens if I press the star button?</summary>
+            <p>A star is born! Just kidding. It changes the background color and throws a mini firework celebration because we believe every click is a cause for celebration.</p>
+        </details>
+
+        <details>
+            <summary>Is the snowfall button a time machine?</summary>
+            <p>Unfortunately, no. It just makes it snow on our website. But imagine how cool it would be if it were a time machine!</p>
+        </details>
+    </div>
+
+    <div class="additional-section">
+        <p>So how do you use this site?</p>
+        <p>Go to our games list and play some free games! Make sure to create a free account to play even cooler ones!</p>
+    </div>
+
     <footer>
-        &copy; 2024 Your Game Universe. All rights reserved.
+        <div class="social-links">
+            <a class="social-link" href="https://www.youtube.com" target="_blank">🎥</a>
+            <a class="social-link" href="https://www.instagram.com" target="_blank">📷</a>
+            <a class="social-link" href="https://www.twitter.com" target="_blank">🐦</a>
+        </div>
+        <p>&copy; 2024 Your Game Universe. All rights reserved.</p>
     </footer>
 
+    <script>
+        function changeStyle() {
+            document.body.style.backgroundColor = getRandomColor();
+        }
 
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function startSnowfall() {
+            var snowfallContainer = document.getElementById('snowfallContainer');
+            if (!snowfallContainer) {
+                snowfallContainer = document.createElement('div');
+                snowfallContainer.id = 'snowfallContainer';
+                document.body.appendChild(snowfallContainer);
+            }
+
+            var snowflakeCount = 100;
+            for (var i = 0; i < snowflakeCount; i++) {
+                createSnowflake();
+            }
+            setTimeout(stopSnowfall, 10000); // Stop snowfall after 10 seconds
+        }
+
+        function stopSnowfall() {
+            var snowfallContainer = document.getElementById('snowfallContainer');
+            if (snowfallContainer) {
+                snowfallContainer.innerHTML = '';
+            }
+        }
+
+        function createSnowflake() {
+            var snowflake = document.createElement("div");
+            snowflake.className = "snowflake";
+            snowflake.innerHTML = '<div class="inner"></div>';
+            var randomX = Math.random() * window.innerWidth;
+            var randomY = Math.random() * window.innerHeight;
+            snowflake.style.left = randomX + "px";
+            snowflake.style.top = randomY + "px";
+            document.getElementById("snowfallContainer").appendChild(snowflake);
+        }
+    </script>
 </body>
 
-
 </html>
-
-
-
