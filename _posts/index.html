@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Game Universe</title>
     <style>
+        /* global styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -15,6 +16,7 @@
             transition: background-color 1s ease-in-out;
         }
 
+        /* header styles */
         header {
             background-color: #333;
             color: white;
@@ -25,6 +27,7 @@
             overflow: hidden;
         }
 
+        /* navigation style  */
         nav {
             display: flex;
             flex-wrap: wrap;
@@ -43,6 +46,7 @@
             color: #ffcc00;
         }
 
+        /* image slideshow styles */
         .image-slideshow {
             position: relative;
             overflow: hidden;
@@ -57,7 +61,7 @@
             animation: moveAnimation 8s linear infinite;
             position: relative;
         }
-
+        /* image keyframe animation  */
         @keyframes moveAnimation {
             0% {
                 transform: translateX(0);
@@ -68,6 +72,7 @@
             }
         }
 
+        /*  games styles for featured games stuff */
         .featured-games {
             text-align: center;
             padding: 2em;
@@ -79,16 +84,7 @@
             margin: 0 1em;
         }
 
-        .featured-label {
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 12px;
-        }
-
+        /* footer styles */
         footer {
             background-color: #333;
             color: white;
@@ -99,6 +95,7 @@
             align-items: center;
         }
 
+        /* sidebar styles with special effects */
         #sidebar {
             position: fixed;
             top: 50%;
@@ -128,6 +125,7 @@
             color: #ffcc00;
         }
 
+        /* snowfall animation styling */
         .snowfall {
             pointer-events: none;
             position: fixed;
@@ -177,7 +175,7 @@
             }
         }
 
-        /* Additional Section Styles */
+        /* how to use this site styles */
         .additional-section {
             padding: 2em;
             background-color: #eee;
@@ -220,6 +218,7 @@
 
 <body>
 
+    <!-- sidebar -->
     <div id="sidebar">
         <button id="styleButton" onclick="changeStyle()">✧</button>
         <p>Change Style</p>
@@ -227,6 +226,7 @@
         <p>Add Snowflakes!</p>
     </div>
 
+    <!-- header section -->
     <header>
         Your Game Universe
         <div class="snowfall" id="snowfallContainer">
@@ -234,6 +234,7 @@
         </div>
     </header>
 
+    <!-- nav bar section -->
     <nav>
         <a href="http://127.0.0.1:5501/_posts/index.html">HOME</a>
         <a href="http://127.0.0.1:5501/_posts/gameslist.html">GAMES</a>
@@ -244,6 +245,7 @@
         <a href="http://127.0.0.1:5501/_posts/edit.html">UPDATE</a>
     </nav>
 
+    <!-- image slideshow section + sourvces -->
     <div class="image-slideshow">
         <div class="image">
             <img src="../images/gamescrollimages/tictactoe.png" alt="Tic Tac Toe" onclick="window.location.href='http://127.0.0.1:5501/_posts/gameslist.html';">
@@ -263,6 +265,7 @@
         </div>
     </div>
 
+    <!-- featured games section -->
     <div class="featured-games">
         <h2>Featured Games</h2>
         <div class="featured-game">
@@ -283,35 +286,38 @@
         </div>
     </div>
 
+    <!-- FAQ section -->
     <div class="faq-section">
         <h2>Frequently Asked Questions (FAQ)</h2>
 
         <details>
             <summary>Why should I create an account?</summary>
-            <p>Because it's more fun when the computer knows your gaming secrets! Plus, who doesn't love personalized game recommendations from a machine?</p>
+            <p>Unlock access to special games! </p>
         </details>
 
         <details>
             <summary>How do I find the coolest games?</summary>
-            <p>Follow the floating bubbles, they are the wise sages of game recommendations. Or you could just check our Games section, that works too!</p>
+            <p> Check our Games section, and see what works best for you!</p>
         </details>
 
         <details>
             <summary>What happens if I press the star button?</summary>
-            <p>A star is born! Just kidding. It changes the background color and throws a mini firework celebration because we believe every click is a cause for celebration.</p>
+            <p>A star is born! Just kidding lol the styling will change so you get some cool slide show colors instead!.</p>
         </details>
 
         <details>
-            <summary>Is the snowfall button a time machine?</summary>
-            <p>Unfortunately, no. It just makes it snow on our website. But imagine how cool it would be if it were a time machine!</p>
+            <summary>Is the snowfall button make it christmas time?</summary>
+            <p>Unfortunately, no. It just makes it snow on our website. But that would be so cooooooool! get it? cool? ill shut up now</p>
         </details>
     </div>
 
+    <!-- how to use this site section -->
     <div class="additional-section">
         <p>So how do you use this site?</p>
         <p>Go to our games list and play some free games! Make sure to create a free account to play even cooler ones!</p>
     </div>
 
+    <!-- Footer section -->
     <footer>
         <div class="social-links">
             <a class="social-link" href="https://www.youtube.com" target="_blank">🎥</a>
@@ -322,10 +328,12 @@
     </footer>
 
     <script>
+        // Function to change background color
         function changeStyle() {
             document.body.style.backgroundColor = getRandomColor();
         }
 
+        // Function to get a random color
         function getRandomColor() {
             var letters = '0123456789ABCDEF';
             var color = '#';
@@ -335,6 +343,7 @@
             return color;
         }
 
+        // Function to start snowfall animation
         function startSnowfall() {
             var snowfallContainer = document.getElementById('snowfallContainer');
             if (!snowfallContainer) {
@@ -350,6 +359,7 @@
             setTimeout(stopSnowfall, 10000); // Stop snowfall after 10 seconds
         }
 
+        // Function to stop snowfall animation
         function stopSnowfall() {
             var snowfallContainer = document.getElementById('snowfallContainer');
             if (snowfallContainer) {
@@ -357,6 +367,7 @@
             }
         }
 
+        // Function to create a snowflake
         function createSnowflake() {
             var snowflake = document.createElement("div");
             snowflake.className = "snowflake";
