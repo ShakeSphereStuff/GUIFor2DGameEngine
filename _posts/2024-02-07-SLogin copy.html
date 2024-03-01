@@ -201,7 +201,7 @@ body{
     <a href="http://127.0.0.1:5500/_posts/index.html" class="button">Home</a>
   <div class="container">
     <div class="img-box">
-      <img src="http://127.0.0.1:5500/images/YGUlogo.png" alt="">
+      <img src="../images/YGUlogo.png" alt="">
     </div>
     <div class="content-box">
       <div class="content">
@@ -274,12 +274,12 @@ The script defines a function when the page loads. This function is triggered wh
             
             // Success!!!
             // Redirect to the database page
-            window.location.href = "http://127.0.0.1:5500/_posts/gameslist.html"
+            window.location.href = "http://127.0.0.1:5501/_posts/gameslist.html"
             ;
         })
         // catch fetch errors (ie ACCESS to server blocked)
         .catch(err => {
-            window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-403error.html"
+            window.location.href = "http://127.0.0.1:5501/_posts/2024-02-07-403error.html"
             console.error(err);
         });
     }
