@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang = "eng" style = "background-color: rgb(58, 60, 81);" xmlns="https://http://www.w3.org/2000/svg"> 
+    <head>
+        <title>
+            GUI for Game Editor
+        </title>
+    </head>
+    <body>
+        <link rel = "stylesheet" href = "2024-01-17-GUIforGameEditorStyle.css">
+        <div hidden>elopment</div>
+        <div id = "mainContainer"> 
+            <div id = "mainHeader">
+                <p style = "float:left; padding: 0px; margin: 0px">Ascension</p>
+                <img src = "../images/gamecreatoriamges/TempSettingLogo.png" alt = "SettingsLogo" onclick = "settingsPrompt()" style = "width: 20px; height: 20px"/>
+                <img src = "../images/gamecreatoriamges/saveAccountData.png" alt = "SaveData" onclick = "saveData()" style = "width: 20px; height: 20px"/>
+                <select style = "height: 25px; font-size: 20px; color:white; background-color: transparent; border-radius: 30px; border-color: white; position: absolute; right:0px; display: inline-block; padding: 0px 10px 0px 10px; top: 17px; width: calc(100% - 280px); max-width: 180px; text-overflow: ellipsis" id = "layOutSelectionMenu">
+                </select>
+            </div>
+            <div id = "cellSettingsOpener">&lt;</div>
+            <div id = "cellSettingsControls">
+                <p class = "currentSelectedCellValue" id = "0" hidden></p>
+                <p style = "display: inline-block; vertical-align: middle;">Width</p><input type = "range" style="width:75px" value = "0"><br>
+                <p style = "display: inline-block; vertical-align: middle">Height</p><input type = "range" style="width:75px" value = "0"><br><br>
+            </div>
+            <div id = "mainWindow">
+            </div>
+        </div>
+        <!-- <script type="module">
+            const url = 'http://127.0.0.1:8084/api/users/';
+            // prepare HTML result container for new output
+            const resultContainer = document.getElementById("result");
+            const options = {
+                mode: 'cors', // no-cors, cors, same-origin
+                credentials: 'include', // include, same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET', // Override the method property
+                cache: 'no-cache', // Set the cache property
+            };
+            // fetch the API
+            fetch(url, options)
+                // response is a RESTful "promise" on any successful fetch
+                .then(response => {
+                    // check for response errors and display
+                    if (response.status !== 200) {
+                        const errorMsg = 'Database response error: ' + response.status;
+                        window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-401error.html";
+                        window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-401error.html";
+                        console.log(errorMsg);
+                        resultContainer.textContent = errorMsg;
+                        return;
+                    }
+                    // If you don't want to display the data, you can leave this part empty
+                })
+                // catch fetch errors (i.e., ACCESS to server blocked)
+                .catch(err => {
+                    window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-403error.html"
+                    window.location.href = "http://127.0.0.1:5500/_posts/2024-02-07-403error.html"
+                    console.error(err);
+                    resultContainer.innerHTML = err + ": " + url;
+                });
+        </script> -->
+        <script src = "2024-01-17-GUIforGameEditorCode.js">
+        </script>
+    </body>
+</html>
